@@ -40,14 +40,12 @@ export default function BentoGrid() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          {/* Tile 1: Tech Stack - Spans 2 columns */}
           <div 
   className="flex h-full flex-col items-center justify-center md:col-span-2 overflow-hidden rounded-3xl sm:bg-neutral-900/50 sm:border border-white/5 p-4 backdrop-blur-xl transition-colors group animate-fade-in-up"
 >
   <h3 className="text-base sm:text-xl pl-4 font-bold text-neutral-200">TechStack</h3>
   <div className="flex flex-col inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity" />
 
-  {/* Grid je nyní vycentrován díky flexu na rodiči */}
   <div className="grid grid-cols-6 sm:grid-cols-6 gap-4 items-center justify-items-center relative z-10">
     {techStack.map((tech, index) => (
       <div 
@@ -70,7 +68,6 @@ export default function BentoGrid() {
     ))}
   </div>
 </div>
-  {/* Tile 2: Location */}
           <div 
             className="relative hidden md:flex overflow-hidden rounded-3xl bg-neutral-900/50 border border-white/5 !p-8 backdrop-blur-xl transition-colors flex flex-col items-center justify-center text-center gap-6 group animate-fade-in-up delay-100"
           >
@@ -83,7 +80,6 @@ export default function BentoGrid() {
             </div>
           </div>
 
-          {/* Tile 3: Connect - Spans 3 columns */}
           <div 
             className="md:col-span-3 relative overflow-hidden rounded-3xl sm:bg-neutral-900/50 sm:border border-white/5 sm:p-4 backdrop-blur-xl transition-colors flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 group animate-fade-in-up delay-200"
           >

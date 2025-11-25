@@ -22,8 +22,6 @@ export default function LiveWidget({ value, color, label, isActive }: LiveWidget
           />
         )}
       </div>
-
-      {/* Value Display */}
       <motion.div
         key={value}
         initial={{ scale: 0.8, opacity: 0 }}
@@ -34,8 +32,6 @@ export default function LiveWidget({ value, color, label, isActive }: LiveWidget
           {value}%
         </div>
       </motion.div>
-
-      {/* Bar Chart Visualization */}
       <div className="space-y-3">
         {[...Array(5)].map((_, i) => {
           const barValue = Math.max(0, value - i * 15);
@@ -58,8 +54,6 @@ export default function LiveWidget({ value, color, label, isActive }: LiveWidget
           );
         })}
       </div>
-
-      {/* Status Footer */}
       <div className="mt-6 pt-6 border-t border-white/10">
         <div className="flex items-center justify-between text-sm">
           <span className="text-[#A1A1A1]">Status</span>

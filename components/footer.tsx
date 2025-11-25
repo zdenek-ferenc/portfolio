@@ -3,10 +3,9 @@
 export default function Footer() {
   return (
     <footer className="px-6 py-24 border-t border-white/5 bg-neutral-950">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-start justify-between">
           
-          {/* Left: Brand */}
           <div className="space-y-8">
             <div className="animate-fade-in-up">
               <h2 className="text-3xl font-bold tracking-tight text-white mb-2">Zdenek Ferenc</h2>
@@ -22,7 +21,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Right: CTA */}
           <div className="md:text-right space-y-8">
              <div className="animate-fade-in-up delay-200">
               <p className="text-neutral-500 text-sm font-mono mb-4">MÁTE PROJEKT?</p>

@@ -51,7 +51,6 @@ export default function CommandPalette() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Cmd+K (Mac) or Ctrl+K (Windows/Linux)
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setIsOpen((prev) => !prev);
@@ -59,7 +58,6 @@ export default function CommandPalette() {
 
       if (!isOpen) return;
 
-      // Arrow navigation
       if (e.key === "ArrowDown") {
         e.preventDefault();
         setSelectedIndex((prev) => (prev + 1) % commands.length);
@@ -69,14 +67,12 @@ export default function CommandPalette() {
         setSelectedIndex((prev) => (prev - 1 + commands.length) % commands.length);
       }
 
-      // Enter to execute
       if (e.key === "Enter") {
         e.preventDefault();
         commands[selectedIndex].action();
         setIsOpen(false);
       }
 
-      // Escape to close
       if (e.key === "Escape") {
         setIsOpen(false);
       }
@@ -90,7 +86,6 @@ export default function CommandPalette() {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -99,7 +94,6 @@ export default function CommandPalette() {
             className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
           />
 
-          {/* Command Palette Modal */}
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: -20 }}
@@ -107,7 +101,6 @@ export default function CommandPalette() {
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               className="w-full max-w-2xl bg-[#222222]/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
             >
-              {/* Search Input */}
               <div className="flex items-center gap-3 px-4 py-4 border-b border-white/10">
                 <Search className="w-5 h-5 text-[#A1A1A1]" />
                 <input
@@ -120,8 +113,6 @@ export default function CommandPalette() {
                   ESC
                 </kbd>
               </div>
-
-              {/* Command List */}
               <div className="p-2">
                 {commands.map((command, index) => (
                   <motion.button
@@ -144,8 +135,6 @@ export default function CommandPalette() {
                   </motion.button>
                 ))}
               </div>
-
-              {/* Footer Hint */}
               <div className="px-4 py-3 border-t border-white/10 text-xs text-[#A1A1A1] flex items-center gap-4">
                 <span className="flex items-center gap-1">
                   <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-white/10">↑</kbd>

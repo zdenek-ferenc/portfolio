@@ -39,7 +39,6 @@ export default function ProjectsSection() {
               key={project.title}
               className={`group relative grid md:grid-cols-2 bg-neutral-900/50 md:bg-transparent border md:border-none border-white/5 p-8 md:p-0 rounded-3xl gap-8 md:gap-10 items-center animate-fade-in-up ${index === 1 ? 'delay-200' : ''}`}
             >
-              {/* Project Visual */}
               <div className="aspect-video rounded-xl border border-white/5 relative overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-neutral-900/10 z-10 group-hover:bg-transparent transition-colors duration-500" />
                 <Image
@@ -49,8 +48,6 @@ export default function ProjectsSection() {
                   className="object-cover transition-transform duration-700 ease-out"
                 />
               </div>
-
-              {/* Project Info */}
               <div className="space-y-6">
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
