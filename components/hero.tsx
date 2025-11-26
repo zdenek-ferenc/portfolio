@@ -28,7 +28,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-full flex flex-col items-center justify-center px-6 pt-18 sm:pt-10 pb-12 overflow-hidden">
+    <section className="relative min-h-full flex flex-col items-center justify-center px-6 pt-10 sm:pt-10 pb-12 overflow-hidden">
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] sm:w-[1000px] sm:h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] sm:w-[800px] sm:h-[300px] bg-accent/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
@@ -61,7 +61,7 @@ export default function Hero() {
         </div>
 
         <div className="w-full flex justify-center animate-fade-in-up delay-200">
-          <p className="text-base md:text-xl text-center text-neutral-400 bg-none leading-relaxed max-w-2xl font-light tracking-wide">
+          <p className="text-sm md:text-xl text-center text-neutral-400 bg-none leading-relaxed max-w-2xl font-light tracking-wide">
             Aktuálně tvořím budoucnost studentských stáží v <span className="font-black">RiseHigh</span>.
           </p>
         </div>
@@ -69,14 +69,14 @@ export default function Hero() {
         <div className="flex flex-row gap-6 justify-center items-center animate-fade-in-up delay-300">
           <MagneticButton
             onClick={handleViewWork}
-            className="group relative px-4 md:px-8 md:py-4 py-2 cursor-pointer hover:bg-white text-black rounded-full font-bold text-sm md:text-lg flex items-center gap-2 bg-neutral-100 transition-all ease-in-out duration-300 shadow-[0_0_40px_-10px_rgba(255,255,255,0)] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]"
+            className="group relative px-5 md:px-8 md:py-4 py-3 cursor-pointer hover:bg-white text-black rounded-full font-bold text-sm md:text-lg flex items-center gap-2 bg-neutral-100 transition-all ease-in-out duration-300 shadow-[0_0_30px_-5px_rgba(255,255,255,0.4)] md:shadow-[0_0_40px_-10px_rgba(255,255,255,0)] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]"
           >
             Moje práce
           </MagneticButton>
 
           <MagneticButton
             onClick={handleContact}
-            className="px-4 md:px-8 md:py-4 py-2 cursor-pointer bg-transparent text-neutral-400 font-medium text-sm md:text-lg rounded-full hover:text-white hover:bg-white/5 transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)] flex items-center gap-2 duration-300 border border-transparent hover:border-white/10"
+            className="px-5 md:px-8 md:py-4 py-3 cursor-pointer bg-transparent text-neutral-400 font-medium text-sm md:text-lg rounded-full hover:text-white hover:bg-white/5 transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)] flex items-center gap-2 duration-300 border border-transparent hover:border-white/10"
           >
             Kontakt
           </MagneticButton>

@@ -33,11 +33,11 @@ export default function ProjectsSection() {
           <div className="h-1 w-20 bg-accent" />
         </div>
 
-        <div className="space-y-8 sm:space-y-12">
+        <div className="space-y-5 sm:space-y-12">
           {projects.map((project, index) => (
             <div
               key={project.title}
-              className={`group relative grid md:grid-cols-2 bg-neutral-900/50 md:bg-transparent border md:border-none border-white/5 p-8 md:p-0 rounded-3xl gap-8 md:gap-10 items-center animate-fade-in-up ${index === 1 ? 'delay-200' : ''}`}
+              className={`group relative grid md:grid-cols-2 bg-neutral-900/50 md:bg-transparent border md:border-none border-white/5 p-5 md:p-0 rounded-3xl gap-5 md:gap-10 items-center animate-fade-in-up ${index === 1 ? 'delay-200' : ''}`}
             >
               <div className="aspect-video rounded-xl border border-white/5 relative overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 bg-neutral-900/10 z-10 group-hover:bg-transparent transition-colors duration-500" />
@@ -48,7 +48,7 @@ export default function ProjectsSection() {
                   className="object-cover transition-transform duration-700 ease-out"
                 />
               </div>
-              <div className="space-y-6">
+              <div className="space-y-5 md:space-y-6">
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <span key={tag} className="px-3 py-1 text-xs font-medium uppercase tracking-wider text-neutral-400 border border-white/10 rounded-full">
@@ -58,7 +58,7 @@ export default function ProjectsSection() {
                 </div>
                 
                 <h3 className="text-3xl md:text-4xl font-bold text-neutral-100">{project.title}</h3>
-                <p className="text-lg text-neutral-400 leading-relaxed">
+                <p className="md:text-lg text-neutral-400 leading-relaxed">
                   {project.description}
                 </p>
 
@@ -67,7 +67,7 @@ export default function ProjectsSection() {
                     href={project.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-accent font-semibold group/link hover:text-white transition-colors"
+                    className="inline-flex text-sm md:text-base items-center gap-2 text-accent font-semibold group/link hover:text-white transition-colors"
                   >
                     Navštívit web
                     <ArrowUpRight className="w-5 h-5 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />

@@ -134,9 +134,9 @@ export default function StatusBadge() {
         <span className={`relative inline-flex rounded-full h-2 w-2 transition-colors duration-500 ${config.dot}`}></span>
       </div>
       
-      <span className={`text-sm font-medium transition-colors duration-500 flex items-center gap-2 ${config.text}`}>
+      <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 flex items-center gap-2 ${config.text}`}>
         {status === "loading" ? (
-           <span className="opacity-50">Načítám...</span>
+          <span className="opacity-50">Načítám...</span>
         ) : (
           <>
             {activityText}

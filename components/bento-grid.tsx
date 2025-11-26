@@ -41,7 +41,7 @@ export default function BentoGrid() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">         
           <SpotlightCard className="md:col-span-2 p-6 md:p-4 backdrop-blur-xl group animate-fade-in-up">
-            <div className="flex flex-col items-center w-full justify-between gap-6 md:gap-0 h-full px-4 py-4 md:py-2">
+            <div className="flex flex-col items-center w-full justify-between gap-6 md:gap-0 h-full md:px-4 md:py-2">
               <h3 className="text-base text-center sm:text-xl font-bold text-neutral-200 md:self-start">TechStack</h3>
               
               <div className="grid grid-cols-3 sm:grid-cols-6 md:gap-4 items-center justify-items-center w-full">

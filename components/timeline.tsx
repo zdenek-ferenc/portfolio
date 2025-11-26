@@ -92,7 +92,7 @@ export default function Timeline() {
                     <span className="text-xs font-mono text-neutral-500">{entry.date}</span>
                   </div>
                   
-                  <h3 className="text-lg font-semibold text-neutral-200 mb-2 group-hover:text-white transition-colors line-clamp-2">
+                  <h3 className="text-sm md:text-lg font-semibold text-neutral-200 mb-2 group-hover:text-white transition-colors line-clamp-2">
                     {entry.title}
                   </h3>
                   
