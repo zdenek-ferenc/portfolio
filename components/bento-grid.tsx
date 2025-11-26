@@ -67,9 +67,9 @@ export default function BentoGrid() {
               </div>
             </div>
           </SpotlightCard>
-          <SpotlightCard className="hidden md:flex !p-8 backdrop-blur-xl flex-col items-center justify-center text-center gap-6 group animate-fade-in-up delay-100">
-            <div className="w-16 h-16 bg-[#CF2F31]/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-              <MapPin className="w-8 h-8 text-[#CF2F31]" />
+          <SpotlightCard className="hidden md:flex p-8 backdrop-blur-xl flex-col items-center justify-center text-center gap-6 group animate-fade-in-up delay-100">
+            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+              <MapPin className="w-8 h-8 text-accent" />
             </div>
             <div>
               <p className="text-xs text-neutral-500 uppercase tracking-widest font-semibold mb-2">Lokace</p>

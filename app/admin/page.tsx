@@ -4,20 +4,17 @@ import { useState, useEffect } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged, User } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
-  // Form states
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Feature");
   const [content, setContent] = useState(""); 
   const [slug, setSlug] = useState("");
 
-  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,7 +27,7 @@ export default function AdminPage() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
+    } catch {
       alert("Chyba přihlášení");
     }
   };
@@ -112,7 +109,7 @@ export default function AdminPage() {
             className="p-3 bg-neutral-900 border border-white/10 rounded-lg min-h-[300px] font-mono"
         />
 
-        <button type="submit" className="bg-[#CF2F31] py-3 rounded-lg font-bold hover:bg-red-600 transition-colors">
+        <button type="submit" className="bg-accent py-3 rounded-lg font-bold hover:bg-red-600 transition-colors">
             Publikovat
         </button>
       </form>

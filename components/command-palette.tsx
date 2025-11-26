@@ -99,17 +99,17 @@ export default function CommandPalette() {
               initial={{ opacity: 0, scale: 0.95, y: -20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              className="w-full max-w-2xl bg-[#222222]/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+              className="w-full max-w-2xl bg-surface/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
             >
               <div className="flex items-center gap-3 px-4 py-4 border-b border-white/10">
-                <Search className="w-5 h-5 text-[#A1A1A1]" />
+                <Search className="w-5 h-5 text-text-secondary" />
                 <input
                   type="text"
                   placeholder="Type a command..."
-                  className="flex-1 bg-transparent outline-none text-[#EDEDED] placeholder:text-[#A1A1A1]"
+                  className="flex-1 bg-transparent outline-none text-text-primary placeholder:text-text-secondary"
                   autoFocus
                 />
-                <kbd className="px-2 py-1 text-xs bg-white/5 rounded border border-white/10 text-[#A1A1A1]">
+                <kbd className="px-2 py-1 text-xs bg-white/5 rounded border border-white/10 text-text-secondary">
                   ESC
                 </kbd>
               </div>
@@ -121,8 +121,8 @@ export default function CommandPalette() {
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                       selectedIndex === index
-                        ? "bg-[#CF2F31]/10 text-[#CF2F31]"
-                        : "text-[#EDEDED] hover:bg-white/5"
+                        ? "bg-accent/10 text-accent"
+                        : "text-text-primary hover:bg-white/5"
                     }`}
                   >
                     {command.icon}
@@ -135,7 +135,7 @@ export default function CommandPalette() {
                   </motion.button>
                 ))}
               </div>
-              <div className="px-4 py-3 border-t border-white/10 text-xs text-[#A1A1A1] flex items-center gap-4">
+              <div className="px-4 py-3 border-t border-white/10 text-xs text-text-secondary flex items-center gap-4">
                 <span className="flex items-center gap-1">
                   <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-white/10">↑</kbd>
                   <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-white/10">↓</kbd>

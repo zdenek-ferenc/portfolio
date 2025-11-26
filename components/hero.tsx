@@ -31,7 +31,7 @@ export default function Hero() {
     <section className="min-h-full flex flex-col items-center justify-center px-6 pt-18 sm:pt-22 pb-12 overflow-hidden">
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] sm:w-[1000px] sm:h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] sm:w-[800px] sm:h-[300px] bg-[#CF2F31]/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] sm:w-[800px] sm:h-[300px] bg-accent/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
 
       <div className="relative z-10 max-w-5xl w-full text-center space-y-8">
 
@@ -51,7 +51,7 @@ export default function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -40, opacity: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="absolute text-[#CF2F31]"
+                  className="absolute text-accent"
                 >
                   {words[index]}
                 </motion.span>

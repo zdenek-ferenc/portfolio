@@ -26,11 +26,11 @@ export default function ProjectsSection() {
   ];
 
   return (
-    <section className="flex flex-col items-center justify-center !px-6 sm:py-28" id="projects">
+    <section className="flex flex-col items-center justify-center px-6 sm:py-28" id="projects">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6 sm:mb-12 animate-fade-in-up">
-          <h2 className="text-4xl md:text-6xl font-bold !mb-6 tracking-tight">Vybrané projekty</h2>
-          <div className="h-1 w-20 bg-[#CF2F31]" />
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">Vybrané projekty</h2>
+          <div className="h-1 w-20 bg-accent" />
         </div>
 
         <div className="space-y-8 sm:space-y-12">
@@ -67,7 +67,7 @@ export default function ProjectsSection() {
                     href={project.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#CF2F31] font-semibold group/link hover:text-white transition-colors"
+                    className="inline-flex items-center gap-2 text-accent font-semibold group/link hover:text-white transition-colors"
                   >
                     Navštívit web
                     <ArrowUpRight className="w-5 h-5 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
