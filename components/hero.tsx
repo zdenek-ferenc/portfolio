@@ -28,12 +28,12 @@ export default function Hero() {
 
   return (
     <section className="min-h-full flex flex-col items-center justify-center px-6 pt-18 sm:pt-22 pb-12 overflow-hidden">
-      
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] sm:w-[1000px] sm:h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] sm:w-[800px] sm:h-[300px] bg-[#CF2F31]/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
 
       <div className="relative z-10 max-w-5xl w-full text-center space-y-8">
-        
+
         <div className="flex justify-center animate-fade-in-up">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
             <span className="relative flex h-2 w-2">
@@ -43,7 +43,7 @@ export default function Hero() {
             <span className="text-sm font-medium text-neutral-300">Pracuji na RiseHigh</span>
           </div>
         </div>
-        
+
         <div className="flex flex-col items-center justify-center text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight animate-fade-in-up delay-100">
           <span className="text-white block mb-2 md:mb-4">Měním nápady</span>
           <div className="flex flex-row items-center justify-center gap-3 md:gap-4">
@@ -88,7 +88,6 @@ export default function Hero() {
         </div>
       </div>
       <BentoGrid />
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-950 to-transparent pointer-events-none" />
     </section>
   );
 }

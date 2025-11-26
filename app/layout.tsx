@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Zdeněk Ferenc - Product Engineer",
+  title: "Zdenek Ferenc - Product Engineer",
   description: "Product Engineer turning complex ideas into clean software. Full-stack developer with an eye for design.",
 };
 
