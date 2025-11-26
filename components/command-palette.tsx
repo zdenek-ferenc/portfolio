@@ -20,7 +20,7 @@ export default function CommandPalette() {
       id: "risehigh",
       label: "Go to RiseHigh",
       icon: <Rocket className="w-4 h-4" />,
-      action: () => window.open("https://risehigh.app", "_blank"),
+      action: () => window.open("https://risehigh.io", "_blank"),
     },
     {
       id: "github",

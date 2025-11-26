@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-import BentoGrid from "@/components/bento-grid";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import MagneticButton from "@/components/ui/magnetic-button";
+import BentoGrid from "@/components/bento-grid";
+import StatusBadge from "@/components/status-badge";
 
 const words = ["projekty", "aplikace", "produkty"];
 
@@ -23,7 +24,7 @@ export default function Hero() {
   };
 
   const handleContact = () => {
-    window.location.href = "mailto:zdenek@example.com";
+    window.location.href = "mailto:zdenekk.ferenc@gmail.com";
   };
 
   return (
@@ -35,13 +36,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl w-full text-center space-y-8">
 
         <div className="flex justify-center animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            <span className="text-sm font-medium text-neutral-300">Pracuji na RiseHigh</span>
-          </div>
+          <StatusBadge />
         </div>
 
         <div className="flex flex-col items-center justify-center text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight animate-fade-in-up delay-100">
@@ -72,19 +67,19 @@ export default function Hero() {
         </div>
 
         <div className="flex flex-row gap-6 justify-center items-center animate-fade-in-up delay-300">
-          <button
+          <MagneticButton
             onClick={handleViewWork}
             className="group relative px-4 md:px-8 md:py-4 py-2 cursor-pointer hover:bg-white text-black rounded-full font-bold text-sm md:text-lg flex items-center gap-2 bg-neutral-100 transition-all ease-in-out duration-300 shadow-[0_0_40px_-10px_rgba(255,255,255,0)] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]"
           >
             Moje práce
-          </button>
+          </MagneticButton>
 
-          <button
+          <MagneticButton
             onClick={handleContact}
-            className="px-4 md:px-8 md:py-4 py-2 cursor-pointer bg-transparent text-neutral-400 font-medium text-sm md:text-lg rounded-full hover:text-white hover:bg-white/5 transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)] flex items-center gap-2 duration-300"
+            className="px-4 md:px-8 md:py-4 py-2 cursor-pointer bg-transparent text-neutral-400 font-medium text-sm md:text-lg rounded-full hover:text-white hover:bg-white/5 transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)] flex items-center gap-2 duration-300 border border-transparent hover:border-white/10"
           >
             Kontakt
-          </button>
+          </MagneticButton>
         </div>
       </div>
       <BentoGrid />
