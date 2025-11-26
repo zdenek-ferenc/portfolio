@@ -26,7 +26,7 @@ export default function Footer() {
               <p className="text-neutral-500 text-sm font-mono mb-4">MÁTE PROJEKT?</p>
               <a 
                 href="mailto:zdenekk.ferenc@gmail.com" 
-                className="text-4xl md:text-5xl font-bold text-white hover:text-accent transition-colors tracking-tight"
+                className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors tracking-tight"
               >
                 zdenekk.ferenc@gmail.com
               </a>

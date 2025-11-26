@@ -40,15 +40,15 @@ export default function BentoGrid() {
       <div className="max-w-6xl w-full">
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">         
-          <SpotlightCard className="md:col-span-2 p-4 backdrop-blur-xl group animate-fade-in-up">
-            <div className="flex h-full w-full flex-col items-center justify-center">
-              <h3 className="text-base text-center sm:text-xl pl-4 font-bold text-neutral-200 self-start mb-4 md:mb-0">TechStack</h3>
+          <SpotlightCard className="md:col-span-2 p-6 md:p-4 backdrop-blur-xl group animate-fade-in-up">
+            <div className="flex flex-col items-center w-full justify-between gap-6 md:gap-0 h-full px-4 py-4 md:py-2">
+              <h3 className="text-base text-center sm:text-xl font-bold text-neutral-200 md:self-start">TechStack</h3>
               
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 items-center justify-items-center w-full">
+              <div className="grid grid-cols-3 sm:grid-cols-6 md:gap-4 items-center justify-items-center w-full">
                 {techStack.map((tech, index) => (
                   <div 
                     key={index} 
-                    className="flex flex-col items-center justify-end gap-2 group/icon duration-200 relative h-24 w-full"
+                    className="flex flex-col items-center justify-end gap-2 group/icon duration-200 self-center relative h-18 md:h-18 w-full"
                   >
                     <div className="p-4 cursor-pointer rounded-2xl sm:bg-white/5 sm:border border-white/5 group-hover/icon:bg-white/10 transition-all duration-300 shadow-2xl relative h-16 w-16 flex items-center justify-center group-hover/icon:-translate-y-2">
                       <Image
@@ -78,8 +78,8 @@ export default function BentoGrid() {
           </SpotlightCard>
 
           <SpotlightCard className="md:col-span-3 sm:p-4 backdrop-blur-xl group animate-fade-in-up delay-200">
-            <div className="flex flex-col md:flex-row items-center w-full justify-between gap-6 sm:gap-8 h-full px-4 py-6 md:py-2">
-              <div className="text-center md:text-left">
+            <div className="flex flex-col md:flex-row items-center w-full justify-between gap-6 sm:gap-8 h-full px-4 py-4 md:py-2">
+              <div className="text-left">
                 <h3 className="text-base sm:text-xl font-bold text-neutral-200">Spojme se</h3>
               </div>
               

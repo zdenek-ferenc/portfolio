@@ -10,6 +10,8 @@
   --font-heading: var(--font-heading);
   --font-body: var(--font-body);
   --font-sans: var(--font-body);
+
+  --breakpoint-3xl: 1920px;
 }
 
 
