@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged, signOut, User } from "f
 import { collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy, onSnapshot } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage } from "@/lib/firebase";
-import { compressImage } from "@/lib/image-optimizer"; // Import komprese
+import { compressImage } from "@/lib/image-optimizer"; 
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { 
@@ -192,8 +192,8 @@ export default function AdminPage() {
         <div className="p-4 border-b border-white/5 flex justify-between bg-neutral-900/50">
           <h2 className="font-bold text-white flex items-center gap-2"><Layout className="w-4 h-4 text-accent" /> DevLog</h2>
           <div className="flex gap-2">
-            <button onClick={resetForm} className="p-2 hover:bg-white/10 rounded text-neutral-400 hover:text-white"><Plus className="w-4 h-4" /></button>
-            <button onClick={() => signOut(auth)} className="p-2 hover:bg-white/10 rounded text-neutral-400 hover:text-red-500"><LogOut className="w-4 h-4" /></button>
+            <button onClick={resetForm} className="p-2 hover:bg-white/10 rounded cursor-pointer text-neutral-400 hover:text-white"><Plus className="w-4 h-4" /></button>
+            <button onClick={() => signOut(auth)} className="p-2 hover:bg-white/10 rounded cursor-pointer text-neutral-400 hover:text-red-500"><LogOut className="w-4 h-4" /></button>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar">
@@ -218,9 +218,9 @@ export default function AdminPage() {
             className="bg-transparent text-xl font-bold text-white placeholder:text-neutral-600 focus:outline-none w-full max-w-2xl"
           />
           <div className="flex items-center gap-3">
-            <button onClick={() => setIsPreview(!isPreview)} className="md:hidden p-2 hover:bg-white/5 rounded text-neutral-400">{isPreview ? <Edit3 className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}</button>
-            {selectedPostId && <button onClick={() => handleDelete(selectedPostId!)} className="p-2 hover:bg-red-500/10 text-neutral-500 hover:text-red-500 rounded"><Trash2 className="w-5 h-5" /></button>}
-            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 bg-accent hover:bg-red-600 text-white px-4 py-2 rounded font-medium text-sm disabled:opacity-50">
+            <button onClick={() => setIsPreview(!isPreview)} className="md:hidden p-2 hover:bg-white/5 rounded cursor-pointer text-neutral-400">{isPreview ? <Edit3 className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}</button>
+            {selectedPostId && <button onClick={() => handleDelete(selectedPostId!)} className="p-2 hover:bg-red-500/10 cursor-pointer text-neutral-500 hover:text-red-500 rounded"><Trash2 className="w-5 h-5" /></button>}
+            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 bg-accent/80 hover:bg-accent transition-all ease-in-out duration-200 cursor-pointer text-white px-4 py-2 rounded font-medium text-sm disabled:opacity-50">
               {isSaving ? <Loader2 className="w-4 h-4 animate-spin"/> : <><Save className="w-4 h-4" /> {selectedPostId ? "Upravit" : "Publikovat"}</>}
             </button>
           </div>
@@ -228,7 +228,7 @@ export default function AdminPage() {
 
         {/* Toolbar */}
         <div className="px-4 py-2 border-b border-white/5 bg-neutral-900/20 flex flex-wrap gap-2 items-center select-none overflow-x-auto">
-            <select value={category} onChange={e => setCategory(e.target.value)} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white outline-none focus:border-accent">
+            <select value={category} onChange={e => setCategory(e.target.value)} className="bg-white cursor-pointer border border-white/10 rounded px-2 py-1 text-xs text-black outline-none focus:border-accent">
                 {["Feature", "Design", "Backend", "Bugfix", "Learning"].map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             
@@ -295,7 +295,6 @@ export default function AdminPage() {
                     {content ? <ReactMarkdown 
   rehypePlugins={[rehypeRaw]}
   components={{
-    // Definice stylů pro jednotlivé prvky
     h1: (props) => <h1 className="text-3xl md:text-4xl font-bold text-white mt-8 mb-4 tracking-tight" {...props} />,
     h2: (props) => <h2 className="text-2xl md:text-3xl font-bold text-white mt-6 mb-3 tracking-tight" {...props} />,
     h3: (props) => <h3 className="text-xl md:text-2xl font-semibold text-white mt-4 mb-2" {...props} />,
@@ -324,9 +323,9 @@ export default function AdminPage() {
 }
 
 function ToolBtn({ icon, onClick, tip }: { icon: React.ReactNode, onClick: () => void, tip: string }) {
-  return <button onClick={onClick} title={tip} className="p-1.5 hover:bg-white/10 rounded text-neutral-400 hover:text-white transition-colors">{icon}</button>;
+  return <button onClick={onClick} title={tip} className="p-1.5 hover:bg-white/10 rounded text-neutral-400 cursor-pointer hover:text-white transition-colors">{icon}</button>;
 }
 
 function ColorDot({ color, onClick, label }: { color: string, onClick: () => void, label: string }) {
-  return <button onClick={onClick} title={label} className="w-4 h-4 rounded-full border border-white/10 hover:scale-110 transition-transform" style={{ backgroundColor: color }} />;
+  return <button onClick={onClick} title={label} className="w-4 h-4 rounded-full border cursor-pointerborder-white/10 hover:scale-110 transition-transform" style={{ backgroundColor: color }} />;
 }
