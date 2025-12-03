@@ -40,12 +40,12 @@ export default function ProjectsSection() {
               className={`group relative grid md:grid-cols-2 bg-neutral-900/50 md:bg-transparent border md:border-none border-white/5 p-5 md:p-0 rounded-3xl gap-5 md:gap-10 items-center animate-fade-in-up ${index === 1 ? 'delay-200' : ''}`}
             >
               <div className="aspect-video rounded-xl border border-white/5 relative overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-neutral-900/10 z-10 group-hover:bg-transparent transition-colors duration-500" />
+                <div className="absolute inset-0 bg-neutral-900/10 z-10 group-hover:bg-transparent transition-colors duration-200" />
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out"
+                  className="object-cover transition-transform duration-700 p-2 rounded-xl ease-out"
                 />
               </div>
               <div className="space-y-5 md:space-y-6">

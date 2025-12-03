@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="px-6 py-24 border-t border-white/5 bg-neutral-950">
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-start justify-between">
+        <div className="grid md:grid-cols-2 gap-8 items-start justify-between">
           
           <div className="space-y-8">
             <div className="animate-fade-in-up">
