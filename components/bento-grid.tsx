@@ -50,7 +50,7 @@ export default function BentoGrid() {
                     key={index} 
                     className="flex flex-col items-center justify-end gap-2 group/icon duration-200 self-center relative h-18 md:h-18 w-full"
                   >
-                    <div className="p-4 cursor-pointer rounded-2xl sm:bg-white/5 sm:border border-white/5 group-hover/icon:bg-white/10 transition-all duration-300 shadow-2xl relative h-16 w-16 flex items-center justify-center group-hover/icon:-translate-y-2">
+                    <div className="p-4 cursor-pointer rounded-3xl sm:bg-white/5 sm:border border-white/5 group-hover/icon:bg-white/10 transition-all duration-300 shadow-2xl relative h-16 w-16 flex items-center justify-center group-hover/icon:-translate-y-2">
                       <Image
                         src={tech.icon}
                         alt={tech.name}
