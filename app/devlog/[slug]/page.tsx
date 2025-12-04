@@ -41,7 +41,7 @@ export default async function DevLogPage({ params }: { params: { slug: string } 
         <div className="prose prose-invert prose-lg max-w-none">
   <ReactMarkdown 
     rehypePlugins={[rehypeRaw]}
-    components={{
+    components={{ 
       h1: (props) => <h1 className="text-3xl md:text-4xl font-bold text-white mt-10 mb-6 tracking-tight" {...props} />,
       h2: (props) => <h2 className="text-2xl md:text-3xl font-bold text-white mt-8 mb-4 tracking-tight" {...props} />,
       h3: (props) => <h3 className="text-xl md:text-2xl font-semibold text-white mt-6 mb-3" {...props} />,
