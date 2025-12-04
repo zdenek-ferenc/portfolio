@@ -11,22 +11,16 @@ import EditorToolbar from "./EditorToolbar";
 import EditorPane from "./EditorPane";
 
 export default function DevLogManager() {
-    // Data
     const [posts, setPosts] = useState<DevLogPost[]>([]);
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-
-    // Editor content
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("Feature");
     const [content, setContent] = useState("");
     const [slug, setSlug] = useState("");
-
-    // Editor settings & UI
     const [isPreview, setIsPreview] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
-    // --- Effects ---
 
     useEffect(() => {
         const q = query(collection(db, "devlog"), orderBy("createdAt", "desc"));
@@ -35,7 +29,6 @@ export default function DevLogManager() {
         });
     }, []);
 
-    // --- Handlers ---
 
     const resetForm = () => {
         setTitle(""); setSlug(""); setContent(""); setCategory("Feature"); setSelectedPostId(null);
@@ -77,7 +70,6 @@ export default function DevLogManager() {
         setIsSaving(false);
     };
 
-    // --- Editor Logic ---
 
     const insertText = (prefix: string, suffix: string = "") => {
         const textarea = document.getElementById("content-editor") as HTMLTextAreaElement;
@@ -97,16 +89,12 @@ export default function DevLogManager() {
 
         setIsUploading(true);
         try {
-            // 1. Optimalizace
             const compressedFile = await compressImage(file);
 
-            // 2. Upload na Firebase
             const storageRef = ref(storage, `devlog/${Date.now()}-${compressedFile.name}`);
             await uploadBytes(storageRef, compressedFile);
             const url = await getDownloadURL(storageRef);
 
-            // 3. Vložení HTML kódu pro obrázek (s Tailwind třídami pro kontrolu)
-            // Defaultně: Full width, zaoblené rohy, stín
             const imageHtml = `
 <img 
   src="${url}" 

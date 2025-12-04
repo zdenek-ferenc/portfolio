@@ -41,9 +41,9 @@ export default function Hero() {
 
         <div className="flex flex-col items-center justify-center text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight animate-fade-in-up delay-100">
           <span className="text-white block mb-2 md:mb-4">Měním nápady</span>
-          <div className="flex flex-row items-center justify-center gap-3 md:gap-4">
+          <div className="pl-6 lg:pl-2 flex flex-row items-center justify-center gap-3 md:gap-4">
             <span className="text-white">na</span>
-            <div className="relative h-[1.2em] w-full min-w-[200px] md:min-w-[400px] overflow-hidden flex items-center justify-start">
+            <div className="relative h-[1.2em] w-full min-w-[200px] sm:min-w-[300px] lg:min-w-[400px] overflow-hidden flex items-center justify-start">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={words[index]}

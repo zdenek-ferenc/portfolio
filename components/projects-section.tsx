@@ -45,7 +45,7 @@ export default function ProjectsSection() {
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="object-cover transition-transform duration-700 p-2 rounded-xl ease-out"
+                  className="object-cover transition-transform duration-700 sm:p-2 rounded-xl ease-out"
                 />
               </div>
               <div className="space-y-5 md:space-y-6">
@@ -70,7 +70,7 @@ export default function ProjectsSection() {
                     className="inline-flex text-sm md:text-base items-center gap-2 text-accent font-semibold group/link hover:text-white transition-colors"
                   >
                     Navštívit web
-                    <ArrowUpRight className="w-5 h-5 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
+                    <ArrowUpRight className="w-5 h-5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                   </a>
                 )}
               </div>

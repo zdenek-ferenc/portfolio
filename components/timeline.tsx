@@ -53,7 +53,7 @@ export default function Timeline() {
   }, []);
 
   return (
-    <section className="px-6 py-32 bg-neutral-900/30" id="devlog">
+<section className="px-6 py-32 bg-linear-to-t from-neutral-900/30 to-background" id="devlog">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-16 animate-fade-in-up">
           <div>

@@ -3,14 +3,13 @@
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { Home, Briefcase, User, FileText, Mail, Terminal, LayoutGrid, X } from "lucide-react";
+import { Home, Briefcase, User, FileText, Mail, LayoutGrid, X } from "lucide-react";
 
 const links = [
   { label: "Domů", icon: <Home className="h-5 w-5" />, href: "/" },
   { label: "O mně", icon: <User className="h-5 w-5" />, href: "/#about-me" },
   { label: "Projekty", icon: <Briefcase className="h-5 w-5" />, href: "/#projects" },
   { label: "DevLog", icon: <FileText className="h-5 w-5" />, href: "/#devlog" },
-  { label: "Admin", icon: <Terminal className="h-5 w-5" />, href: "/admin" },
   { label: "Kontakt", icon: <Mail className="h-5 w-5" />, href: "mailto:zdenekk.ferenc@gmail.com" },
 ];
 
@@ -127,9 +126,6 @@ function AppIcon({
   );
 }
 
-// ----------------------------------------------------------------------
-// 📱 MOBILNÍ IMPLEMENTACE (Stejná jako předtím)
-// ----------------------------------------------------------------------
 function MobileDock() {
   const [open, setOpen] = useState(false);
 
@@ -141,7 +137,7 @@ function MobileDock() {
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="absolute bottom-full right-0 mb-4 flex flex-col gap-2 min-w-[160px]"
+            className="absolute bottom-full right-0 mb-4 flex flex-col gap-2 min-w-40"
           >
             {links.map((link, idx) => (
               <motion.div

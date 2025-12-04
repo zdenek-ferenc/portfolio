@@ -29,8 +29,6 @@ export default function EditorToolbar({ category, setCategory, onInsertText, onI
             </select>
 
             <div className="w-px h-4 bg-white/10 mx-2" />
-
-            {/* Typography */}
             <div className="flex gap-1">
                 <ToolBtn icon={<Heading1 className="w-4 h-4" />} onClick={() => onInsertText('# ')} tip="Velký nadpis" />
                 <ToolBtn icon={<Heading2 className="w-4 h-4" />} onClick={() => onInsertText('## ')} tip="Střední nadpis" />
@@ -38,8 +36,6 @@ export default function EditorToolbar({ category, setCategory, onInsertText, onI
             </div>
 
             <div className="w-px h-4 bg-white/10 mx-2" />
-
-            {/* Formatting */}
             <div className="flex gap-1">
                 <ToolBtn icon={<Bold className="w-3 h-3" />} onClick={() => onInsertText('**', '**')} tip="Tučně" />
                 <ToolBtn icon={<Italic className="w-3 h-3" />} onClick={() => onInsertText('*', '*')} tip="Kurzíva" />
@@ -49,8 +45,6 @@ export default function EditorToolbar({ category, setCategory, onInsertText, onI
             </div>
 
             <div className="w-px h-4 bg-white/10 mx-2" />
-
-            {/* Media & Color */}
             <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="p-1.5 hover:bg-white/10 rounded text-neutral-400 hover:text-white transition-colors relative" title="Nahrát obrázek">
                 {isUploading ? <Loader2 className="w-3 h-3 animate-spin" /> : <ImageIcon className="w-3 h-3" />}
             </button>
