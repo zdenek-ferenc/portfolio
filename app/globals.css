@@ -14,7 +14,9 @@
   --breakpoint-3xl: 1920px;
 }
 
-
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
 
 html {
   scroll-behavior: smooth;

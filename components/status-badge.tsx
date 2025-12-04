@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ArrowDown } from "lucide-react";
 
-const DISCORD_ID = "268798740968505353"; 
+const DISCORD_ID = "268798740968505353";
 
 interface DiscordActivity {
   name: string;
@@ -53,14 +53,14 @@ export default function StatusBadge() {
       try {
         const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
         const json = (await response.json()) as LanyardData;
-        
+
         if (json.success && json.data) {
           const activities = json.data.activities;
           const vscode = activities.find((act) => act.name === "Visual Studio Code");
 
           if (vscode) {
             setStatus("coding");
-            
+
             let repo = vscode.state || "Repo";
             let file = vscode.details || "Code";
 
@@ -90,7 +90,7 @@ export default function StatusBadge() {
         return {
           wrapper: "bg-neutral-500/10 border-neutral-800 cursor-default",
           dot: "bg-neutral-500",
-          pulse: "", 
+          pulse: "",
           text: "text-neutral-400",
         };
       case "coding":
@@ -120,7 +120,7 @@ export default function StatusBadge() {
   const config = getStatusConfig();
 
   return (
-    <div 
+    <div
       onClick={handleContactClick}
       className={`
         inline-flex items-center gap-3 px-4 py-2 rounded-full border backdrop-blur-md shadow-xl 
@@ -133,7 +133,7 @@ export default function StatusBadge() {
         )}
         <span className={`relative inline-flex rounded-full h-2 w-2 transition-colors duration-500 ${config.dot}`}></span>
       </div>
-      
+
       <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 flex items-center gap-2 ${config.text}`}>
         {status === "loading" ? (
           <span className="opacity-50">Načítám...</span>
