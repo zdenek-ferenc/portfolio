@@ -14,7 +14,7 @@ export default function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, 2000);
+    }, 3000); // Pomalejší interval pro klidnější dojem
     return () => clearInterval(interval);
   }, []);
 
@@ -28,61 +28,70 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-full flex flex-col items-center justify-center px-6 pt-10 sm:pt-10 pb-12 overflow-hidden">
+    <section className="relative min-h-full flex flex-col items-center justify-center pt-24 pb-12 overflow-hidden">
+      
+      {/* Decentní pozadí - žádný šum, jen velmi jemné glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-accent/15 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] sm:w-[1000px] sm:h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] sm:w-[800px] sm:h-[300px] bg-accent/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+      <div className="relative z-10 max-w-5xl w-full flex flex-col items-center text-center space-y-10 px-4">
 
-      <div className="relative z-10 max-w-5xl w-full text-center space-y-8">
-
-        <div className="flex justify-center animate-fade-in-up">
+        <div className="animate-fade-in-up">
           <StatusBadge />
         </div>
 
-        <div className="flex flex-col items-center justify-center text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight animate-fade-in-up delay-100">
-          <span className="text-white block mb-2 md:mb-4">Měním nápady</span>
-          <div className="pl-6 lg:pl-2 flex flex-row items-center justify-center gap-3 md:gap-4">
-            <span className="text-white">na</span>
-            <div className="relative h-[1.2em] w-full min-w-[200px] sm:min-w-[300px] lg:min-w-[400px] overflow-hidden flex items-center justify-start">
+        {/* Hlavní nadpis - Flexbox stack pro perfektní centrování */}
+        <h1 className="flex flex-col items-center justify-center font-bold tracking-tighter leading-tight animate-fade-in-up delay-100">
+          
+          {/* Statická část - velká a dominantní */}
+          <span className="text-5xl md:text-7xl lg:text-8xl text-white mb-2 md:mb-4">
+            Měním nápady na
+          </span>
+          
+          <div className="flex flex-row items-center justify-center text-4xl md:text-7xl lg:text-8xl gap-3 md:gap-5">
+            <div className="relative h-[1.2em] min-w-5 flex items-center justify-start overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={words[index]}
-                  initial={{ y: 40, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -40, opacity: 0 }}
+                  initial={{ y: 20, opacity: 0, filter: "blur(4px)" }}
+                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: -20, opacity: 0, filter: "blur(4px)" }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="absolute text-accent"
+                  className="text-accent whitespace-nowrap block"
                 >
                   {words[index]}
                 </motion.span>
               </AnimatePresence>
             </div>
           </div>
-        </div>
+        </h1>
 
-        <div className="w-full flex justify-center animate-fade-in-up delay-200">
-          <p className="text-sm md:text-xl text-center text-neutral-400 bg-none leading-relaxed max-w-2xl font-light tracking-wide">
-            Aktuálně tvořím budoucnost studentských stáží v <span className="font-black">RiseHigh</span>.
+        <div className="animate-fade-in-up delay-200">
+          <p className="text-sm md:text-lg text-neutral-400 max-w-xl leading-relaxed">
+            Aktuálně tvořím budoucnost studentských stáží v <span className="text-white font-medium">RiseHigh</span>.
           </p>
         </div>
 
-        <div className="flex flex-row gap-6 justify-center items-center animate-fade-in-up delay-300">
+        <div className="flex flex-row gap-4 items-center animate-fade-in-up delay-300">
           <MagneticButton
             onClick={handleViewWork}
-            className="group relative px-5 md:px-8 md:py-4 py-3 cursor-pointer hover:bg-white text-black rounded-full font-bold text-sm md:text-lg flex items-center gap-2 bg-neutral-100 transition-all ease-in-out duration-300 shadow-[0_0_30px_-5px_rgba(255,255,255,0.4)] md:shadow-[0_0_40px_-10px_rgba(255,255,255,0)] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]"
+            className="px-6 py-3 md:px-8 md:py-4 bg-white text-black rounded-full font-semibold text-sm md:text-base hover:bg-neutral-200 transition-colors"
           >
             Moje práce
           </MagneticButton>
 
           <MagneticButton
             onClick={handleContact}
-            className="px-5 md:px-8 md:py-4 py-3 cursor-pointer bg-transparent text-neutral-400 font-medium text-sm md:text-lg rounded-full hover:text-white hover:bg-white/5 transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)] flex items-center gap-2 duration-300 border border-transparent hover:border-white/10"
+            className="px-6 py-3 md:px-8 md:py-4 bg-transparent text-neutral-400 rounded-full font-medium text-sm md:text-base hover:text-white transition-colors"
           >
             Kontakt
           </MagneticButton>
         </div>
       </div>
-      <BentoGrid />
+      
+      <div className="mt-16 w-full max-w-6xl px-4">
+        <BentoGrid />
+      </div>
     </section>
   );
 }

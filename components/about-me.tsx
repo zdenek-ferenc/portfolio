@@ -24,7 +24,7 @@ export default function AboutSection() {
             <div className="relative aspect-4/5 w-full overflow-hidden group">
               <div className="absolute inset-0 bg-neutral-900/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
               <Image
-                src="/me.jpg"
+                src="/me.png"
                 alt="Zdeněk Ferenc"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
