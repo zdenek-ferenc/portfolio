@@ -196,7 +196,7 @@ export default function RiseHighPage() {
                     <p className="text-neutral-400 text-sm leading-relaxed">
                     React byl základ, ale pro veřejnou platformu čisté SPA (Single Page App) nestačilo.
                     Zvolil jsem <strong>Next.js</strong> kvůli <strong>Server-Side Renderingu (SSR)</strong>. Bylo kritické, aby Google indexoval jednotlivé výzvy a studenti je našli organicky – to u klasického Reactu drhne.
-                    <p className="pt-2">Navíc mi <strong>App Router</strong> umožnil psát backend logiku přímo vedle frontendu, což mi jako solo vývojáři ušetřilo týdny nastavování infrastruktury.</p>
+                    <span className="pt-2">Navíc mi <strong>App Router</strong> umožnil psát backend logiku přímo vedle frontendu, což mi jako solo vývojáři ušetřilo týdny nastavování infrastruktury.</span>
                     </p>
                 </div>
 
