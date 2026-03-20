@@ -10,12 +10,6 @@ interface DiscordActivity {
   details?: string;
   state?: string;
   type: number;
-  assets?: {
-    large_image?: string;
-    large_text?: string;
-    small_image?: string;
-    small_text?: string;
-  };
 }
 
 interface LanyardData {
@@ -60,13 +54,10 @@ export default function StatusBadge() {
 
           if (vscode) {
             setStatus("coding");
-
             let repo = vscode.state || "Repo";
             let file = vscode.details || "Code";
-
             repo = repo.replace("Workspace: ", "");
             file = file.replace("Editing ", "").replace("Working on ", "");
-
             setActivityText(`Pracuju: ${repo}/${file}`);
             return;
           }
@@ -84,67 +75,35 @@ export default function StatusBadge() {
     return () => clearInterval(interval);
   }, []);
 
-  const getStatusConfig = () => {
+  const getStatusColor = () => {
     switch (status) {
-      case "sleeping":
-        return {
-          wrapper: "bg-neutral-500/10 border-neutral-800 cursor-default",
-          dot: "bg-neutral-500",
-          pulse: "",
-          text: "text-neutral-400",
-        };
-      case "coding":
-        return {
-          wrapper: "bg-blue-500/10 border-blue-500/20 cursor-default",
-          dot: "bg-blue-500",
-          pulse: "bg-blue-400",
-          text: "text-blue-400",
-        };
-      case "online":
-        return {
-          wrapper: "bg-green-500/10 border-green-500/20 hover:bg-green-500/20 cursor-pointer group",
-          dot: "bg-green-500",
-          pulse: "bg-green-400",
-          text: "text-green-400 group-hover:text-green-300",
-        };
-      default:
-        return {
-          wrapper: "bg-white/5 border-white/5",
-          dot: "bg-neutral-500",
-          pulse: "bg-neutral-500",
-          text: "text-neutral-500",
-        };
+      case "sleeping": return "bg-neutral-500";
+      case "coding": return "bg-blue-500";
+      case "online": return "bg-green-500";
+      default: return "bg-neutral-500";
     }
   };
-
-  const config = getStatusConfig();
 
   return (
     <div
       onClick={handleContactClick}
       className={`
-        inline-flex items-center gap-3 px-4 py-2 rounded-full border backdrop-blur-md shadow-xl 
-        transition-all duration-300 ${config.wrapper}
+        inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.08] bg-neutral-900 
+        backdrop-blur-sm text-[11px] font-medium text-neutral-300 transition-all duration-300
+        ${status === "online" ? "cursor-pointer hover:bg-neutral-800 hover:border-white/10" : "cursor-default"}
       `}
     >
-      <div className="relative flex h-2 w-2">
-        {config.pulse && (
-          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${config.pulse}`}></span>
+      <div className="relative flex items-center justify-center w-2 h-2">
+        {status !== "loading" && status !== "sleeping" && (
+          <span className="absolute inset-0 rounded-full bg-current opacity-20 filter blur-[2px] animate-pulse" 
+                style={{ color: status === "coding" ? "rgb(59, 130, 246)" : "rgb(34, 197, 94)" }} />
         )}
-        <span className={`relative inline-flex rounded-full h-2 w-2 transition-colors duration-500 ${config.dot}`}></span>
+        <span className={`w-1.5 h-1.5 rounded-full ${getStatusColor()}`} />
       </div>
 
-      <span className={`text-xs sm:text-sm font-medium transition-colors duration-500 flex items-center gap-2 ${config.text}`}>
-        {status === "loading" ? (
-          <span className="opacity-50">Načítám...</span>
-        ) : (
-          <>
-            {activityText}
-            {status === "online" && (
-              <ArrowDown className="w-3 h-3 animate-bounce" />
-            )}
-          </>
-        )}
+      <span className="flex items-center gap-1.5">
+        {status === "loading" ? "Načítám..." : activityText}
+        {status === "online" && <ArrowDown className="w-3 h-3 text-neutral-500 animate-bounce" />}
       </span>
     </div>
   );

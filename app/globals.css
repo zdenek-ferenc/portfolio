@@ -8,7 +8,7 @@
 
   /* Tvé barvy */
   --color-background: #0a0a0a;
-  --color-surface: #222222;
+  --color-surface: #141414;
   --color-accent: #CF2F31;
   --color-kovacka: #188C01;
   --color-text-primary: #EDEDED;
@@ -21,7 +21,6 @@
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  /* Defaultní font je Inter (body) */
   font-family: var(--font-body); 
 }
 
@@ -29,7 +28,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  letter-spacing: -0.02em; /* Tight tracking pro moderní look */
+  letter-spacing: -0.02em;
 }
 
 .font-handwriting {
@@ -41,7 +40,10 @@ h1, h2, h3, h4, h5, h6 {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Animace (zachováno) */
+/* ========================
+   ANIMATIONS
+   ======================== */
+
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -68,6 +70,7 @@ h1, h2, h3, h4, h5, h6 {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 
+/* Gradient text animation */
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -89,11 +92,13 @@ h1, h2, h3, h4, h5, h6 {
   animation: gradient-shift 4s ease-in-out infinite;
 }
 
+/* Glow pulse */
 @keyframes glow-pulse {
   0%, 100% { opacity: 0.4; filter: blur(40px); }
   50% { opacity: 0.7; filter: blur(50px); }
 }
 
+/* Floating blobs */
 @keyframes float-slow {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -20px) scale(1.05); }
@@ -106,17 +111,128 @@ h1, h2, h3, h4, h5, h6 {
   66% { transform: translate(15px, -25px) scale(1.05); }
 }
 
+/* Draw line */
 @keyframes draw-line {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
 
-.bg-dot-grid {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* === MARQUEE (tech stack auto-scroll) === */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 28s linear infinite;
+}
+
+/* Pause on hover */
+.marquee-track:hover .animate-marquee,
+.marquee-track:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* === TIMELINE CONNECTOR LINE === */
+@keyframes timeline-grow {
+  from { height: 0; opacity: 0; }
+  to { height: 100%; opacity: 1; }
+}
+
+.animate-timeline-line {
+  animation: timeline-grow 1.2s cubic-bezier(0.2, 0.65, 0.3, 0.9) forwards;
+}
+
+/* === ROTATING BORDER GRADIENT === */
+@keyframes rotate-border {
+  from { --border-angle: 0deg; }
+  to { --border-angle: 360deg; }
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animate-border-rotate {
+  --border-angle: 0deg;
+  animation: rotate-border 4s linear infinite;
+  background-image: conic-gradient(
+    from var(--border-angle),
+    transparent 25%,
+    #CF2F31 50%,
+    #ff8c42 75%,
+    transparent
+  );
+}
+
+/* === SHIMMER === */
+@keyframes shimmer-slide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer-slide 1.5s ease-in-out infinite;
+}
+
+/* === DOT GRID === */
+.bg-dot-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* === GRID LINES (hero) === */
+.bg-grid-lines {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* === SCROLLBAR === */
 .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* === CURSOR BLINK (command palette) === */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1s ease-in-out infinite;
+}
+
+/* === NUMBER COUNTER spring === */
+@keyframes count-up {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-count {
+  animation: count-up 0.5s cubic-bezier(0.2, 0.65, 0.3, 0.9) forwards;
+}
+
+/* === BREATHING GLOW === */
+@keyframes breathing-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 6px 2px rgba(34, 197, 94, 0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1), 0 0 12px 4px rgba(34, 197, 94, 0.15); }
+}
+
+.animate-breathing-glow {
+  animation: breathing-glow 2.5s ease-in-out infinite;
+}

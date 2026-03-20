@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import AdminLogin from "@/components/admin/AdminLogin";
-import DevLogManager from "@/components/admin/DevLogManager";
+import AdminDashboard from "@/components/admin/AdminDashboard";
 
 export default function AdminPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -22,5 +22,5 @@ export default function AdminPage() {
 
   if (!user) return <AdminLogin />;
 
-  return <DevLogManager />;
+  return <AdminDashboard />;
 }

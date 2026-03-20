@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Home, Briefcase, User, FileText, Mail, LayoutGrid, X } from "lucide-react";
 
@@ -14,19 +14,48 @@ const links = [
 ];
 
 export default function FloatingDock() {
+  const [activeSection, setActiveSection] = useState<string>("/");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY < 300) {
+        setActiveSection("/");
+        return;
+      }
+
+      const sectionIds = ["about-me", "projects", "devlog"];
+      let currentSection = "/";
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Pokud je vršek sekce nad středem obrazovky
+          if (rect.top <= window.innerHeight / 2) {
+            currentSection = `/#${id}`;
+          }
+        }
+      }
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       <div className="hidden md:block">
-        <DesktopDock />
+        <DesktopDock activeSection={activeSection} />
       </div>
       <div className="block md:hidden">
-        <MobileDock />
+        <MobileDock activeSection={activeSection} />
       </div>
     </>
   );
 }
 
-function DesktopDock() {
+function DesktopDock({ activeSection }: { activeSection: string }) {
   const mouseX = useMotionValue(Infinity);
   const mouseY = useMotionValue(Infinity);
 
@@ -40,16 +69,20 @@ function DesktopDock() {
         mouseX.set(Infinity);
         mouseY.set(Infinity);
       }}
-      // OPRAVA: Všechny třídy jsou spojené do jednoho bezpečného stringu.
-      // Používám pole a .join(" "), aby to zůstalo čitelné v kódu, ale React dostal čistý string.
       className={[
         "fixed z-50 hidden gap-6 rounded-2xl border border-white/10 bg-neutral-900/40 p-3 backdrop-blur-md shadow-2xl md:flex items-center justify-center",
-        "bottom-8 left-1/2 -translate-x-1/2 flex-row", // Pozice pro menší monitory
-        "xl:bottom-auto xl:left-4 xl:top-1/2 xl:-translate-y-1/2 xl:flex-col xl:translate-x-0" // Pozice pro XL monitory
+        "bottom-8 left-1/2 -translate-x-1/2 flex-row",
+        "xl:bottom-auto xl:left-4 xl:top-1/2 xl:-translate-y-1/2 xl:flex-col xl:translate-x-0"
       ].join(" ")}
     >
       {links.map((link) => (
-        <AppIcon mouseX={mouseX} mouseY={mouseY} key={link.label} {...link} />
+        <AppIcon 
+          mouseX={mouseX} 
+          mouseY={mouseY} 
+          key={link.label} 
+          {...link} 
+          isActive={activeSection === link.href}
+        />
       ))}
     </motion.div>
   );
@@ -61,17 +94,18 @@ function AppIcon({
   label,
   icon,
   href,
+  isActive,
 }: {
   mouseX: MotionValue;
   mouseY: MotionValue;
   label: string;
   icon: React.ReactNode;
   href: string;
+  isActive: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // OPRAVA: Přidán typ (val: number[])
   const distance = useTransform([mouseX, mouseY], (val: number[]) => {
     const x = val[0];
     const y = val[1];
@@ -86,8 +120,29 @@ function AppIcon({
   const scaleSync = useTransform(distance, [0, 100], [1.5, 1]);
   const scale = useSpring(scaleSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (href.startsWith("/#")) {
+      e.preventDefault();
+      const id = href.replace("/#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      } else {
+        window.location.href = href;
+      }
+    }
+  };
+
   return (
-    <Link href={href} className="relative">
+    <Link href={href} className="relative" onClick={handleClick}>
+      {isActive && (
+        <motion.div
+          layoutId="active-dock-bg"
+          className="absolute inset-0 bg-accent/[0.12] border border-accent/20 rounded-full -z-10"
+          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+        />
+      )}
       <div 
         ref={ref} 
         className="h-10 w-10 cursor-pointer"
@@ -126,18 +181,18 @@ function AppIcon({
   );
 }
 
-function MobileDock() {
+function MobileDock({ activeSection }: { activeSection: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed top-6 right-6 z-50">
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="absolute bottom-full right-0 mb-4 flex flex-col gap-2 min-w-40"
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            className="absolute top-full right-0 mt-4 flex flex-col gap-2 min-w-40"
           >
             {links.map((link, idx) => (
               <motion.div
@@ -149,11 +204,30 @@ function MobileDock() {
               >
                 <Link
                   href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-neutral-900/90 p-3 shadow-lg backdrop-blur-md active:bg-neutral-800"
+                  onClick={(e) => {
+                    setOpen(false);
+                    if (link.href.startsWith("/#")) {
+                      e.preventDefault();
+                      const id = link.href.replace("/#", "");
+                      const el = document.getElementById(id);
+                      if (el) {
+                        el.scrollIntoView({ behavior: "smooth" });
+                        window.history.pushState(null, "", link.href);
+                      } else {
+                        window.location.href = link.href;
+                      }
+                    }
+                  }}
+                  className={`flex items-center justify-between gap-4 rounded-xl border p-3 shadow-lg backdrop-blur-md active:bg-neutral-800 transition-colors ${
+                    activeSection === link.href 
+                      ? "border-accent/40 bg-accent/[0.08] text-white" 
+                      : "border-white/10 bg-neutral-900/90 text-neutral-200"
+                  }`}
                 >
-                  <span className="text-sm font-medium text-neutral-200">{link.label}</span>
-                  <div className="text-neutral-400">{link.icon}</div>
+                  <span className="text-sm font-medium">{link.label}</span>
+                  <div className={activeSection === link.href ? "text-accent" : "text-neutral-400"}>
+                    {link.icon}
+                  </div>
                 </Link>
               </motion.div>
             ))}
