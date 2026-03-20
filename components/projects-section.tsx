@@ -232,7 +232,7 @@ export default function ProjectsSection() {
                       return (
                         <span
                           key={tag}
-                          className={`font-mono px-3 py-1 bg-white/[0.03] rounded-lg text-[11px] font-medium border transition-all duration-500 ${
+                          className={`font-mono px-3 py-1 bg-white/[0.03] rounded-lg text-sm font-medium border transition-all duration-500 ${
                             isHighlighted 
                               ? "animate-pulse" 
                               : "text-neutral-400 border-white/[0.05] hover:border-white/10 hover:text-neutral-300"
