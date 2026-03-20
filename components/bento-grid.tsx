@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { MapPin, Github, Linkedin, Mail, ArrowUpRight, Code2, Sparkles } from "lucide-react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import SpotlightCard from "@/components/ui/spotlight-card";
 
 const containerVariants = {
@@ -30,15 +31,24 @@ const cardVariants = {
 };
 
 export default function BentoGrid() {
-  const techStack = [
-    { name: "Next.js", icon: "/nextjs-icon.svg", className: "invert" },
-    { name: "React", icon: "/React-icon.svg.png" },
-    { name: "TypeScript", icon: "/919832.png" },
-    { name: "Tailwind", icon: "/tailwind.svg" },
-    { name: "Supabase", icon: "/supabase-icon-5uqgeeqeknngv9las8zeef.webp" },
-    { name: "Stripe", icon: "/stripe-v2.svg", hiddenOnMobile: true },
-    { name: "Firebase", icon: "/firebase.png" },
+  const techStack: Array<{ name: string; icon: string; className?: string; glow: string; hasProject: boolean; hiddenOnMobile?: boolean; desc?: string }> = [
+    { name: "Next.js", icon: "/nextjs-icon.svg", className: "invert", glow: "#ffffff", hasProject: true },
+    { name: "React", icon: "/React-icon.svg.png", glow: "#67DAF5", hasProject: true },
+    { name: "TypeScript", icon: "/919832.png", glow: "#0980D4", hasProject: true },
+    { name: "Tailwind", icon: "/tailwind.svg", glow: "#47A9B4", hasProject: true },
+    { name: "Supabase", icon: "/supabase-icon-5uqgeeqeknngv9las8zeef.webp", glow: "#40CE91", hasProject: true },
+    { name: "Stripe", icon: "/stripe-v2.svg", hiddenOnMobile: true, glow: "#635BFF", hasProject: true },
+    { 
+      name: "Firebase", 
+      icon: "/firebase.png", 
+      hiddenOnMobile: true, 
+      glow: "#F79000", 
+      hasProject: false,
+      desc: "Tento skill aktivně používám přímo na tomto portfoliu, ale momentálně pro něj teprve připravuji samostatnou case-study."
+    },
   ];
+
+  const [activeModal, setActiveModal] = useState<{ name: string; glow: string; desc?: string } | null>(null);
 
 
   const socialLinks = [
@@ -94,13 +104,37 @@ export default function BentoGrid() {
                       transition={{ type: "spring", stiffness: 400, damping: 20 }}
                       className={`flex flex-col items-center gap-2 group/icon duration-200 relative ${tech.hiddenOnMobile ? "hidden md:flex" : "flex"}`}
                     >
-                      <div className="p-2.5 md:p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] group-hover/icon:bg-white/[0.06] group-hover/icon:border-white/10 transition-all duration-300 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center cursor-pointer">
+                      <div 
+                        onClick={() => {
+                          if (tech.hasProject) {
+                            const section = document.getElementById("projects");
+                            if (section) {
+                              section.scrollIntoView({ behavior: "smooth" });
+                              window.dispatchEvent(new CustomEvent("highlight-skill", { detail: tech.name }));
+                            }
+                          } else {
+                            setActiveModal({ name: tech.name, glow: tech.glow, desc: tech.desc });
+                          }
+                        }}
+                        className="p-2.5 md:p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] group-hover/icon:bg-white/[0.06] group-hover/icon:border-white/10 transition-all duration-300 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center cursor-pointer relative"
+                      >
+                        {/* Glow back-lit effect */}
+                        <div 
+                           className="absolute inset-0 rounded-2xl opacity-0 group-hover/icon:opacity-20 blur-md transition-all duration-300 -z-10 scale-95 group-hover/icon:scale-100"
+                           style={{ backgroundColor: tech.glow, boxShadow: `0 0 20px ${tech.glow}` }}
+                        />
+                        {/* Dynamic Core Border */}
+                        <div 
+                           className="absolute inset-0 rounded-2xl border-[0.1px] transition-all duration-300 opacity-0 group-hover/icon:opacity-100 pointer-events-none"
+                           style={{ borderColor: tech.glow }}
+                        />
                         <Image
                           src={tech.icon}
                           alt={tech.name}
                           width={32}
                           height={32}
-                          className={`object-contain w-6 h-6 md:w-8 md:h-8 ${tech.className || ""}`}
+                          className={`object-contain w-6 md:w-8 ${tech.className || ""}`}
+                          style={{ height: "auto" }}
                         />
                       </div>
                       <span className="text-[10px] md:text-xs font-medium text-neutral-500 group-hover/icon:text-neutral-300 transition-colors duration-300">
@@ -119,9 +153,9 @@ export default function BentoGrid() {
                 <div className="w-16 h-16 bg-accent/[0.08] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-500 group-hover:bg-accent/[0.14] group-hover:shadow-[0_0_30px_rgba(207,47,49,0.2)] border border-accent/10">
                   <MapPin className="w-7 h-7 text-accent transition-transform duration-500 group-hover:scale-105" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-3.5 h-3.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent/50 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-accent border-2 border-neutral-900" />
+                <div className="absolute -top-1 -right-1 w-3.5 h-3.5 flex items-center justify-center">
+                  <span className="animate-ping absolute inset-0 rounded-full bg-accent/50 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent border border-neutral-900" />
                 </div>
               </div>
               <div>
@@ -169,6 +203,49 @@ export default function BentoGrid() {
           </motion.div>
         </motion.div>
       </div>
+      <AnimatePresence>
+        {activeModal && (
+          <motion.div 
+             initial={{ opacity: 0 }} 
+             animate={{ opacity: 1 }} 
+             exit={{ opacity: 0 }} 
+             onClick={() => setActiveModal(null)}
+             className="fixed inset-0 bg-neutral-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-pointer"
+          >
+             <motion.div 
+                initial={{ scale: 0.95, y: 15 }} 
+                animate={{ scale: 1, y: 0 }} 
+                exit={{ scale: 0.95, y: 15 }} 
+                onClick={(e) => e.stopPropagation()}
+                className="bg-neutral-900 border border-white/[0.08] max-w-sm w-full p-8 rounded-2xl text-center shadow-2xl relative cursor-default"
+             >
+                <div 
+                   className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl opacity-10 pointer-events-none"
+                   style={{ backgroundColor: activeModal.glow }}
+                />
+                
+                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
+                    <Sparkles className="w-6 h-6" style={{ color: activeModal.glow }} />
+                </div>
+                
+                <h3 className="text-xl font-bold text-white mb-2">{activeModal.name}</h3>
+                
+                <p className="text-neutral-400 text-sm leading-relaxed mb-6 font-light">
+                   {activeModal.desc || (
+                      <>Tento skill aktivně používám na projektech, ale momentálně pro něj <strong className="text-white">teprve připravuji case-study</strong>.</>
+                   )}
+                </p>
+
+                <button 
+                  onClick={() => setActiveModal(null)}
+                  className="cursor-pointer w-full bg-white text-black font-bold py-2.5 rounded-xl text-sm hover:bg-neutral-200 transition-all hover:scale-[0.98]"
+                >
+                   Rozumím
+                </button>
+             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

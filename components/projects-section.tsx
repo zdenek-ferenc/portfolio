@@ -4,7 +4,7 @@ import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef, MouseEvent } from "react";
+import { useRef, MouseEvent, useState, useEffect } from "react";
 
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -56,6 +56,7 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
         alt={alt}
         fill
         className="object-cover transition-transform duration-700 group-hover/image:scale-[1.04]"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
       />
       {/* Top sheen */}
       <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none z-10" />
@@ -104,30 +105,53 @@ export default function ProjectsSection() {
       num: "01",
       title: "RiseHigh",
       description: "Platforma propojující studenty s firmami skrze reálné challenge.",
-      tags: ["Next.js", "Supabase", "Stripe", "VUT Spin-off"],
+      tags: ["Next.js","React","TypeScript","Supabase", "Tailwind", "Stripe"],
       href: "https://risehigh.io",
       link: "/projects/risehigh",
       image: "/risehigh.png",
-      impact: "První studentský startup s podílem VUT",
+      impact: "VUT Startup",
     },
     {
       num: "02",
       title: "Alexander Kovačka",
-      description: "Fotografické portfolio s komplexním CMS a klientskou zónou.",
-      tags: ["React", "Admin Panel", "Automation"],
+      description: "Minimalistické portfolio s komplexním CMS a klientskou zónou.",
+      tags: ["Next.js", "React","Supabase", "Tailwind", "CMS", "Client Proofing"],
       href: "https://www.alexanderkovacka.com/cs",
       link: "/projects/alexander-kovacka",
       image: "/kovacka.png",
-      impact: "Automatizace faktur & Client proofing",
+      impact: "Portfolio & Admin",
     },
   ];
 
+  const [highlightedSkill, setHighlightedSkill] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleHighlight = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      setHighlightedSkill(customEvent.detail);
+      const timer = setTimeout(() => setHighlightedSkill(null), 3500);
+      return () => clearTimeout(timer);
+    };
+    window.addEventListener("highlight-skill", handleHighlight);
+    return () => window.removeEventListener("highlight-skill", handleHighlight);
+  }, []);
+
+  const SKILL_COLORS: Record<string, string> = {
+    "Next.js": "#ffffff",
+    "React": "#67DAF5",
+    "TypeScript": "#0980D4",
+    "Tailwind": "#47A9B4",
+    "Supabase": "#40CE91",
+    "Stripe": "#635BFF",
+    "Firebase": "#F79000",
+  };
+
   return (
     <section
-      className="flex flex-col items-center justify-center py-6 sm:py-12"
+      className="flex flex-col px-6 items-center justify-center py-6 sm:py-12"
       id="projects"
     >
-      <div className="px-6 max-w-5xl mx-auto w-full">
+      <div className="max-w-5xl mx-auto w-full">
         <motion.div
           variants={headingVariants}
           initial="hidden"
@@ -201,23 +225,33 @@ export default function ProjectsSection() {
 
                   {/* Tags — monospace style */}
                   <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono px-3 py-1 bg-white/[0.03] rounded-lg text-[11px] font-medium text-neutral-400 border border-white/[0.05] hover:border-white/10 hover:text-neutral-300 transition-all duration-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    {project.tags.map((tag) => {
+                      const isHighlighted = highlightedSkill === tag;
+                      const glowColor = SKILL_COLORS[tag] || "#ffffff";
+                      
+                      return (
+                        <span
+                          key={tag}
+                          className={`font-mono px-3 py-1 bg-white/[0.03] rounded-lg text-[11px] font-medium border transition-all duration-500 ${
+                            isHighlighted 
+                              ? "animate-pulse" 
+                              : "text-neutral-400 border-white/[0.05] hover:border-white/10 hover:text-neutral-300"
+                          }`}
+                          style={isHighlighted ? { borderColor: glowColor, color: glowColor, boxShadow: `0 0 12px ${glowColor}30` } : {}}
+                        >
+                          {tag}
+                        </span>
+                      );
+                    })}
                   </div>
 
                   {/* Buttons */}
                   <div className="flex flex-wrap items-center gap-3 pt-1">
                     <Link
                       href={project.link}
-                      className="group/btn relative px-7 py-3 bg-accent text-white rounded-full font-bold text-sm hover:bg-accent/90 hover:shadow-[0_0_30px_rgba(207,47,49,0.3)] transition-all duration-300 flex items-center gap-2 overflow-hidden"
+                      className="group/btn relative px-7 py-3 bg-accent text-white rounded-xl font-bold text-sm hover:bg-accent/90 hover:shadow-[0_0_30px_rgba(207,47,49,0.3)] transition-all duration-300 flex items-center gap-2 overflow-hidden"
                     >
-                      <span className="relative z-10">Příběh projektu</span>
+                      <span className="relative z-10">O projektu</span>
                       <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover/btn:translate-x-1" />
                       <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                     </Link>
@@ -227,9 +261,9 @@ export default function ProjectsSection() {
                         href={project.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/live px-7 py-3 bg-transparent border border-white/10 text-neutral-400 rounded-full font-medium text-sm hover:bg-white/[0.05] hover:border-white/20 hover:text-white transition-all duration-300 flex items-center gap-2"
+                        className="group/live px-7 py-3 bg-transparent border border-white/10 text-neutral-400 rounded-xl font-medium text-sm hover:bg-white/[0.05] hover:border-white/20 hover:text-white transition-all duration-300 flex items-center gap-2"
                       >
-                        Live Web
+                        Web
                         <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5" />
                       </a>
                     )}

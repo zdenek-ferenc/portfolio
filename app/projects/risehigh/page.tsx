@@ -4,10 +4,9 @@ import Link from "next/link";
 import { 
   ArrowLeft, Users, AlertTriangle, Target, Globe, Layers, Zap, 
   GraduationCap, Building2, Lightbulb, Trophy, 
-  ArrowUpRight, Star, Sparkles
+  ArrowUpRight, Star, Terminal, ArrowRight
 } from "lucide-react";
-import MagneticButton from "@/components/ui/magnetic-button";
-import SpotlightCard from "@/components/ui/spotlight-card";
+import SpotlightCard from "@/components/ui/spotlight-card-risehigh";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -27,15 +26,13 @@ export default function RiseHighPage() {
   return (
     <main className="min-h-screen bg-[#050505] selection:bg-accent/30 overflow-x-hidden text-neutral-200 font-sans">
       
-      {/* BACKGROUND GLOBAL EFFECTS */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-0 w-[600px] h-[600px] bg-orange-500/[0.04] blur-[180px] rounded-full pointer-events-none -z-10" />
 
-      {/* HERO SECTION */}
-      <section className="relative flex flex-col pt-12 justify-end pb-32 px-6 md:px-12 border-b border-white/[0.03]">
+      <section className="relative flex flex-col pt-6 md:pt-12 justify-end pb-12 md:pb-22 px-6 md:px-12 border-b border-white/[0.03]">
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-[#050505] z-10 pointer-events-none" />
         
-        <div className="relative z-20 max-w-6xl mx-auto w-full space-y-16">
+        <div className="relative z-20 max-w-6xl mx-auto w-full space-y-8 md:space-y-16">
           <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
             <Link href="/#projects" className="inline-flex items-center gap-2.5 text-neutral-500 hover:text-white transition-all group w-fit text-sm">
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -49,22 +46,19 @@ export default function RiseHighPage() {
                 <span className="text-xs font-bold text-accent uppercase tracking-[0.15em]">VUT Startup</span>
              </motion.div>
              
-             <motion.h1 variants={fadeUp} className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white leading-[0.85]">
+             <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-[0.85]">
                RiseHigh
              </motion.h1>
              
-             <motion.p variants={fadeUp} className="text-xl md:text-3xl text-neutral-400 font-light leading-relaxed max-w-3xl">
-               Od studentské iniciativy k <span className="text-white font-medium">prvnímu startupu s majetkovým podílem VUT</span> v historii.
+             <motion.p variants={fadeUp} className="text-xl md:text-3xl text-neutral-400 font-light leading-relaxed max-w-4xl">
+               Od studentského nápadu k platformě, která<span className="text-white font-medium"> inovuje trh práce.</span>
              </motion.p>
           </motion.div>
         </div>
       </section>
 
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative">
-        {/* CENTER TIMELINE LINE (Dotted and faint) */}
         <div className="absolute md:left-12 top-0 bottom-0 w-[1px] bg-gradient-to-b from-white/5 via-neutral-800 to-transparent hidden md:block" />
-
-        {/* CHAPTER 01: PODHOUBÍ ESBD */}
         <motion.section 
           variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
           className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start"
@@ -73,7 +67,7 @@ export default function RiseHighPage() {
           
           <div className="md:col-span-4 space-y-4 relative">
             <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">01</span>
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Kapitola 01</span>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Kapitola 01</span>
             <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Podhoubí ESBD</h2>
           </div>
 
@@ -86,7 +80,6 @@ export default function RiseHighPage() {
               </p>
               
               <h3 className="text-white font-bold mt-12 text-2xl mb-4 flex items-center gap-3">
-                <Building2 className="w-6 h-6 text-accent" />
                 Virtigo Digital
               </h3>
               
@@ -104,7 +97,7 @@ export default function RiseHighPage() {
           </div>
         </motion.section>
 
-        {/* CHAPTER 02: MYŠLENKA VUT HUBU */}
+         {/* CHAPTER 02: MYŠLENKA VUT HUBU */}
         <motion.section 
           variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
           className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start"
@@ -113,7 +106,7 @@ export default function RiseHighPage() {
           
           <div className="md:col-span-4 space-y-4 relative">
              <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">02</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Kapitola 02</span>
+             <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Kapitola 02</span>
              <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Myšlenka VUT Hubu</h2>
           </div>
 
@@ -131,20 +124,20 @@ export default function RiseHighPage() {
                 </p>
              </div>  
              
-             <div className="bg-gradient-to-br from-neutral-900/80 to-neutral-950 p-8 md:p-10 rounded-3xl border border-white/5 relative overflow-hidden group max-w-3xl">
+             <div className="bg-gradient-to-br from-neutral-900/80 to-neutral-950 p-5 md:p-10 rounded-3xl border border-white/5 relative overflow-hidden group max-w-3xl">
                 <div className="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative z-10 space-y-4">
                    <div className="flex items-center gap-4 mb-3">
-                      <div className="p-2.5 bg-red-500/10 rounded-xl border border-red-500/20">
-                         <AlertTriangle className="w-5 h-5 text-red-500" />
+                      <div className="p-3 md:p-2.5 bg-red-500/10 rounded-xl border border-red-500/20">
+                         <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-500" />
                       </div>
-                      <h4 className="text-xl font-bold text-white">Byrokratická past</h4>
+                      <h4 className="text-lg md:text-xl font-bold text-white">Byrokratická past</h4>
                    </div>
-                   <p className="text-neutral-400 text-lg leading-relaxed">
-                      Věděli jsme, že pro úspěch projektu musí být VUT nějak zapojené. Ale ze všech stran jsme dostávali varování – fakulta v těchto věcech funguje zkrátka jako klasický úřad. Všechno trvá dlouho, schvalování jde přes několik lidí a byrokracie má přednost před rychlostí.
+                   <p className="text-neutral-400 text-sm md:text-lg leading-relaxed">
+                      Zapojit do projektu univerzitu byla jasná volba, ale narazili jsme na klasický problém: startup a velká instituce fungují v jiném časovém pásmu. Pro nás studenty bylo klíčové neztratit úvodní momentum a začít hned testovat reálný produkt.
                    </p>
-                   <p className="text-neutral-400 text-lg leading-relaxed pt-2">
-                      Pro nás studenty, kteří chtěli okamžitě tvořit a stavět, to v tu chvíli představovalo <strong>obrovský risk</strong>. S těžkým srdcem jsme VUT Hub raději zařízli dřív, než vůbec začal, abychom neztratili cenné momentum.
+                   <p className="text-neutral-400 text-sm md:text-lg leading-relaxed pt-2">
+                     Proto jsme udělali těžké, ale nutné rozhodnutí – koncept VUT Hubu jsme stopli ještě před startem, abychom se vyhnuli byrokratickému zdržení a mohli se posunout dál.
                    </p>
                 </div>
              </div>
@@ -162,7 +155,7 @@ export default function RiseHighPage() {
 
           <div className="md:col-span-4 space-y-4 relative">
              <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">03</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Kapitola 03</span>
+             <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Kapitola 03</span>
              <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Pivot ve Finsku</h2>
           </div>
 
@@ -179,8 +172,8 @@ export default function RiseHighPage() {
 
              <div className="relative p-8 rounded-2xl bg-white/[0.02] border border-white/[0.05] max-w-3xl my-6 backdrop-blur-sm">
                 <div className="absolute top-0 left-0 w-1 h-full bg-accent" />
-                <p className="text-white text-xl md:text-2xl font-black leading-snug m-0">
-                   &quot;Za jeden jediný týden řešení <span className="text-accent underline decoration-accent/20 underline-offset-4">opravdového problému</span> reálné firmy jsme se naučili stokrát více, než za celý semestr na přednáškách nad fiktivními případovkami.&quot;
+                <p className="text-white text-base md:text-2xl font-black leading-snug m-0">
+                   &quot;Za jeden jediný týden řešení <span className="text-accent underline decoration-accent/20 underline-offset-4">opravdového problému </span>reálné firmy jsme se naučili stokrát více, než za celý semestr na přednáškách nad fiktivními případovkami.&quot;
                 </p>
              </div>
 
@@ -191,16 +184,16 @@ export default function RiseHighPage() {
                </p>
                
                <div className="grid md:grid-cols-2 gap-5 mt-8 not-prose">
-                  <SpotlightCard className="p-6 items-start text-left bg-neutral-900/20">
-                     <Building2 className="w-6 h-6 text-accent/80 mb-3" />
-                     <h4 className="text-lg font-bold text-white mb-2">Přínos pro Firmy</h4>
+                  <SpotlightCard className="p-5 md:p-6 items-start text-left bg-neutral-900/20">
+                     <Building2 className="w-6 h-6 text-accent/80 mb-1 md:mb-3" />
+                     <h4 className="text-lg font-bold text-white mb-1 md:mb-2">Přínos pro Firmy</h4>
                      <p className="text-sm text-neutral-500 leading-relaxed">
                         Firmy prahnou po inovacích. Od studentů získají &quot;fresh&quot; nezatížený nadhled a hlavně možnost odchytit zajímavé mladé talenty přímo u zdroje.
                      </p>
                   </SpotlightCard>
-                  <SpotlightCard className="p-6 items-start text-left bg-neutral-900/20">
-                     <GraduationCap className="w-6 h-6 text-accent/80 mb-3" />
-                     <h4 className="text-lg font-bold text-white mb-2">Přínos pro Studenty</h4>
+                  <SpotlightCard className="p-5 md:p-6 items-start text-left bg-neutral-900/20">
+                     <GraduationCap className="w-6 h-6 text-accent/80 mb-1 md:mb-3" />
+                     <h4 className="text-lg font-bold text-white mb-1 md:mb-2">Přínos pro Studenty</h4>
                      <p className="text-sm text-neutral-500 leading-relaxed">
                         Končit školu s prázdným CV nestačí. Studenti nutně potřebují budovat reálnou praxi na ostro a vytvořit si špičkové portfolio.
                      </p>
@@ -227,13 +220,13 @@ export default function RiseHighPage() {
                </p>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 text-left">
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 mt-8 md:mt-16 text-left">
                 {[
                   { icon: Target, title: "1. Zadání", p: "Firma vytvoří reálnou Challenge (logo, business plán, UX re-design).", color: "text-white" },
                   { icon: Lightbulb, title: "2. Tvorba", p: "Studenti (či celé týmy) zapracují na řešení a odešlou své nápady.", color: "text-white" },
                   { icon: Trophy, title: "3. Win-Win", p: "Nejlepší řešení vyhrává. Firma má nápad a talent, student má super referenci.", color: "text-accent" }
                 ].map((step, i) => (
-                  <SpotlightCard key={i} className={`p-8 bg-neutral-900/10 flex flex-col items-center text-center space-y-4 group h-full ${i === 2 ? 'border-accent/10 bg-accent/[0.01]' : ''}`}>
+                  <SpotlightCard key={i} className={`p-4 md:p-8 bg-neutral-900/10 flex flex-col items-center text-left md:text-center !gap-2 space-y-4 group h-full ${i === 2 ? 'border-accent/10 bg-accent/[0.01]' : ''}`}>
                      <div className={`w-14 h-14 rounded-2xl bg-white/5 backdrop-blur-md flex items-center justify-center mb-2 border border-white/5 ${i === 2 ? 'bg-accent/10 border-accent/20' : ''}`}>
                         <step.icon className={`w-6 h-6 ${step.color}`} />
                      </div>
@@ -254,14 +247,14 @@ export default function RiseHighPage() {
           
           <div className="md:col-span-4 space-y-4 relative">
              <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">05</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Kapitola 05</span>
+             <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Kapitola 05</span>
              <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Prototyping & Validace</h2>
           </div>
 
           <div className="md:col-span-8">
              <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
                 <p>
-                  Cestou z Finska jsme začali kreslit první drátěnky. Dva měsíce jsme strávili designováním aplikace ve Figmě a postupně vytvořili klikatelný prototyp. 
+                  Cestou z Finska jsme začali kreslit první wireframy. Měsíc jsme strávili designováním aplikace ve Figmě a postupně vytvořili klikatelný prototyp. 
                   Běhali jsme s tím ze všech stran – nebyl to projekt k odevzdání dál, ale k testování.
                 </p>
                 <ul className="list-none space-y-4 pt-6 pl-0 not-prose">
@@ -286,21 +279,39 @@ export default function RiseHighPage() {
          
          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="max-w-6xl mx-auto space-y-12 relative z-10">
             <div className="grid md:grid-cols-12 gap-10 items-start">
-               {/* Left Description Column */}
                <div className="md:col-span-5 space-y-5">
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500 block">Kapitola 06</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent block">Kapitola 06</span>
                   <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tight leading-none bg-linear-to-b from-white to-neutral-500 bg-clip-text">Vývojářské léto</h2>
-                  <p className="text-neutral-400 font-light leading-relaxed">
-                     Září byl fixed-deadline pro launch MVP. Bez rozpočtu, s nulovým týmem developerů. Volba robustního a agilního stacku byla čistá pragmatika pro doručení.
-                  </p>
+                  <div className="space-y-4">
+                    <p className="text-neutral-400 font-light leading-relaxed">
+                      Když přišel srpen, z celého týmu zbyla na psaní kódu jen <strong className="text-white">jedna jediná dvojice rukou – moje</strong>. Měl jsem přesně měsíc a půl na to, abych z nákresů ve Figmě postavil robustní, plně zabezpečenou a živou platformu.
+                    </p>
+                    <p className="text-neutral-400 font-light leading-relaxed">
+                      Bylo to léto přilepené k monitoru, krmené redbullem a dlouhými nocemi ve VS Code. Cíl byl jasný, do dalšího semestru musíme mít hotový produkt, který firmy mohou plnit výzvama a který studentům nespadne při prvním náporu.
+                    </p>
+                  </div>
                </div>
 
-               {/* Right Features Column */}
-               <div className="md:col-span-7 grid gap-4">
+               <div className="md:col-span-7 grid gap-5">
                   {[
-                    { icon: Globe, title: "Next.js nad React", desc: "Pure React SPA by selhalo na indexaci. Musíme mít SEO pro výzvy nahoře na Google. App router dodal i backend logiku pro solo-dev.", style: "hover:border-white/10" },
-                    { icon: Layers, title: "Supabase Relational", desc: "NoSQL Firebase pro strukturu (Firma -> Challenge -> Řešení) je past na dotazy. Supabase a relační Postgres mi ušetřil tuny utrpení.", style: "hover:border-emerald-500/10" },
-                    { icon: Zap, title: "AI pro Boilerplate", desc: "AI za mě nepsala architekturu, ale dělala nekonečný UI kód z nákresů. Reálně to urychlilo launch o dobrý měsíc práce.", style: "hover:border-orange-500/10" }
+                    { 
+                      icon: Globe, 
+                      title: "Next.js & SSR: Nezávislá Indexace", 
+                      desc: "U klasického Reactu (SPA) roboti od Google občas neparsují JS a platforma by pro vyhledávače téměř neexistovala. Next.js doručí hotové HTML přímo na klienta (SSR/ISR). Zároveň spojení Frontendu i Backend (API route) do jediné codebase ušetřilo dny setupování serveru, CORS a separátního nasazení.", 
+                      style: "hover:border-white/10" 
+                    },
+                    { 
+                      icon: Layers, 
+                      title: "Supabase vs Firebase: Proč BaaS?", 
+                      desc: "Jako frontend vývojář bez zkušeností s backendem mi BaaS zařídil Auth i DB v jednom. Před NoSQL (Firebase) jsem ale dal přednost relačnímu Postgresu – propletená data (Firma -> Výzva -> Student) by v NoSQL vytvořila query peklo. RLS (Row Level Security) navíc hlídá práva přímo v DB bez nutnosti psát tuny API.", 
+                      style: "hover:border-emerald-500/10" 
+                    },
+                    { 
+                      icon: Zap, 
+                      title: "Tailwind CSS: Rychlost iterace bez údržby", 
+                      desc: "Při sólo vývoji nelze trávit minuty context-switchingem do externích stylů. Tailwind mě donutil myslet v designových tokenech. Komponenty se dají bezpečně upravovat za pochodu bez strachu, že rozbiju stylování jinde v aplikaci. Žádné konflikty ve stylech, žádné 'mrtvé' CSS soubory.", 
+                      style: "hover:border-orange-500/10" 
+                    }
                   ].map((card, i) => (
                      <SpotlightCard key={i} className={`p-6 bg-neutral-900/20 border border-white/5 flex flex-row items-start gap-4 transition-all duration-300 ${card.style}`}>
                         <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 shrink-0">
@@ -308,7 +319,7 @@ export default function RiseHighPage() {
                         </div>
                         <div>
                            <h3 className="text-base font-bold text-white mb-1">{card.title}</h3>
-                           <p className="text-xs text-neutral-500 leading-relaxed">{card.desc}</p>
+                           <p className="text-sm text-neutral-400 leading-relaxed font-light">{card.desc}</p>
                         </div>
                      </SpotlightCard>
                   ))}
@@ -329,7 +340,7 @@ export default function RiseHighPage() {
           
           <div className="md:col-span-4 space-y-4 relative">
              <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">07</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Kapitola 07</span>
+             <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Kapitola 07</span>
              <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Křest ohněm: 24h v Inprofu</h2>
           </div>
 
@@ -346,14 +357,17 @@ export default function RiseHighPage() {
                 
                 <div className="bg-gradient-to-br from-neutral-900 to-neutral-950 border border-white/5 p-6 md:p-8 rounded-2xl my-6">
                    <h4 className="text-white font-bold text-lg mb-2 flex items-center gap-2">
-                     <Sparkles className="w-4 h-4 text-accent" />
-                     Hořká pilulka na konec
+                     <Lightbulb className="w-4 h-4 text-accent" />
+                     Zlatá lekce: Síla zadání
                    </h4>
-                   <p className="text-sm md:text-base leading-relaxed m-0 text-neutral-400">
-                     Atmosféra byla neuvěřitelná, nápady lítaly, ale logo? <strong>Startup si nakonec nevybral.</strong> 
-                     Vkus founderů se prostě netrefil do studentů. Pro někoho neúspěch, pro nás brutální lekce: 
-                     Museli jsme donutit firmy přesněji, lépe a tvrději definovat vizuální obrysy a zadání.
-                   </p>
+                   <div className="space-y-3">
+                     <p className="text-sm md:text-base leading-relaxed m-0 text-neutral-400">
+                       Atmosféra byla neuvěřitelná a <strong>studenti odvedli za 24 hodin skvělou práci</strong>. Ukázalo se ale, že zadání ze strany klienta mělo slepá místa, která se v časovém presu ukázala jako klíčová. Startup si návrh nakonec nevybral, protože v něm chybělo přesné naplnění jejich interní vize.
+                     </p>
+                     <p className="text-sm md:text-base leading-relaxed m-0 text-neutral-400">
+                       Pro nás to nebyla překážka, ale <strong>zlatý feedback</strong>. Aby platforma fungovala na 100 %, musíme firmy donutit postavit neprůstřelné zadání a jasně definovat mantinely dřív, než se začne tvořit.
+                     </p>
+                   </div>
                 </div>
              </div>
           </div>
@@ -362,7 +376,7 @@ export default function RiseHighPage() {
         {/* CHAPTER 08: OPEN CHALLENGE */}
         <motion.section 
           variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
-          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start overflow-hidden pb-32"
+          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start pb-32"
         >
           <div className="absolute left-[-5px] top-[140px] w-4 h-4 bg-accent rounded-full animate-ping shadow-[0_0_12px_rgba(207,47,49,1)] hidden md:block" />
           <div className="absolute left-[-5px] top-[140px] w-2.5 h-2.5 bg-accent rounded-full hidden md:block" />
@@ -376,12 +390,10 @@ export default function RiseHighPage() {
           <div className="md:col-span-8 space-y-8">
              <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
                 <p>
-                  Sporteru jsme stát nenechali. Rozhodli jsme se výzvu vzít znova, líp, jasněji a tentokrát plně <strong>v otevřeném digitálním prostoru</strong> bez nutnosti být na stejném místě. 
-                  Měli jsme pár týdnů na promotion napříč studentskými komunitami.
+                  Sporteru jsme stát nenechali. Rozhodli jsme se výzvu vzít znova a tentokrát plně <strong>v otevřeném digitálním prostoru</strong>. K propagaci jsme využili dostupné marketingové kanály VUT (fakultní Instagramy, LinkedIn, Facebook) a přidali úderné offline promo přímo na naší fakultě.
                 </p>
                 <p>
-                  Výsledky nás posadily na zadek. Online se prihlásilo <strong>32 studentů</strong>. 
-                  A nebyli to jen lidé odsud, ale tvořili pro nás napříč univerzitami z <strong>MUNI, VUT i ostravské VŠB</strong>. Hlad po opravdových referencích a příležitostech u studentů je zkrátka masivní.
+                  Výsledky nás překvapily. Online se přihlásilo <strong>32 studentů</strong>. I když kampaň cílila primárně na VUT, přitáhla tvůrce z různých škol i měst – od brněnské <strong>MUNI až po ostravskou VŠB</strong>. Hlad po opravdových referencích a příležitostech je zkrátka masivní.
                 </p>
              </div>
 
@@ -405,30 +417,62 @@ export default function RiseHighPage() {
         </motion.section>
       </div>
 
+      {/* DEVLOG CTA BANNER */}
+      <div className="max-w-4xl mx-auto px-6 pb-12 relative z-10">
+         <motion.div 
+           initial={{ opacity: 0, y: 30, scale: 0.98 }}
+           whileInView={{ opacity: 1, y: 0, scale: 1 }}
+           viewport={{ once: true, margin: "-100px" }}
+           transition={{ duration: 0.8 }}
+           className="relative group p-8 md:p-12 rounded-3xl bg-linear-to-b from-neutral-950 to-[#030303] border border-white/[0.04] backdrop-blur-md overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl"
+         >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/[0.06] blur-3xl rounded-full pointer-events-none -z-10" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/[0.03] blur-3xl rounded-full pointer-events-none -z-10" />
+
+            <div className="space-y-4 max-w-xl text-center md:text-left flex flex-col items-center md:items-start">
+               <div className="p-2 w-fit bg-accent/[0.08] rounded-xl border border-accent/20 flex items-center justify-center">
+                  <Terminal className="w-5 h-5 text-accent" />
+               </div>
+               <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight">Zákulisí & Co se chystá</h3>
+               <p className="text-neutral-400 text-sm md:text-base font-light leading-relaxed">
+                  Zajímá tě, jak se produkt vyvíjí pod pokličkou? Na mém <strong className="text-white">DevLogu</strong> čas od času sdílím technické rozvahy, postupy a prototypy featury ještě předtím než se dostanou na produkci.
+               </p>
+            </div>
+
+            <div className="shrink-0">
+               <Link href="/devlog" className="group/btn relative px-6 py-3.5 bg-white text-black rounded-2xl font-bold text-sm transition-all duration-300 flex items-center gap-2 overflow-hidden shadow-lg hover:shadow-white/[0.12] hover:scale-[1.02]">
+                  <span className="relative z-10">Kouknout na DevLog</span>
+                  <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                  <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-black/[0.05] to-transparent" />
+               </Link>
+            </div>
+         </motion.div>
+      </div>
+
       <section className="py-28 bg-[#020202] border-t border-white/[0.02] text-center px-6 relative overflow-hidden">
          <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_accent_0%,_transparent_70%) opacity-[0.03] pointer-events-none" />
          
          <div className="max-w-4xl mx-auto space-y-12 relative z-10">
-            <h2 className="text-4xl md:text-7xl font-black tracking-tight text-white mb-6">Mise teprve začíná.</h2>
-            <p className="text-neutral-500 text-lg md:text-xl max-w-xl mx-auto font-light leading-relaxed">
-               RiseHigh roste každý den. Pokud máš dotaz ohledně tech space (Next.js, Supabase), byznysu nebo chceš postavit něco cool – dej vědět.
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-4">Máš dotaz nebo nápad?</h2>
+            <p className="text-neutral-500 text-base md:text-lg max-w-xl mx-auto font-light leading-relaxed">
+               Pokud tě zajímají detaily z vývoje platformy, byznysu nebo chceš jen probrat vlastní koncept, neváhej se ozvat.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-5 justify-center pt-8">
-                 <MagneticButton 
-                    onClick={() => window.open('https://risehigh.cz', '_blank')}
-                    className="bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-[1.03] active:scale-95 transition-all shadow-xl flex items-center justify-center gap-2 group"
+                 <button 
+                    onClick={() => window.open('https://risehigh.io', '_blank')}
+                    className="cursor-pointer bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-95 active:scale-90 transition-all shadow-xl flex items-center justify-center gap-2 group"
                  >
                     Kouknout na web 
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                 </MagneticButton>
+                 </button>
                  
-                 <MagneticButton 
-                    onClick={() => window.location.href = "mailto:zdenekk.ferenc@gmail.com"}
-                    className="bg-neutral-900 border border-white/10 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
+                 <button 
+                    onClick={() => window.location.href = "/?contact=true#about-me"}
+                    className="cursor-pointer bg-neutral-900 border border-white/10 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
                  >
                     Probrat projekt
-                 </MagneticButton>
+                 </button>
             </div>
          </div>
       </section>

@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Home, Briefcase, User, FileText, Mail, LayoutGrid, X } from "lucide-react";
 
 const links = [
@@ -14,12 +15,20 @@ const links = [
 ];
 
 export default function FloatingDock() {
-  const [activeSection, setActiveSection] = useState<string>("/");
+  const pathname = usePathname();
+  const [activeHash, setActiveHash] = useState<string>("/");
+
+  // Odvozený stav: na vnitřních stránkách vynutíme sekci, na homepage použijeme hash ze scrollu
+  const activeSection = pathname !== "/" 
+    ? (pathname.startsWith("/projects/") ? "/#projects" : pathname.startsWith("/devlog/") ? "/#devlog" : "/") 
+    : activeHash;
 
   useEffect(() => {
+    if (pathname !== "/") return;
+
     const handleScroll = () => {
       if (window.scrollY < 300) {
-        setActiveSection("/");
+        setActiveHash("/");
         return;
       }
 
@@ -30,18 +39,18 @@ export default function FloatingDock() {
         const el = document.getElementById(id);
         if (el) {
           const rect = el.getBoundingClientRect();
-          // Pokud je vršek sekce nad středem obrazovky
           if (rect.top <= window.innerHeight / 2) {
             currentSection = `/#${id}`;
           }
         }
       }
-      setActiveSection(currentSection);
+      setActiveHash(currentSection);
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Spustit hned pro výchozí stav
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   return (
     <>
@@ -62,8 +71,8 @@ function DesktopDock({ activeSection }: { activeSection: string }) {
   return (
     <motion.div
       onMouseMove={(e) => {
-        mouseX.set(e.pageX);
-        mouseY.set(e.pageY);
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
       }}
       onMouseLeave={() => {
         mouseX.set(Infinity);

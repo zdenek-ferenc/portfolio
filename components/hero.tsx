@@ -148,7 +148,7 @@ export default function Hero() {
         >
           <MagneticButton
             onClick={handleViewWork}
-            className="cursor-pointer flex items-center justify-center group relative px-7 py-3.5 md:px-9 md:py-4 bg-accent text-white rounded-full font-semibold text-sm md:text-base transition-all duration-300 hover:bg-accent/90 hover:shadow-[0_0_40px_rgba(207,47,49,0.35)] overflow-hidden"
+            className="cursor-pointer flex items-center justify-center group relative px-7 py-3.5 md:px-9 md:py-4 bg-accent text-white rounded-xl font-semibold text-sm md:text-base transition-all duration-300 hover:bg-accent/90 hover:shadow-[0_0_40px_rgba(207,47,49,0.35)] overflow-hidden"
           >
             <span className="relative z-10">Moje práce</span>
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -156,7 +156,7 @@ export default function Hero() {
 
           <MagneticButton
             onClick={handleContact}
-            className="cursor-pointer group flex items-center gap-2 px-7 py-3.5 md:px-9 md:py-4 bg-white/[0.04] border border-white/[0.08] text-neutral-300 rounded-full font-medium text-sm md:text-base hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+            className="cursor-pointer group flex items-center gap-2 px-7 py-3.5 md:px-9 md:py-4 bg-white/[0.04] border border-white/[0.08] text-neutral-300 rounded-xl font-medium text-sm md:text-base hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
           >
             Kontakt
             <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

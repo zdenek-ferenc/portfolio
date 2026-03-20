@@ -56,7 +56,7 @@ export default function Footer() {
               </span>
             </h2>
             <div className="mt-6 flex items-center gap-3 text-neutral-500 group-hover:text-neutral-300 transition-colors duration-400">
-              <span className="font-mono text-sm tracking-wide">zdenekk.ferenc@gmail.com</span>
+              <span className="font-mono text-lg tracking-wide">zdenekk.ferenc@gmail.com</span>
               <motion.div
                 className="h-[1px] bg-neutral-700 group-hover:bg-accent transition-colors duration-400"
                 initial={{ width: 40 }}
