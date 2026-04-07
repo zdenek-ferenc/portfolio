@@ -27,6 +27,7 @@ const categoryColors: Record<string, { bg: string; text: string; dot: string }> 
 export default function Timeline() {
   const [entries, setEntries] = useState<DevLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const getIcon = (category: string) => {
     const nc = category.toLowerCase();
@@ -60,6 +61,7 @@ export default function Timeline() {
         setEntries(fetchedEntries);
       } catch (error) {
         console.error("Chyba při načítání DevLogu:", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -136,7 +138,6 @@ export default function Timeline() {
                       }}
                       className="relative"
                     >
-                      {/* Timeline dot — positioned in the left gutter */}
                       <div className="absolute -left-12 top-1/2 -translate-y-1/2 flex items-center justify-center">
                         <div className="w-[10px] h-[10px] rounded-full bg-neutral-700 border border-neutral-600 relative">
                           <div className={`absolute inset-0 rounded-full ${style.dot} opacity-80 scale-75`} />
@@ -177,8 +178,24 @@ export default function Timeline() {
                 })}
           </div>
 
-          {/* Archive link */}
-          {!loading && (
+          {!loading && (error || entries.length === 0) && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="pl-12 py-8"
+            >
+              <div className="bg-neutral-900/20 border border-dashed border-white/[0.05] rounded-2xl p-8 text-center">
+                <Terminal className="w-8 h-8 text-neutral-700 mx-auto mb-3 opacity-50" />
+                <p className="text-neutral-500 text-sm">
+                  {error 
+                    ? "DevLog je momentálně nedostupný (pravděpodobně kvůli AdBlocku)." 
+                    : "Zatím tu nejsou žádné záznamy."}
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {!loading && entries.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}

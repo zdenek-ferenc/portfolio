@@ -11,7 +11,6 @@ interface LiveWidgetProps {
 
 export default function LiveWidget({ value, color, label, isActive }: LiveWidgetProps) {
   const segments = 10;
-  const filledSegments = Math.round((value / 100) * segments);
 
   return (
     <div className="bg-neutral-900/40 rounded-2xl p-7 border border-white/[0.05] h-full hover:border-white/[0.09] transition-all duration-400">
