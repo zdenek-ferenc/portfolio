@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Plus_Jakarta_Sans, Caveat } from "next/font/google";
 import "./globals.css";
 import FloatingDock from "@/components/ui/floating-dock";
+import { Analytics } from "@vercel/analytics/react";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
@@ -42,6 +43,7 @@ export default function RootLayout({
         {children}
         
         <FloatingDock />
+        <Analytics />
       </body>
     </html>
   );

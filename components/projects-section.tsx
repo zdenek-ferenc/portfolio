@@ -3,7 +3,7 @@
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
 import { useRef, MouseEvent, useState, useEffect } from "react";
 
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
@@ -11,9 +11,9 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const springConfig = { stiffness: 150, damping: 20 };
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), springConfig);
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), springConfig);
+  const springConfig = { stiffness: 300, damping: 30 };
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [4, -4]), springConfig);
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-4, 4]), springConfig);
   const scale = useSpring(1, springConfig);
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
@@ -25,7 +25,7 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
     y.set(yPos);
   };
 
-  const handleMouseEnter = () => scale.set(1.03);
+  const handleMouseEnter = () => scale.set(1.02);
   const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
@@ -44,22 +44,22 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
         scale,
         transformStyle: "preserve-3d",
       }}
-      className="aspect-video rounded-2xl relative overflow-hidden cursor-pointer group/image"
+      className="relative w-full aspect-video rounded-2xl overflow-hidden cursor-pointer group/image shadow-2xl border border-white/[0.05]"
     >
-      {/* Border overlay */}
-      <div className="absolute inset-0 rounded-2xl border border-white/[0.08] z-20 pointer-events-none" />
-      {/* Hover gradient */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-accent/15 via-transparent to-accent/[0.07] opacity-0 group-hover/image:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
-      {/* Image */}
+      <motion.div 
+        className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover/image:opacity-40 transition-opacity duration-500"
+        style={{
+          background: useMotionTemplate`radial-gradient(circle 300px at calc(50% + ${x} * 100%) calc(50% + ${y} * 100%), rgba(255,255,255,0.1), transparent)`
+        }}
+      />
+      
       <Image
         src={src}
         alt={alt}
         fill
-        className="object-cover transition-transform duration-700 group-hover/image:scale-[1.04]"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
+        className="object-cover transition-transform duration-700 ease-out group-hover/image:scale-105"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
       />
-      {/* Top sheen */}
-      <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none z-10" />
     </motion.div>
   );
 }
@@ -69,32 +69,32 @@ const sectionVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.28,
+      staggerChildren: 0.15,
       delayChildren: 0.1,
     },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 60 },
+  hidden: { opacity: 0, y: 40 },
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.85,
-      ease: [0.2, 0.65, 0.3, 0.9] as const,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
 
 const headingVariants = {
-  hidden: { opacity: 0, x: -30 },
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
       duration: 0.7,
-      ease: [0.2, 0.65, 0.3, 0.9] as const,
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
@@ -104,8 +104,8 @@ export default function ProjectsSection() {
     {
       num: "01",
       title: "RiseHigh",
-      description: "Platforma propojující studenty s firmami skrze reálné challenge.",
-      tags: ["Next.js","React","TypeScript","Supabase", "Tailwind", "Stripe"],
+      description: "Platforma propojující studenty s firmami skrze reálné challenge. Komplexní marketplace s dashboardem a onboardingem.",
+      tags: ["Next.js", "React", "TypeScript", "Supabase", "Tailwind", "Stripe"],
       href: "https://risehigh.io",
       link: "/projects/risehigh",
       image: "/risehigh.png",
@@ -114,8 +114,8 @@ export default function ProjectsSection() {
     {
       num: "02",
       title: "Alexander Kovačka",
-      description: "Minimalistické portfolio s komplexním CMS a klientskou zónou.",
-      tags: ["Next.js", "React","Supabase", "Tailwind", "CMS", "Client Proofing"],
+      description: "Minimalistické portfolio s komplexním CMS a klientskou zónou pro sdílení a schvalování svatebních galerií.",
+      tags: ["Next.js", "React", "Supabase", "Tailwind", "CMS", "Client Proofing"],
       href: "https://www.alexanderkovacka.com/cs",
       link: "/projects/alexander-kovacka",
       image: "/kovacka.png",
@@ -123,14 +123,21 @@ export default function ProjectsSection() {
     },
   ];
 
-  const [highlightedSkill, setHighlightedSkill] = useState<string | null>(null);
+  const [highlightedSkill, setHighlightedSkill] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return (window as (typeof window & { __lastHighlightedSkill?: string })).__lastHighlightedSkill || null;
+    }
+    return null;
+  });
 
   useEffect(() => {
     const handleHighlight = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
-      setHighlightedSkill(customEvent.detail);
-      const timer = setTimeout(() => setHighlightedSkill(null), 3500);
-      return () => clearTimeout(timer);
+      const skill = customEvent.detail;
+      if (skill && typeof skill === "string") {
+        setHighlightedSkill(skill);
+        (window as (typeof window & { __lastHighlightedSkill?: string })).__lastHighlightedSkill = skill;
+      }
     };
     window.addEventListener("highlight-skill", handleHighlight);
     return () => window.removeEventListener("highlight-skill", handleHighlight);
@@ -143,132 +150,128 @@ export default function ProjectsSection() {
     "Tailwind": "#47A9B4",
     "Supabase": "#40CE91",
     "Stripe": "#635BFF",
-    "Firebase": "#F79000",
   };
 
   return (
-    <section
-      className="flex flex-col px-6 items-center justify-center py-6 sm:py-12"
-      id="projects"
-    >
-      <div className="max-w-5xl mx-auto w-full">
+    <section className="relative flex flex-col items-center justify-center py-12 px-6 overflow-hidden" id="projects">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px] opacity-20 pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto w-full z-10">
         <motion.div
           variants={headingVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="mb-6 sm:mb-12 flex items-end gap-6"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mb-16 sm:mb-24 text-center sm:text-left flex flex-col items-center gap-6 sm:gap-12"
         >
-          <div>
-            <p className="text-accent text-xs sm:text-sm font-bold uppercase tracking-[0.2em] mb-3">
-              Portfolio
-            </p>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
+          <div className="flex-1">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white">
               Vybrané projekty
             </h2>
-            <motion.div
-              className="h-[3px] w-0 bg-gradient-to-r from-accent to-orange-500 mt-4 rounded-full"
-              initial={{ width: 0 }}
-              whileInView={{ width: 72 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            />
+          </div>
+          <div className="flex-1 hidden sm:block">
+            <p className="text-neutral-400 text-lg md:text-xl leading-relaxed max-w-md">
+              Ukázka mých nejlepších prací. Zaměřuji se na perfektní UX, moderní technologie a čistý kód.
+            </p>
           </div>
         </motion.div>
 
-        {/* Projects */}
         <motion.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          className="space-y-6"
+          viewport={{ once: true, margin: "-100px" }}
+          className="space-y-24"
         >
-          {projects.map((project) => (
+          {projects.map((project, idx) => (
             <motion.div
               key={project.title}
               variants={cardVariants}
-              className="group relative"
+              className={`flex flex-col-reverse relative ${
+                idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+              } gap-10 items-center`}
             >
-              <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-accent/10 via-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
-              
-              <div className="relative grid md:grid-cols-2 gap-6 md:gap-12 items-center rounded-3xl p-5 sm:p-8 md:p-10 bg-neutral-900/40 backdrop-blur-sm border border-white/[0.05] hover:border-accent/10 transition-all duration-500">
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-accent/[0.01] via-transparent to-transparent" />
-
-                <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-xs text-neutral-700 tracking-widest">
+              <div className="flex-1 w-full space-y-4 relative z-10">
+                <div className="absolute -top-12 -left-6 text-[140px] font-bold text-white/[0.02] -z-10 leading-none select-none tracking-tighter">
                   {project.num}
                 </div>
 
-                <div style={{ perspective: "1000px" }}>
-                  <ProjectImage src={project.image} alt={project.title} />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                  </span>
+                  <span className="text-xs font-semibold text-neutral-300 uppercase tracking-widest">
+                    {project.impact}
+                  </span>
                 </div>
 
-                <div className="space-y-5 md:space-y-6">
-                  {/* Impact pill */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/[0.07] border border-accent/[0.12] backdrop-blur-sm">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
-                    </span>
-                    <span className="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-wider">
-                      {project.impact}
-                    </span>
-                  </div>
-
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-100 tracking-tight">
+                <div className="space-y-4">
+                  <h3 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white tracking-tight">
                     {project.title}
                   </h3>
-
-                  <p className="text-base md:text-lg text-neutral-400 leading-relaxed max-w-lg">
+                  <p className="text-lg text-neutral-400 leading-relaxed font-light md:max-w-[90%]">
                     {project.description}
                   </p>
-
-                  {/* Tags — monospace style */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => {
-                      const isHighlighted = highlightedSkill === tag;
-                      const glowColor = SKILL_COLORS[tag] || "#ffffff";
-                      
-                      return (
-                        <span
-                          key={tag}
-                          className={`font-mono px-3 py-1 bg-white/[0.03] rounded-lg text-sm font-medium border transition-all duration-500 ${
-                            isHighlighted 
-                              ? "animate-pulse" 
-                              : "text-neutral-400 border-white/[0.05] hover:border-white/10 hover:text-neutral-300"
-                          }`}
-                          style={isHighlighted ? { borderColor: glowColor, color: glowColor, boxShadow: `0 0 12px ${glowColor}30` } : {}}
-                        >
-                          {tag}
-                        </span>
-                      );
-                    })}
-                  </div>
-
-                  {/* Buttons */}
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
-                    <Link
-                      href={project.link}
-                      className="group/btn relative px-7 py-3 bg-accent text-white rounded-xl font-bold text-sm hover:bg-accent/90 hover:shadow-[0_0_30px_rgba(207,47,49,0.3)] transition-all duration-300 flex items-center gap-2 overflow-hidden"
-                    >
-                      <span className="relative z-10">O projektu</span>
-                      <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                      <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                    </Link>
-
-                    {project.href && (
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group/live px-7 py-3 bg-transparent border border-white/10 text-neutral-400 rounded-xl font-medium text-sm hover:bg-white/[0.05] hover:border-white/20 hover:text-white transition-all duration-300 flex items-center gap-2"
-                      >
-                        Web
-                        <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5" />
-                      </a>
-                    )}
-                  </div>
                 </div>
+
+                <div className="flex flex-wrap gap-2.5 pt-2">
+                  {project.tags.map((tag) => {
+                    const isHighlighted = highlightedSkill === tag;
+                    const glowColor = SKILL_COLORS[tag] || "#ffffff";
+                    
+                    return (
+                      <span
+                        key={tag}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium border backdrop-blur-sm transition-all duration-500 ${
+                          isHighlighted 
+                            ? "bg-white/10 text-white ring-1 ring-white/20 animate-pulse" 
+                            : "bg-white/[0.02] text-neutral-400 border-white/[0.05] hover:bg-white/[0.06] hover:text-neutral-200"
+                        }`}
+                        style={
+                          isHighlighted 
+                          ? { borderColor: glowColor, boxShadow: `0 0 20px ${glowColor}30` } 
+                          : {}
+                        }
+                      >
+                        {isHighlighted && (
+                          <span 
+                            className="w-1.5 h-1.5 rounded-full" 
+                            style={{ backgroundColor: glowColor, boxShadow: `0 0 8px ${glowColor}` }}
+                          />
+                        )}
+                        {tag}
+                      </span>
+                    );
+                  })}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 pt-6">
+                  <Link
+                    href={project.link}
+                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold text-sm hover:bg-neutral-200 hover:scale-105 active:scale-95 transition-all duration-300 ease-out"
+                  >
+                    <span>O projektu</span>
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+
+                  {project.href && (
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-white rounded-full font-bold text-sm border border-white/[0.15] hover:bg-white/[0.05] active:scale-95 transition-all duration-300 ease-out"
+                    >
+                      <span>Web</span>
+                      <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex-1 w-full perspective-1000 relative">
+                <div className="absolute inset-4 bg-accent/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <ProjectImage src={project.image} alt={project.title} />
               </div>
             </motion.div>
           ))}

@@ -10,13 +10,11 @@ interface LiveWidgetProps {
 }
 
 export default function LiveWidget({ value, color, label, isActive }: LiveWidgetProps) {
-  // Build segmented bar (10 segments)
   const segments = 10;
   const filledSegments = Math.round((value / 100) * segments);
 
   return (
     <div className="bg-neutral-900/40 rounded-2xl p-7 border border-white/[0.05] h-full hover:border-white/[0.09] transition-all duration-400">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-[0.12em]">
           {label}
@@ -35,7 +33,6 @@ export default function LiveWidget({ value, color, label, isActive }: LiveWidget
         )}
       </div>
 
-      {/* Value */}
       <motion.div
         key={value}
         initial={{ opacity: 0, y: 8 }}
@@ -85,7 +82,6 @@ export default function LiveWidget({ value, color, label, isActive }: LiveWidget
         })}
       </div>
 
-      {/* Status */}
       <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between text-xs">
         <span className="text-neutral-700 uppercase tracking-[0.12em] font-medium">Status</span>
         <span
