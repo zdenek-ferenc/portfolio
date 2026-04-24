@@ -26,38 +26,29 @@ export default function FloatingDock() {
   useEffect(() => {
     if (pathname !== "/") return;
 
-    let ticking = false;
-
     const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      
-      requestAnimationFrame(() => {
-        if (window.scrollY < 300) {
-          setActiveHash("/");
-          ticking = false;
-          return;
-        }
+      if (window.scrollY < 300) {
+        setActiveHash("/");
+        return;
+      }
 
-        const sectionIds = ["about-me", "projects", "devlog"];
-        let currentSection = "/";
+      const sectionIds = ["about-me", "projects", "devlog"];
+      let currentSection = "/";
 
-        for (const id of sectionIds) {
-          const el = document.getElementById(id);
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            if (rect.top <= window.innerHeight / 2) {
-              currentSection = `/#${id}`;
-            }
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight / 2) {
+            currentSection = `/#${id}`;
           }
         }
-        setActiveHash(currentSection);
-        ticking = false;
-      });
+      }
+      setActiveHash(currentSection);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Spustit hned pro výchozí stav
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 

@@ -15,13 +15,13 @@ export default function Home() {
         <Hero />
 
         {/* Ambient background layer */}
-        <div className="relative" style={{ contain: "layout style" }}>
+        <div className="relative">
           {/* Dot grid texture — visible but not dominant */}
-          <div className="absolute inset-0 bg-dot-grid opacity-100 pointer-events-none z-0 will-change-transform" />
+          <div className="absolute inset-0 bg-dot-grid opacity-100 pointer-events-none z-0" />
 
           {/* Large ambient orbs — positioned along the page flow */}
           <div
-            className="absolute top-[200px] -left-[200px] w-[800px] h-[800px] rounded-full pointer-events-none z-0 will-change-transform"
+            className="absolute top-[200px] -left-[200px] w-[800px] h-[800px] rounded-full pointer-events-none z-0"
             style={{
               background: "radial-gradient(circle, rgba(207,47,49,0.12) 0%, transparent 60%)",
               filter: "blur(100px)",
@@ -29,7 +29,7 @@ export default function Home() {
             }}
           />
           <div
-            className="absolute top-[900px] -right-[200px] w-[700px] h-[700px] rounded-full pointer-events-none z-0 will-change-transform"
+            className="absolute top-[900px] -right-[200px] w-[700px] h-[700px] rounded-full pointer-events-none z-0"
             style={{
               background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 60%)",
               filter: "blur(100px)",
@@ -37,7 +37,7 @@ export default function Home() {
             }}
           />
           <div
-            className="absolute top-[1800px] left-[10%] w-[600px] h-[600px] rounded-full pointer-events-none z-0 will-change-transform"
+            className="absolute top-[1800px] left-[10%] w-[600px] h-[600px] rounded-full pointer-events-none z-0"
             style={{
               background: "radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 60%)",
               filter: "blur(100px)",
@@ -45,7 +45,7 @@ export default function Home() {
             }}
           />
           <div
-            className="absolute top-[2800px] -right-[100px] w-[500px] h-[500px] rounded-full pointer-events-none z-0 will-change-transform"
+            className="absolute top-[2800px] -right-[100px] w-[500px] h-[500px] rounded-full pointer-events-none z-0"
             style={{
               background: "radial-gradient(circle, rgba(207,47,49,0.08) 0%, transparent 60%)",
               filter: "blur(80px)",

@@ -54,7 +54,7 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-full flex flex-col items-center justify-center pt-8 md:pt-16 pb-12 overflow-hidden">
-      <div className="absolute inset-0 bg-grid-lines opacity-100 pointer-events-none will-change-transform" />
+      <div className="absolute inset-0 bg-grid-lines opacity-100 pointer-events-none" />
 
       <div
         className="absolute inset-0 pointer-events-none"
@@ -65,7 +65,7 @@ export default function Hero() {
       />
 
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-[0.12] will-change-transform"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-[0.12]"
         style={{
           background:
             "conic-gradient(from 0deg at 50% 50%, transparent 0deg, #CF2F31 60deg, transparent 120deg, #ff8c42 180deg, transparent 240deg, #CF2F31 300deg, transparent 360deg)",

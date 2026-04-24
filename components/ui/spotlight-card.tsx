@@ -1,5 +1,6 @@
 "use client";
-import { useRef, useCallback } from "react";
+import { useRef, useState, MouseEvent } from "react";
+import { motion } from "framer-motion";
 
 export default function SpotlightCard({ 
   children, 
@@ -9,42 +10,37 @@ export default function SpotlightCard({
   className?: string 
 }) {
   const divRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    divRef.current.style.setProperty("--spotlight-x", `${x}px`);
-    divRef.current.style.setProperty("--spotlight-y", `${y}px`);
-  }, []);
+    const div = divRef.current;
+    const rect = div.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
 
-  const handleMouseEnter = useCallback(() => {
-    divRef.current?.style.setProperty("--spotlight-opacity", "1");
-  }, []);
+  const handleFocus = () => {
+    setOpacity(1);
+  };
 
-  const handleMouseLeave = useCallback(() => {
-    divRef.current?.style.setProperty("--spotlight-opacity", "0");
-  }, []);
+  const handleBlur = () => {
+    setOpacity(0);
+  };
 
   return (
     <div
       ref={divRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleFocus}
+      onMouseLeave={handleBlur}
       className={`relative overflow-hidden rounded-3xl border border-white/5 bg-neutral-900/50 transition-colors ${className}`}
-      style={{
-        "--spotlight-x": "0px",
-        "--spotlight-y": "0px",
-        "--spotlight-opacity": "0",
-      } as React.CSSProperties}
     >
-      <div
-        className="pointer-events-none absolute -inset-px hidden md:block z-10 transition-opacity duration-300"
+      <motion.div
+        className="pointer-events-none absolute -inset-px bg-opacity-0 md:bg-opacity-60 opacity-0 transition duration-300 z-10"
         style={{
-          opacity: "var(--spotlight-opacity)",
-          background: "radial-gradient(600px circle at var(--spotlight-x) var(--spotlight-y), rgba(255, 255, 255, 0.06), transparent 40%)",
+          opacity,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 255, 255, 0.06), transparent 40%)`,
         }}
       />
       <div className="flex flex-col gap-4 items-center h-full z-20">{children}</div>
