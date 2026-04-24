@@ -38,7 +38,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${jakarta.variable} ${caveat.variable} antialiased bg-neutral-950 text-neutral-200 selection:bg-red-500/30`}
       >
         {/* Noise overlay */}
-        <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.04] mix-blend-overlay bg-noise" />
+        <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.04] mix-blend-overlay bg-noise will-change-transform" />
         
         {children}
         

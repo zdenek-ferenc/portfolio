@@ -111,6 +111,7 @@ h1, h2, h3, h4, h5, h6 {
   66% { transform: translate(15px, -25px) scale(1.05); }
 }
 
+
 /* Draw line */
 @keyframes draw-line {
   from { transform: scaleX(0); }
@@ -135,6 +136,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-marquee-reverse {
   animation: marquee-reverse 28s linear infinite;
+  will-change: transform;
 }
 
 /* Pause on hover */

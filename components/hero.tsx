@@ -54,10 +54,8 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-full flex flex-col items-center justify-center pt-8 md:pt-16 pb-12 overflow-hidden">
-      {/* Grid lines background */}
-      <div className="absolute inset-0 bg-grid-lines opacity-100 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-lines opacity-100 pointer-events-none will-change-transform" />
 
-      {/* Radial mask over grid — fades edges */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -66,9 +64,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Aurora rings — layered conic gradient glow */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-[0.12]"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-[0.12] will-change-transform"
         style={{
           background:
             "conic-gradient(from 0deg at 50% 50%, transparent 0deg, #CF2F31 60deg, transparent 120deg, #ff8c42 180deg, transparent 240deg, #CF2F31 300deg, transparent 360deg)",
@@ -77,7 +74,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Soft center glow */}
       <div
         className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[500px] h-[200px] rounded-full pointer-events-none opacity-30"
         style={{
@@ -88,7 +84,6 @@ export default function Hero() {
       />
 
 
-      {/* Main content */}
       <motion.div
         variants={container}
         initial="hidden"
@@ -148,7 +143,7 @@ export default function Hero() {
         >
           <MagneticButton
             onClick={handleViewWork}
-            className="cursor-pointer flex items-center justify-center group relative px-7 py-3.5 md:px-9 md:py-4 bg-accent text-white rounded-xl font-semibold text-sm md:text-base transition-all duration-300 hover:bg-accent/90 hover:shadow-[0_0_40px_rgba(207,47,49,0.35)] overflow-hidden"
+            className="cursor-pointer flex items-center justify-center group relative px-7 py-3.5 md:px-9 md:py-4 bg-accent/70 text-white rounded-xl font-semibold text-sm md:text-base transition-all duration-300 hover:bg-accent hover:shadow-[0_0_40px_rgba(207,47,49,0.35)] overflow-hidden"
           >
             <span className="relative z-10">Moje práce</span>
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />

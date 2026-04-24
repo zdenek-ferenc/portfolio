@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Mail, ArrowUpRight, Calendar, Code2, Handshake } from "lucide-react";
@@ -12,14 +12,14 @@ const containerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.15,
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 25 },
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
     y: 0,
@@ -29,61 +29,6 @@ const itemVariants = {
     },
   },
 };
-
-function ProfileCard() {
-  return (
-    <div className="w-full">
-      <div className="relative w-full flex flex-col bg-neutral-900/50 backdrop-blur-sm border border-white/[0.06] rounded-3xl overflow-hidden group shadow-2xl shadow-black/50">
-        <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-br from-accent/25 via-transparent to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 blur-sm" />
-
-        <div className="relative aspect-4/5 w-full overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/20 to-transparent z-10" />
-          <Image
-            src="/me.png"
-            alt="Zdenek Ferenc"
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-            priority
-            sizes="(max-width: 768px) 100vw, 400px"
-          />
-          <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-            <p className="text-[10px] font-bold text-accent uppercase tracking-[0.22em] mb-1.5">
-              Developer & Founder
-            </p>
-            <h3 className="text-2xl font-bold text-white">Zdenek Ferenc</h3>
-          </div>
-        </div>
-
-        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent w-full" />
-
-        <div className="p-6 space-y-4">
-          <div className="flex items-center gap-3 text-neutral-400 text-sm">
-            <div className="p-1.5 rounded-lg bg-accent/[0.08] border border-accent/[0.12]">
-              <MapPin className="w-4 h-4 text-accent" />
-            </div>
-            <span>Brno, Česká republika</span>
-          </div>
-
-          <div className="flex items-center gap-3 text-neutral-400 text-sm">
-            <div className="p-1.5 rounded-lg bg-accent/[0.08] border border-accent/[0.12]">
-              <Mail className="w-4 h-4 text-accent" />
-            </div>
-            <a
-              href="mailto:zdenekk.ferenc@gmail.com"
-              className="hover:text-white transition-colors duration-300"
-            >
-              zdenekk.ferenc@gmail.com
-            </a>
-          </div>
-
-          <div className="h-px bg-gradient-to-r from-transparent via-white/[0.05] to-transparent w-full" />
-
-          <CalButton />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function CalButton({ compact = false }: { compact?: boolean }) {
   const CAL_LINK = "zdenekferenc/intro";
@@ -118,9 +63,67 @@ function CalButton({ compact = false }: { compact?: boolean }) {
       }`}
     >
       <Calendar className={`${compact ? "w-3.5 h-3.5" : "w-4 h-4"} relative z-10 transition-transform duration-300 group-hover/cal:-translate-y-0.5`} />
-      <span className="relative z-10">{compact ? "Call" : "Rezervovat Call"}</span>
+      <span className="relative z-10">{compact ? "Call" : "Pojďme si zavolat"}</span>
       <div className="absolute inset-0 -translate-x-full group-hover/cal:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
     </button>
+  );
+}
+
+function FloatingCard({ title, icon, description, color, badge }: { title: string, icon: React.ReactNode, description: string, color: 'accent' | 'orange', badge?: string }) {
+  const lineColors = {
+    accent: "bg-accent",
+    orange: "bg-orange-500"
+  };
+
+  const textColors = {
+    accent: "text-accent",
+    orange: "text-orange-500"
+  };
+
+  return (
+    <motion.div
+      variants={itemVariants}
+      className="group relative flex flex-col p-4 md:p-8 overflow-hidden rounded-2xl bg-neutral-900/30 border border-white/[0.03] hover:bg-neutral-900/50 hover:border-white/[0.08] transition-all duration-500 flex-1"
+    >
+      {/* Background watermark icon */}
+      <div className={`absolute -bottom-8 -right-8 opacity-[0.02] group-hover:opacity-[0.06] group-hover:-rotate-12 transition-all duration-700 pointer-events-none [&>svg]:w-48 [&>svg]:h-48 ${textColors[color]}`}>
+        {icon}
+      </div>
+
+      {/* Decorative gradient blur in top left */}
+      <div className={`absolute -top-20 -left-20 w-40 h-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none ${lineColors[color]}`} />
+
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Top header: Line + optional badge */}
+        <div className="hidden md:flex items-start justify-between mb-4 sm:mb-0">
+          <div className={`w-8 h-[2px] rounded-full ${lineColors[color]} group-hover:w-16 transition-all duration-500`} />
+          {badge && (
+             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-[9px] font-bold text-green-500 uppercase tracking-widest">
+               <span className="relative flex h-1.5 w-1.5">
+                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
+                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+               </span>
+               {badge}
+             </div>
+          )}
+        </div>
+
+        {/* Bottom content */}
+        <div className="mt-auto space-y-3">
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-xl bg-neutral-950/50 border border-white/[0.05] ${textColors[color]} group-hover:scale-110 transition-transform duration-500`}>
+              {icon}
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+              {title}
+            </h3>
+          </div>
+          <p className="text-sm text-neutral-400 font-light leading-relaxed">
+            {description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -136,163 +139,217 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section className="px-6 sm:py-12 relative overflow-hidden" id="about-me">
-      <div className="absolute top-1/2 -translate-y-1/2 -right-[250px] w-[500px] h-[500px] bg-accent/[0.05] blur-[150px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute top-1/4 -left-[200px] w-[400px] h-[400px] bg-blue-500/[0.03] blur-[120px] rounded-full pointer-events-none -z-10" />
-
-      <div className="max-w-5xl mx-auto grid md:grid-cols-12 gap-10 md:gap-10 items-start relative z-10">
+    <section className="relative overflow-hidden" id="about-me">
+      <div className="max-w-5xl mx-auto px-6 lg:px-0">
         
-        <motion.div
-          initial={{ opacity: 0, x: -40, scale: 0.97 }}
-          whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] as const }}
-          className="md:col-span-5 hidden md:flex sticky top-24"
-        >
-          <ProfileCard />
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          className="md:col-span-7 flex flex-col justify-center h-full space-y-4 md:space-y-8 md:pl-6"
-        >
-          <motion.div variants={itemVariants} className="md:hidden space-y-5">
-            <div>
-              <p className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">O mně</p>
-              <h1 className="text-5xl font-bold text-white leading-[0.95]">
-                Zdenek <br />
-                <span className="text-neutral-600">Ferenc.</span>
-              </h1>
-            </div>
-
-            <div className="flex items-center gap-4 bg-neutral-900/50 backdrop-blur-sm border border-white/[0.06] rounded-2xl p-4 w-full">
-               <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-white/5 shadow-inner">
-                  <Image src="/me.png" alt="Zdenek Ferenc" fill className="object-cover" sizes="56px"/>
-               </div>
-               <div className="flex-1 flex flex-col justify-center gap-1">
-                  <span className="text-[10px] font-bold text-accent uppercase tracking-widest leading-none">Developer & Founder</span>
-                  <span className="text-sm font-bold text-white leading-none">Zdenek Ferenc</span>
-                  <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
-                      <MapPin className="w-3.5 h-3.5 text-accent" />
-                      <span>Brno, CZ</span>
-                  </div>
-               </div>
-               <div className="w-fit">
-                  <CalButton compact />
-               </div>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="hidden md:block">
-            <p className="text-accent text-xs sm:text-sm font-bold uppercase tracking-[0.2em] mb-3">
-              O mně
-            </p>
-            <h1 className="text-5xl lg:text-7xl font-bold text-white tracking-tight leading-[0.95]">
-              Zdenek
-              <br />
-              <span className="text-neutral-700">Ferenc.</span>
-            </h1>
-            <motion.div
-              className="h-[3px] w-0 bg-gradient-to-r from-accent to-orange-500 mt-5 rounded-full"
-              initial={{ width: 0 }}
-              whileInView={{ width: 56 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            />
-          </motion.div>
-
-          <motion.p
-            variants={itemVariants}
-            className="text-xl lg:text-2xl text-neutral-300 font-light leading-relaxed"
+        <div className="hidden md:block">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
           >
-            Jsem vývojář a Founder. Momentálně věnuju většinu času budování{" "}
-            <Link
-              href="/projects/risehigh"
-              className="inline-flex items-baseline gap-1 font-bold text-white hover:text-accent transition-all duration-300 group/rh cursor-pointer"
-            >
-              <span className="bg-gradient-to-r from-white to-white bg-[length:0%_1.5px] bg-no-repeat bg-left-bottom group-hover/rh:bg-[length:100%_1.5px] transition-all duration-500">
-                RiseHigh
-              </span>
-              <ArrowUpRight className="w-4 h-4 self-center text-accent transform transition-transform duration-300 group-hover/rh:-translate-y-0.5 group-hover/rh:translate-x-0.5" />
-            </Link>
-          </motion.p>
+            <div className="relative mb-2">
+              <div className="grid grid-cols-12 gap-8 items-end">
+                <motion.div variants={itemVariants} className="col-span-7 relative z-10 pb-6">
+                  <p className="text-accent text-xs font-bold uppercase tracking-[0.25em] mb-5">
+                    O mně
+                  </p>
+                  <h1 className="text-5xl lg:text-7xl font-bold text-white tracking-tight leading-[0.92] mb-8">
+                    Developer,{" "}
+                    <br />
+                    <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(135deg, #CF2F31, #ff8c42)" }}>
+                      Founder
+                    </span>
+                    <span className="text-neutral-700">.</span>
+                  </h1>
+                  <div className="space-y-4 max-w-lg">
+                    <p className="text-lg text-neutral-300 font-light leading-relaxed">
+                      Jsem vývojář a Founder. Momentálně věnuju většinu času budování{" "}
+                      <Link
+                        href="/projects/risehigh"
+                        className="inline-flex items-baseline gap-1 font-semibold text-white hover:text-accent transition-all duration-300 group/rh cursor-pointer"
+                      >
+                        <span className="bg-gradient-to-r from-white to-white bg-[length:0%_1.5px] bg-no-repeat bg-left-bottom group-hover/rh:bg-[length:100%_1.5px] transition-all duration-500">
+                          RiseHigh
+                        </span>
+                        <ArrowUpRight className="w-3.5 h-3.5 self-center text-accent transform transition-transform duration-300 group-hover/rh:-translate-y-0.5 group-hover/rh:translate-x-0.5" />
+                      </Link>
+                      {" "}— platformy, která propojuje studenty s firmami přes reálné challenge.
+                    </p>
+                    <p className="text-[15px] text-neutral-500 font-light leading-relaxed">
+                      Baví mě stavět věci od nuly. Rád přemýšlím nad celým produktem — ne jen nad kódem, ale i nad tím, jestli to vůbec dává smysl pro lidi, kteří to budou používat. Většinu věcí řeším sám, od designu přes frontend až po backend.
+                    </p>
+                  </div>
+                </motion.div>
 
-          <div className="space-y-3">
-            <motion.div
-              variants={itemVariants}
-              className="group/card rounded-2xl p-5 sm:p-6 bg-neutral-900/30 border border-white/[0.05] hover:border-white/[0.09] transition-all duration-500 relative overflow-hidden"
-            >
-              <div className="absolute left-0 top-4 bottom-4 w-[2px] bg-accent rounded-r-full opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-accent/[0.03] via-transparent to-transparent" />
-              <div className="flex items-center gap-3 mb-3 relative z-10 pl-4">
-                <div className="p-2 rounded-xl bg-accent/[0.07] border border-accent/10">
-                  <Code2 className="w-4 h-4 text-accent" />
-                </div>
-                <h3 className="text-white font-bold text-base sm:text-lg">Co dělám?</h3>
+                <motion.div
+                  variants={itemVariants}
+                  className="col-span-5 relative z-20"
+                >
+                  <div className="relative group">
+                    <div className="absolute -inset-4 bg-accent/[0.08] blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    
+                    <div className="relative rounded-3xl overflow-hidden border border-white/[0.08] shadow-2xl shadow-black/60">
+                      <div className="aspect-[4/5] relative">
+                        <Image
+                          src="/me.png"
+                          alt="Zdenek Ferenc"
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                          priority={true}
+                          fetchPriority="high"
+                          sizes="(max-width: 768px) 100vw, 500px"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent" />
+                      </div>
+                      
+                      <div className="absolute bottom-0 left-0 right-0 p-5">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-[9px] font-bold text-accent uppercase tracking-[0.25em] mb-0.5">Developer & Founder</p>
+                            <p className="md:text-2xl text-lg font-bold text-white">Zdenek Ferenc</p>
+                          </div>
+                          <CalButton compact />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-              <p className="text-neutral-400 text-sm sm:text-base leading-relaxed relative z-10 pl-4">
-                Tvořím kompletní webové aplikace. Navrhuju UI, vymýšlím features a píšu kód. Vše stavím na moderním stacku (Next.js, TypeScript, Supabase).
-              </p>
+            </div>
+
+            <motion.div 
+              variants={itemVariants}
+              className="flex items-center gap-8 mb-6 mt-6 py-4 border-y border-white/[0.04]"
+            >
+              <div className="flex items-center gap-2.5 text-sm text-neutral-400">
+                <MapPin className="w-3.5 h-3.5 text-accent" />
+                <span>Brno, CZ</span>
+              </div>
+              <div className="w-px h-4 bg-white/[0.08]" />
+              <a href="mailto:zdenekk.ferenc@gmail.com" className="flex items-center gap-2.5 text-sm text-neutral-400 hover:text-white transition-colors">
+                <Mail className="w-3.5 h-3.5 text-accent" />
+                <span>zdenekk.ferenc@gmail.com</span>
+              </a>
+              <div className="w-px h-4 bg-white/[0.08]" />
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                <span className="text-sm text-green-500 font-medium">Open for work</span>
+              </div>
             </motion.div>
 
-            <motion.div
-              variants={itemVariants}
-              className="group/card rounded-2xl p-5 sm:p-6 bg-neutral-900/30 border border-white/[0.05] hover:border-white/[0.09] transition-all duration-500 relative overflow-hidden"
-            >
-              <div className="absolute left-0 top-4 bottom-4 w-[2px] bg-orange-500/70 rounded-r-full opacity-60 group-hover/card:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-orange-500/[0.03] via-transparent to-transparent" />
-              <div className="flex items-center gap-3 mb-3 relative z-10 pl-4">
-                <div className="p-2 rounded-xl bg-orange-500/[0.07] border border-orange-500/10">
-                  <Handshake className="w-4 h-4 text-orange-400" />
-                </div>
-                <h3 className="text-white font-bold text-base sm:text-lg">Networking & Spolupráce</h3>
-              </div>
-              <p className="hidden md:block text-neutral-400 text-sm sm:text-base leading-relaxed relative z-10 pl-4">
-                Nehledám klasický full-time job. Věnuju se primárně svému startupu, ale jsem otevřený zajímavým spolupracím na projektech, konzultacím a discovery fázím. Pokud máš nápad, technický zásek nebo chceš probrat koncept, klidně se ozvi.
-              </p>
-              <p className="md:hidden text-neutral-400 text-sm sm:text-base leading-relaxed relative z-10 pl-4">
-                Nehledám full-time, věnuju se startupu. Jsem ale otevřený zajímavým spolupracím, konzultacím a nápadům. Ozvi se!
-              </p>
-            </motion.div>
-          </div>
-
-          <motion.div variants={itemVariants} className="md:hidden">
-            <MobileSidebar />
+            <div className="grid grid-cols-2 gap-5">
+              <FloatingCard 
+                title="Co dělám?"
+                icon={<Code2 className="w-5 h-5 text-accent" />}
+                color="accent"
+                description="Navrhuju a kóduju webové aplikace. Postarám se o všechno od UI až po backend. Většinou stavím na Next.js a Supabase — baví mě dělat věci, které jsou rychlé a dávají smysl."
+              />
+              <FloatingCard 
+                title="Freelance & Spolupráce"
+                icon={<Handshake className="w-5 h-5 text-orange-500" />}
+                color="orange"
+                badge="Mám volnou kapacitu"
+                description="Většinu času věnuju svému startupu, ale rád si najdu čas na zajímavý freelance projekt nebo web na zakázku. Full-time nehledám, ale pokud něco potřebuješ postavit, ozvi se."
+              />
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
+
+        <div className="md:hidden">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            className="space-y-6"
+          >
+            <motion.div variants={itemVariants} className="space-y-5">
+              <div>
+                <p className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">O mně</p>
+                <h1 className="text-4xl font-bold text-white leading-[0.95]">
+                  Developer,{" "}
+                  <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(135deg, #CF2F31, #ff8c42)" }}>
+                    Founder
+                  </span>
+                  <span className="text-neutral-600">.</span>
+                </h1>
+              </div>
+
+              <div className="flex items-center gap-4 bg-neutral-900/50 backdrop-blur-sm border border-white/[0.06] rounded-2xl p-4 w-full">
+                 <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-white/5 shadow-inner">
+                    <Image src="/me.png" alt="Zdenek Ferenc" fill className="object-cover" sizes="56px" priority={true} fetchPriority="high"/>
+                 </div>
+                 <div className="flex-1 flex flex-col justify-center gap-1">
+                    <span className="text-[10px] font-bold text-accent uppercase tracking-widest leading-none">Developer & Founder</span>
+                    <span className="text-sm font-bold text-white leading-none">Zdenek Ferenc</span>
+                    <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
+                        <MapPin className="w-3.5 h-3.5 text-accent" />
+                        <span>Brno, CZ</span>
+                    </div>
+                 </div>
+                 <div className="w-fit">
+                    <CalButton compact />
+                 </div>
+              </div>
+            </motion.div>
+
+            <motion.p variants={itemVariants} className="text-base text-neutral-400 font-light leading-relaxed">
+              Jsem vývojář a Founder. Momentálně věnuju většinu času budování{" "}
+              <Link
+                href="/projects/risehigh"
+                className="inline-flex items-baseline gap-1 font-semibold text-white hover:text-accent transition-all duration-300 group/rh cursor-pointer"
+              >
+                <span className="bg-gradient-to-r from-white to-white bg-[length:0%_1.5px] bg-no-repeat bg-left-bottom group-hover/rh:bg-[length:100%_1.5px] transition-all duration-500">
+                  RiseHigh
+                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 self-center text-accent" />
+              </Link>
+            </motion.p>
+
+            <div className="space-y-4">
+              <FloatingCard 
+                title="Co dělám?"
+                icon={<Code2 className="w-5 h-5 text-accent" />}
+                color="accent"
+                description="Navrhuju a kóduju webové aplikace. Postarám se o všechno od UI až po backend. Většinou stavím na Next.js a Supabase — baví mě dělat věci, které jsou rychlé a dávají smysl."
+              />
+              <FloatingCard 
+                title="Freelance & Spolupráce"
+                icon={<Handshake className="w-5 h-5 text-orange-500" />}
+                color="orange"
+                badge="Mám volnou kapacitu"
+                description="Většinu času věnuju svému startupu, ale rád si najdu čas na zajímavý freelance projekt nebo web na zakázku. Full-time nehledám, ale pokud něco potřebuješ postavit, ozvi se."
+              />
+            </div>
+
+            <motion.div variants={itemVariants}>
+              <div className="bg-transparent md:bg-neutral-900/40 backdrop-blur-sm border border-transparent md:border-white/[0.04] rounded-2xl p-5 space-y-4">
+                <div className="flex items-center gap-3 text-neutral-400 text-sm">
+                  <div className="p-1.5 rounded-lg bg-accent/10 border border-accent/15">
+                    <MapPin className="w-4 h-4 text-accent" />
+                  </div>
+                  <span>Brno, Česká republika</span>
+                </div>
+                <div className="flex items-center gap-3 text-neutral-400 text-sm">
+                  <div className="p-1.5 rounded-lg bg-accent/10 border border-accent/15">
+                    <Mail className="w-4 h-4 text-accent" />
+                  </div>
+                  <a href="mailto:zdenekk.ferenc@gmail.com" className="hover:text-white transition-colors duration-300">
+                    zdenekk.ferenc@gmail.com
+                  </a>
+                </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent w-full" />
+                <CalButton />
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
-  );
-}
-
-function MobileSidebar() {
-  return (
-    <div className="bg-neutral-900/40 backdrop-blur-sm border border-white/[0.04] rounded-2xl p-5 space-y-4">
-      <div className="flex items-center gap-3 text-neutral-400 text-sm">
-        <div className="p-1.5 rounded-lg bg-accent/10 border border-accent/15">
-          <MapPin className="w-4 h-4 text-accent" />
-        </div>
-        <span>Brno, Česká republika</span>
-      </div>
-
-      <div className="flex items-center gap-3 text-neutral-400 text-sm">
-        <div className="p-1.5 rounded-lg bg-accent/10 border border-accent/15">
-          <Mail className="w-4 h-4 text-accent" />
-        </div>
-        <a
-          href="mailto:zdenekk.ferenc@gmail.com"
-          className="hover:text-white transition-colors duration-300"
-        >
-          zdenekk.ferenc@gmail.com
-        </a>
-      </div>
-
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent w-full" />
-
-      <CalButton />
-    </div>
   );
 }

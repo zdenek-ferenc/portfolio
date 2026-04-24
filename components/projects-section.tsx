@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
 import { useRef, MouseEvent, useState, useEffect } from "react";
 
-function ProjectImage({ src, alt }: { src: string; alt: string }) {
+function ProjectImage({ src, alt, priority = false, children }: { src: string; alt: string; priority?: boolean; children?: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -57,9 +57,12 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
         src={src}
         alt={alt}
         fill
-        className="object-cover transition-transform duration-700 ease-out group-hover/image:scale-105"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+        className="object-cover transition-transform duration-700 ease-out"
+        sizes="(max-width: 768px) 100vw, 600px"
+        priority={priority}
+        fetchPriority={priority ? "high" : "auto"}
       />
+      {children}
     </motion.div>
   );
 }
@@ -108,7 +111,7 @@ export default function ProjectsSection() {
       tags: ["Next.js", "React", "TypeScript", "Supabase", "Tailwind", "Stripe"],
       href: "https://risehigh.io",
       link: "/projects/risehigh",
-      image: "/risehigh.png",
+      image: "/risehigh.webp",
       impact: "VUT Startup",
     },
     {
@@ -118,7 +121,7 @@ export default function ProjectsSection() {
       tags: ["Next.js", "React", "Supabase", "Tailwind", "CMS", "Client Proofing"],
       href: "https://www.alexanderkovacka.com/cs",
       link: "/projects/alexander-kovacka",
-      image: "/kovacka.png",
+      image: "/kovacka.webp",
       impact: "Portfolio & Admin",
     },
   ];
@@ -153,7 +156,7 @@ export default function ProjectsSection() {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center py-12 px-6 overflow-hidden" id="projects">
+    <section className="relative flex flex-col items-center justify-center pb-12 px-6 overflow-hidden" id="projects">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px] opacity-20 pointer-events-none" />
 
       <div className="max-w-5xl mx-auto w-full z-10">
@@ -188,15 +191,15 @@ export default function ProjectsSection() {
               key={project.title}
               variants={cardVariants}
               className={`flex flex-col-reverse relative ${
-                idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-              } gap-10 items-center`}
+                idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+              } gap-6 md:gap-10 items-center`}
             >
               <div className="flex-1 w-full space-y-4 relative z-10">
                 <div className="absolute -top-12 -left-6 text-[140px] font-bold text-white/[0.02] -z-10 leading-none select-none tracking-tighter">
                   {project.num}
                 </div>
 
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
+                <div className="hidden md:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
@@ -207,10 +210,10 @@ export default function ProjectsSection() {
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white tracking-tight">
+                  <h3 className="hidden md:block text-4xl md:text-5xl lg:text-5xl font-bold text-white tracking-tight">
                     {project.title}
                   </h3>
-                  <p className="text-lg text-neutral-400 leading-relaxed font-light md:max-w-[90%]">
+                  <p className="text-base sm:text-lg text-neutral-400 leading-relaxed font-light md:max-w-[90%]">
                     {project.description}
                   </p>
                 </div>
@@ -249,7 +252,7 @@ export default function ProjectsSection() {
                 <div className="flex flex-wrap items-center gap-4 pt-6">
                   <Link
                     href={project.link}
-                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold text-sm hover:bg-neutral-200 hover:scale-105 active:scale-95 transition-all duration-300 ease-out"
+                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-neutral-200 text-black rounded-full font-bold text-sm hover:bg-white transition-all duration-300 ease-out"
                   >
                     <span>O projektu</span>
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -271,7 +274,23 @@ export default function ProjectsSection() {
 
               <div className="flex-1 w-full perspective-1000 relative">
                 <div className="absolute inset-4 bg-accent/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <ProjectImage src={project.image} alt={project.title} />
+                <ProjectImage src={project.image} alt={project.title} priority={idx === 0}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/10 to-transparent z-20 md:hidden pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 p-5 z-30 md:hidden flex flex-col items-start gap-3 pointer-events-none">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.1] border border-white/[0.1] backdrop-blur-md shadow-lg">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                      </span>
+                      <span className="text-[10px] font-semibold text-white uppercase tracking-widest drop-shadow-md">
+                        {project.impact}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight drop-shadow-lg">
+                      {project.title}
+                    </h3>
+                  </div>
+                </ProjectImage>
               </div>
             </motion.div>
           ))}

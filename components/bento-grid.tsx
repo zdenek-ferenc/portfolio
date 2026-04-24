@@ -5,6 +5,7 @@ import { MapPin, Github, Linkedin, Mail, ArrowUpRight, Code2, Sparkles } from "l
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import SpotlightCard from "@/components/ui/spotlight-card";
+import { GeneralContactModal } from "@/components/services/general-contact-modal";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -49,6 +50,7 @@ export default function BentoGrid() {
   ];
 
   const [activeModal, setActiveModal] = useState<{ name: string; glow: string; desc?: string } | null>(null);
+  const [isGeneralModalOpen, setIsGeneralModalOpen] = useState(false);
 
 
   const socialLinks = [
@@ -69,7 +71,7 @@ export default function BentoGrid() {
     {
       name: "Email",
       icon: <Mail className="w-4 h-4" />,
-      href: "mailto:zdenekk.ferenc@gmail.com",
+      action: () => setIsGeneralModalOpen(true),
       color: "hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/[0.06]",
       glow: "hover:shadow-[0_0_16px_rgba(52,211,153,0.12)]",
     },
@@ -77,7 +79,7 @@ export default function BentoGrid() {
 
   return (
     <section className="w-full flex flex-col items-center justify-center py-6" id="about">
-      <div className="max-w-5xl mx-auto w-full px-4 md:px-0">
+      <div className="max-w-5xl mx-auto w-full px-4 lg:px-0">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -181,22 +183,40 @@ export default function BentoGrid() {
                 </div>
 
                 <div className="flex flex-wrap gap-2.5 justify-center md:justify-end">
-                  {socialLinks.map((social) => (
-                    <motion.a
-                      key={social.name}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ y: -2, scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                      className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative ${social.color} ${social.glow}`}
-                    >
-                      {social.icon}
-                      <span>{social.name}</span>
-                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </motion.a>
-                  ))}
+                  {socialLinks.map((social) => {
+                    if (social.action) {
+                      return (
+                        <motion.button
+                          key={social.name}
+                          onClick={social.action}
+                          whileHover={{ y: -2, scale: 1.02 }}
+                          whileTap={{ scale: 0.97 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                          className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative cursor-pointer ${social.color} ${social.glow}`}
+                        >
+                          {social.icon}
+                          <span>{social.name}</span>
+                          <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </motion.button>
+                      );
+                    }
+                    return (
+                      <motion.a
+                        key={social.name}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ y: -2, scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                        className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative ${social.color} ${social.glow}`}
+                      >
+                        {social.icon}
+                        <span>{social.name}</span>
+                        <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </motion.a>
+                    );
+                  })}
                 </div>
               </div>
             </SpotlightCard>
@@ -244,6 +264,9 @@ export default function BentoGrid() {
                 </button>
              </motion.div>
           </motion.div>
+        )}
+        {isGeneralModalOpen && (
+          <GeneralContactModal onClose={() => setIsGeneralModalOpen(false)} />
         )}
       </AnimatePresence>
     </section>
