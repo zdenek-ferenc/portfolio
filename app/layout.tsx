@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 // 1. Importujeme Plus_Jakarta_Sans místo Inter
 import { Space_Grotesk, Plus_Jakarta_Sans, Caveat } from "next/font/google";
 import "./globals.css";
@@ -22,8 +22,14 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Zdenek Ferenc - Product Engineer",
-  description: "Product Engineer turning complex ideas into clean software.",
+  title: "Zdenek Ferenc - Developer & Founder",
+  description: "Developer & Founder tvořící moderní webové aplikace s důrazem na čisté UI a skvělé UX.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
