@@ -1,9 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { GeneralContactModal } from "@/components/services/general-contact-modal";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <footer className="relative px-6 pt-20 pb-10 overflow-hidden bg-neutral-950">
@@ -38,9 +41,9 @@ export default function Footer() {
           <p className="text-base font-mono text-gray-200 uppercase tracking-[0.35em] mb-6">
             Máte projekt?
           </p>
-          <a
-            href="mailto:zdenekk.ferenc@gmail.com"
-            className="group block"
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="group block text-left w-full cursor-pointer"
           >
             <h2
               className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-neutral-200 group-hover:text-white transition-colors duration-500 leading-none"
@@ -64,7 +67,7 @@ export default function Footer() {
                 style={{ width: 40 }}
               />
             </div>
-          </a>
+          </button>
         </motion.div>
 
         {/* Bottom bar */}
@@ -78,7 +81,7 @@ export default function Footer() {
           <div>
             <p className="text-sm font-bold text-neutral-200 mb-1">Zdenek Ferenc</p>
             <p className="text-xs text-neutral-600 max-w-xs">
-              Product Engineer tvořící digitální produkty s důrazem na detail.
+              Developer & Founder. Tvořím moderní webové aplikace s důrazem na čisté UI a skvělé UX.
             </p>
           </div>
 
@@ -100,12 +103,12 @@ export default function Footer() {
               >
                 LinkedIn
               </a>
-              <a
-                href="mailto:zdenekk.ferenc@gmail.com"
-                className="hover:text-white transition-colors duration-300 font-medium"
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="hover:text-white transition-colors duration-300 font-medium cursor-pointer"
               >
                 Email
-              </a>
+              </button>
             </div>
             <p className="font-mono text-[10px] text-neutral-700">
               © {currentYear} — All rights reserved
@@ -113,6 +116,11 @@ export default function Footer() {
           </div>
         </motion.div>
       </div>
+      <AnimatePresence>
+        {isModalOpen && (
+          <GeneralContactModal onClose={() => setIsModalOpen(false)} />
+        )}
+      </AnimatePresence>
     </footer>
   );
 }

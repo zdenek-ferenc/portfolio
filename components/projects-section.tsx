@@ -161,10 +161,10 @@ export default function ProjectsSection() {
 
       <div className="max-w-5xl mx-auto w-full z-10">
         <motion.div
-          variants={headingVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 sm:mb-24 text-center sm:text-left flex flex-col items-center gap-6 sm:gap-12"
         >
           <div className="flex-1">
@@ -173,23 +173,20 @@ export default function ProjectsSection() {
             </h2>
           </div>
           <div className="flex-1 hidden sm:block">
-            <p className="text-neutral-400 text-lg md:text-xl leading-relaxed max-w-md">
-              Ukázka mých nejlepších prací. Zaměřuji se na perfektní UX, moderní technologie a čistý kód.
+            <p className="text-neutral-400 text-lg md:text-xl text-center leading-relaxed max-w-md">
+              Ukázka mojí práce. Zaměřuji se na čisté UI, moderní technologie a baví mě vymýšlet zajímavé featury.
             </p>
           </div>
         </motion.div>
 
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="space-y-24"
-        >
+        <div className="space-y-24">
           {projects.map((project, idx) => (
             <motion.div
               key={project.title}
-              variants={cardVariants}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className={`flex flex-col-reverse relative ${
                 idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               } gap-6 md:gap-10 items-center`}
@@ -294,7 +291,7 @@ export default function ProjectsSection() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

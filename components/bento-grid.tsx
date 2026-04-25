@@ -7,29 +7,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import SpotlightCard from "@/components/ui/spotlight-card";
 import { GeneralContactModal } from "@/components/services/general-contact-modal";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.97 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.2, 0.65, 0.3, 0.9] as const,
-    },
-  },
-};
+const cardAnimation = (delay: number = 0) => ({
+  initial: { opacity: 0, y: 25 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.7, delay, ease: [0.2, 0.65, 0.3, 0.9] as const },
+});
 
 export default function BentoGrid() {
   const techStack: Array<{ name: string; icon: string; className?: string; glow: string; hasProject: boolean; hiddenOnMobile?: boolean; desc?: string }> = [
@@ -80,14 +63,8 @@ export default function BentoGrid() {
   return (
     <section className="w-full flex flex-col items-center justify-center py-6" id="about">
       <div className="max-w-5xl mx-auto w-full px-4 lg:px-0">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
-        >
-          <motion.div variants={cardVariants} className="md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <motion.div {...cardAnimation(0)} className="md:col-span-2">
             <SpotlightCard className="p-6 backdrop-blur-xl group h-full overflow-hidden">
               <div className="flex flex-col items-center md:items-start w-full gap-5 h-full">
                 <div className="flex items-center gap-2.5">
@@ -149,7 +126,7 @@ export default function BentoGrid() {
             </SpotlightCard>
           </motion.div>
 
-          <motion.div variants={cardVariants} className="hidden md:block">
+          <motion.div {...cardAnimation(0.1)} className="hidden md:block">
             <SpotlightCard className="p-8 backdrop-blur-xl flex flex-col items-center justify-center text-center gap-5 group h-full">
               <div className="relative">
                 <div className="w-16 h-16 bg-accent/[0.08] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-500 group-hover:bg-accent/[0.14] group-hover:shadow-[0_0_30px_rgba(207,47,49,0.2)] border border-accent/10">
@@ -169,7 +146,7 @@ export default function BentoGrid() {
             </SpotlightCard>
           </motion.div>
 
-          <motion.div variants={cardVariants} className="md:col-span-3">
+          <motion.div {...cardAnimation(0.15)} className="md:col-span-3">
             <SpotlightCard className="backdrop-blur-xl group">
               <div className="flex flex-col md:flex-row items-center w-full justify-between gap-5 sm:gap-4 px-6 py-5">
                 <div className="flex items-center gap-3">
@@ -186,42 +163,36 @@ export default function BentoGrid() {
                   {socialLinks.map((social) => {
                     if (social.action) {
                       return (
-                        <motion.button
+                        <button
                           key={social.name}
                           onClick={social.action}
-                          whileHover={{ y: -2, scale: 1.02 }}
-                          whileTap={{ scale: 0.97 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                          className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative cursor-pointer ${social.color} ${social.glow}`}
+                          className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative cursor-pointer hover:-translate-y-0.5 active:scale-[0.97] ${social.color} ${social.glow}`}
                         >
                           {social.icon}
                           <span>{social.name}</span>
                           <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </motion.button>
+                        </button>
                       );
                     }
                     return (
-                      <motion.a
+                      <a
                         key={social.name}
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ y: -2, scale: 1.02 }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                        className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative ${social.color} ${social.glow}`}
+                        className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative hover:-translate-y-0.5 active:scale-[0.97] ${social.color} ${social.glow}`}
                       >
                         {social.icon}
                         <span>{social.name}</span>
                         <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </motion.a>
+                      </a>
                     );
                   })}
                 </div>
               </div>
             </SpotlightCard>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
       <AnimatePresence>
         {activeModal && (

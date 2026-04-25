@@ -69,7 +69,7 @@ function CalButton({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function FloatingCard({ title, icon, description, color, badge }: { title: string, icon: React.ReactNode, description: string, color: 'accent' | 'orange', badge?: string }) {
+function FloatingCard({ title, icon, description, color, badge, delay = 0 }: { title: string, icon: React.ReactNode, description: string, color: 'accent' | 'orange', badge?: string, delay?: number }) {
   const lineColors = {
     accent: "bg-accent",
     orange: "bg-orange-500"
@@ -82,7 +82,10 @@ function FloatingCard({ title, icon, description, color, badge }: { title: strin
 
   return (
     <motion.div
-      variants={itemVariants}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, delay, ease: [0.2, 0.65, 0.3, 0.9] }}
       className="group relative flex flex-col p-4 md:p-8 overflow-hidden rounded-2xl bg-neutral-900/30 border border-white/[0.03] hover:bg-neutral-900/50 hover:border-white/[0.08] transition-all duration-500 flex-1"
     >
       {/* Background watermark icon */}
@@ -247,6 +250,7 @@ export default function AboutSection() {
                 title="Co dělám?"
                 icon={<Code2 className="w-5 h-5 text-accent" />}
                 color="accent"
+                delay={0.3}
                 description="Navrhuju a kóduju webové aplikace. Postarám se o všechno od UI až po backend. Většinou stavím na Next.js a Supabase — baví mě dělat věci, které jsou rychlé a dávají smysl."
               />
               <FloatingCard 
@@ -254,6 +258,7 @@ export default function AboutSection() {
                 icon={<Handshake className="w-5 h-5 text-orange-500" />}
                 color="orange"
                 badge="Mám volnou kapacitu"
+                delay={0.4}
                 description="Většinu času věnuju svému startupu, ale rád si najdu čas na zajímavý freelance projekt nebo web na zakázku. Full-time nehledám, ale pokud něco potřebuješ postavit, ozvi se."
               />
             </div>
@@ -261,14 +266,14 @@ export default function AboutSection() {
         </div>
 
         <div className="md:hidden">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-40px" }}
-            className="space-y-6"
-          >
-            <motion.div variants={itemVariants} className="space-y-5">
+          <div className="space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.65, 0.3, 0.9] }}
+              className="space-y-5"
+            >
               <div>
                 <p className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">O mně</p>
                 <h1 className="text-4xl font-bold text-white leading-[0.95]">
@@ -298,7 +303,13 @@ export default function AboutSection() {
               </div>
             </motion.div>
 
-            <motion.p variants={itemVariants} className="text-base text-neutral-400 font-light leading-relaxed">
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.65, 0.3, 0.9] }}
+              className="text-base text-neutral-400 font-light leading-relaxed"
+            >
               Jsem vývojář a Founder. Momentálně věnuju většinu času budování{" "}
               <Link
                 href="/projects/risehigh"
@@ -316,6 +327,7 @@ export default function AboutSection() {
                 title="Co dělám?"
                 icon={<Code2 className="w-5 h-5 text-accent" />}
                 color="accent"
+                delay={0.1}
                 description="Navrhuju a kóduju webové aplikace. Postarám se o všechno od UI až po backend. Většinou stavím na Next.js a Supabase — baví mě dělat věci, které jsou rychlé a dávají smysl."
               />
               <FloatingCard 
@@ -323,11 +335,17 @@ export default function AboutSection() {
                 icon={<Handshake className="w-5 h-5 text-orange-500" />}
                 color="orange"
                 badge="Mám volnou kapacitu"
+                delay={0.2}
                 description="Většinu času věnuju svému startupu, ale rád si najdu čas na zajímavý freelance projekt nebo web na zakázku. Full-time nehledám, ale pokud něco potřebuješ postavit, ozvi se."
               />
             </div>
 
-            <motion.div variants={itemVariants}>
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.65, 0.3, 0.9] }}
+            >
               <div className="bg-transparent md:bg-neutral-900/40 backdrop-blur-sm border border-transparent md:border-white/[0.04] rounded-2xl p-5 space-y-4">
                 <div className="flex items-center gap-3 text-neutral-400 text-sm">
                   <div className="p-1.5 rounded-lg bg-accent/10 border border-accent/15">
@@ -347,7 +365,7 @@ export default function AboutSection() {
                 <CalButton />
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

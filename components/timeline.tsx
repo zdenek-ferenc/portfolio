@@ -182,7 +182,7 @@ export default function Timeline() {
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="pl-12 py-8"
+              className="py-8"
             >
               <div className="bg-neutral-900/20 border border-dashed border-white/[0.05] rounded-2xl p-8 text-center">
                 <Terminal className="w-8 h-8 text-neutral-700 mx-auto mb-3 opacity-50" />

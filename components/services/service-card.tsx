@@ -30,11 +30,11 @@ export function ServiceCard({
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: 0.5,
+        duration: 0.7,
         delay: index * 0.1,
         ease: [0.2, 0.65, 0.3, 0.9],
       }}
