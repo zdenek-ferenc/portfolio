@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Mail, ArrowUpRight, Calendar, Code2, Handshake } from "lucide-react";
@@ -69,21 +69,15 @@ function CalButton({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function FloatingCard({ title, icon, description, color, badge, delay = 0 }: { title: string, icon: React.ReactNode, description: string, color: 'accent' | 'orange', badge?: string, delay?: number }) {
+function FloatingCard({ title, description, color, badge }: { title: string, icon: React.ReactNode, description: string, color: 'accent' | 'orange', badge?: string, delay?: number }) {
   const lineColors = {
     accent: "bg-accent",
     orange: "bg-orange-500"
-  };
-
-  const textColors = {
-    accent: "text-accent",
-    orange: "text-orange-500"
-  };
+  }
 
   return (
     <motion.div
       variants={itemVariants}
-      className="group relative flex flex-col pr-4"
       className="group relative flex flex-col pr-4"
     >
       {/* Background watermark icon */}
@@ -145,7 +139,6 @@ export default function AboutSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            className="mobile-no-animate hidden md:block"
             className="mobile-no-animate hidden md:block"
           >
             <div className="relative mb-2">
