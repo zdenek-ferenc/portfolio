@@ -77,7 +77,7 @@ export default function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.2, 0.65, 0.3, 0.9] }}
-          className="mb-16"
+          className="mobile-no-animate mb-4 md:mb-8"
         >
           <p className="text-accent text-xs sm:text-sm font-bold uppercase tracking-[0.2em] mb-3">
             Dev Journal
@@ -105,7 +105,7 @@ export default function Timeline() {
           {/* Connector line */}
           {!loading && entries.length > 0 && (
             <motion.div
-              className="absolute left-[19px] top-0 w-[1px] bg-gradient-to-b from-accent/40 via-white/[0.06] to-transparent"
+              className="mobile-no-animate absolute left-[19px] top-0 w-[1px] bg-gradient-to-b from-accent/40 via-white/[0.06] to-transparent"
               initial={{ height: 0, opacity: 0 }}
               whileInView={{ height: "100%", opacity: 1 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -113,7 +113,7 @@ export default function Timeline() {
             />
           )}
 
-          <div className="space-y-2 pl-12">
+          <div className="space-y-2">
             {loading
               ? [...Array(4)].map((_, i) => (
                   <div
@@ -136,7 +136,7 @@ export default function Timeline() {
                         delay: index * 0.07,
                         ease: [0.2, 0.65, 0.3, 0.9],
                       }}
-                      className="relative"
+                      className="mobile-no-animate relative"
                     >
                       <div className="absolute -left-12 top-1/2 -translate-y-1/2 flex items-center justify-center">
                         <div className="w-[10px] h-[10px] rounded-full bg-neutral-700 border border-neutral-600 relative">
@@ -201,7 +201,7 @@ export default function Timeline() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-6"
+              className="mobile-no-animate mt-6"
             >
               <Link
                 href="/devlog"

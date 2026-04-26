@@ -40,7 +40,7 @@ export function ServiceCard({
       }}
       onMouseMove={handleMouseMove}
       onClick={onClick}
-      className={`group/svc relative rounded-3xl p-5 sm:p-6 bg-neutral-900/40 border border-white/[0.06] ${config.border} transition-all duration-500 overflow-hidden backdrop-blur-md flex flex-col text-left cursor-pointer hover:bg-neutral-900/60`}
+      className={`group/svc relative rounded-3xl p-5 sm:p-6 bg-neutral-800/10 border border-white/[0.06] ${config.border} transition-all duration-500 overflow-hidden backdrop-blur-md flex flex-col text-left cursor-pointer hover:bg-neutral-900/40`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 group-hover/svc:opacity-100 transition duration-300"

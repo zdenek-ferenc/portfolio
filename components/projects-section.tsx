@@ -161,11 +161,11 @@ export default function ProjectsSection() {
 
       <div className="max-w-5xl mx-auto w-full z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 sm:mb-24 text-center sm:text-left flex flex-col items-center gap-6 sm:gap-12"
+          variants={headingVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mobile-no-animate mb-16 sm:mb-24 text-center sm:text-left flex flex-col items-center gap-6 sm:gap-12"
         >
           <div className="flex-1">
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white">
@@ -179,15 +179,18 @@ export default function ProjectsSection() {
           </div>
         </motion.div>
 
-        <div className="space-y-24">
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mobile-no-animate space-y-24"
+        >
           {projects.map((project, idx) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className={`flex flex-col-reverse relative ${
+              variants={cardVariants}
+              className={`mobile-no-animate flex flex-col-reverse relative ${
                 idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               } gap-6 md:gap-10 items-center`}
             >
@@ -291,7 +294,7 @@ export default function ProjectsSection() {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

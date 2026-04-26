@@ -45,7 +45,7 @@ export default function ProjectCard({
         delay,
         ease: [0.16, 1, 0.3, 1] as const,
       }}
-      className="group relative h-full flex"
+      className="mobile-no-animate group relative h-full flex"
     >
       <div className="absolute -inset-1 rounded-3xl bg-accent opacity-0 blur-2xl group-hover:opacity-15 transition-opacity duration-700" />
 

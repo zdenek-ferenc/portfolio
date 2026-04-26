@@ -236,3 +236,13 @@ h1, h2, h3, h4, h5, h6 {
 .animate-breathing-glow {
   animation: breathing-glow 2.5s ease-in-out infinite;
 }
+
+/* === DISABLE ANIMATIONS ON MOBILE === */
+@media (max-width: 768px) {
+  .mobile-no-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

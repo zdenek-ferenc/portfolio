@@ -32,11 +32,11 @@ export default function Footer() {
 
       <div className="max-w-5xl mx-auto relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: [0.2, 0.65, 0.3, 0.9] }}
-          className="mb-16"
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }}
+          className="mobile-no-animate mb-16"
         >
           <p className="text-base font-mono text-gray-200 uppercase tracking-[0.35em] mb-6">
             Máte projekt?
@@ -75,8 +75,8 @@ export default function Footer() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-8 border-t border-white/[0.04]"
+          transition={{ duration: 1, delay: 0.3 }}
+          className="mobile-no-animate flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-8 border-t border-white/[0.04]"
         >
           <div>
             <p className="text-sm font-bold text-neutral-200 mb-1">Zdenek Ferenc</p>

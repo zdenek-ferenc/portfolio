@@ -7,6 +7,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import SpotlightCard from "@/components/ui/spotlight-card";
 import { GeneralContactModal } from "@/components/services/general-contact-modal";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
 const cardAnimation = (delay: number = 0) => ({
   initial: { opacity: 0, y: 25 },
   whileInView: { opacity: 1, y: 0 },
@@ -38,13 +54,6 @@ export default function BentoGrid() {
 
   const socialLinks = [
     {
-      name: "Github",
-      icon: <Github className="w-4 h-4" />,
-      href: "https://github.com/zdenek-ferenc",
-      color: "hover:text-white hover:border-white/20 hover:bg-white/[0.06]",
-      glow: "hover:shadow-[0_0_16px_rgba(255,255,255,0.07)]",
-    },
-    {
       name: "LinkedIn",
       icon: <Linkedin className="w-4 h-4" />,
       href: "https://www.linkedin.com/in/zdenek-ferenc-92a64b2ba/",
@@ -58,19 +67,29 @@ export default function BentoGrid() {
       color: "hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/[0.06]",
       glow: "hover:shadow-[0_0_16px_rgba(52,211,153,0.12)]",
     },
+    {
+      name: "Github",
+      icon: <Github className="w-4 h-4" />,
+      href: "https://github.com/zdenek-ferenc",
+      color: "hover:text-white hover:border-white/20 hover:bg-white/[0.06]",
+      glow: "hover:shadow-[0_0_16px_rgba(255,255,255,0.07)]",
+    },
   ];
 
   return (
     <section className="w-full flex flex-col items-center justify-center py-6" id="about">
       <div className="max-w-5xl mx-auto w-full px-4 lg:px-0">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-          <motion.div {...cardAnimation(0)} className="md:col-span-2">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          className="mobile-no-animate grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
+        >
+          <motion.div variants={cardVariants} className="md:col-span-2">
             <SpotlightCard className="p-6 backdrop-blur-xl group h-full overflow-hidden">
-              <div className="flex flex-col items-center md:items-start w-full gap-5 h-full">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 bg-accent/10 rounded-lg flex items-center justify-center">
-                    <Code2 className="w-3.5 h-3.5 text-accent" />
-                  </div>
+              <div className="flex flex-col items-center w-full gap-5 h-full">
+                <div className="flex">
                   <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-[0.14em]">
                     Tech Stack
                   </h3>
@@ -150,12 +169,8 @@ export default function BentoGrid() {
             <SpotlightCard className="backdrop-blur-xl group">
               <div className="flex flex-col md:flex-row items-center w-full justify-between gap-5 sm:gap-4 px-6 py-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 bg-white/[0.04] rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-3.5 h-3.5 text-neutral-400" />
-                  </div>
                   <div>
-                    <h3 className="text-base font-bold text-neutral-200">Spojme se</h3>
-                    <p className="text-xs text-neutral-600 hidden md:block">Najdeš mě tady</p>
+                    <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-[0.14em]">Najdeš mě zde</h3>
                   </div>
                 </div>
 
@@ -192,7 +207,7 @@ export default function BentoGrid() {
               </div>
             </SpotlightCard>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
       <AnimatePresence>
         {activeModal && (

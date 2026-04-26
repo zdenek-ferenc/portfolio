@@ -35,7 +35,7 @@ export default function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.2, 0.65, 0.3, 0.9] }}
-          className="mb-10 sm:mb-14"
+          className="mobile-no-animate mb-10 sm:mb-14"
         >
           <p className="text-accent text-xs font-bold uppercase tracking-[0.25em] mb-4">
             Služby
@@ -61,7 +61,7 @@ export default function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 sm:mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+          className="mobile-no-animate mt-10 sm:mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <button
             onClick={handleCal}

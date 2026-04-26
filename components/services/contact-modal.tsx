@@ -123,9 +123,15 @@ export function ContactModal({
   const config = colorConfig[activeService.color];
 
   useEffect(() => {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) {
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
+    }
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "0px";
     };
   }, []);
 
@@ -157,25 +163,32 @@ export function ContactModal({
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:p-4"
-      onClick={onClose}
-    >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+    <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center md:p-4 overflow-hidden">
+      {/* Enhanced Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="absolute inset-0 bg-black/60 backdrop-blur-xl"
+        onClick={onClose}
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-accent/5 opacity-50" />
+      </motion.div>
 
       {/* Modal / Bottom Sheet */}
       <motion.div
-        initial={{ y: "100%" }}
-        animate={{ y: 0 }}
-        exit={{ y: "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
+        transition={{ 
+          type: "spring", 
+          damping: 25, 
+          stiffness: 200,
+          mass: 1
+        }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-lg bg-neutral-950 border-t sm:border border-white/[0.08] rounded-t-[2rem] sm:rounded-3xl overflow-hidden shadow-2xl shadow-black/80 flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-lg bg-neutral-950 border-t md:border border-white/[0.08] rounded-t-[2.5rem] md:rounded-[2.5rem] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)] flex flex-col max-h-[92vh] z-10"
       >
         <button
           onClick={onClose}
@@ -317,6 +330,6 @@ export function ContactModal({
           </div>
         )}
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

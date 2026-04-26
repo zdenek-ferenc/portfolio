@@ -30,7 +30,7 @@ export default function BentoTile({
         y: -5,
         transition: { duration: 0.2, ease: "easeOut" },
       }}
-      className={`relative bg-neutral-900/40 rounded-2xl border border-white/[0.05] hover:border-white/[0.09] transition-all duration-400 overflow-hidden group ${className}`}
+      className={`mobile-no-animate group/tile relative h-full flex flex-col justify-between p-6 sm:p-8 rounded-3xl bg-neutral-900/40 border border-white/[0.04] overflow-hidden ${className}`}
       style={{
         boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
       }}

@@ -81,15 +81,6 @@ export default function Home() {
 
             <ProjectsSection />
 
-            <div className="relative h-px w-full max-w-4xl mx-auto my-12 sm:my-20">
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: "linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.1) 60%, transparent 90%)",
-                }}
-              />
-            </div>
-
             <Timeline />
           </div>
         </div>

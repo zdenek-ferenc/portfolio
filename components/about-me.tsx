@@ -82,16 +82,11 @@ function FloatingCard({ title, icon, description, color, badge, delay = 0 }: { t
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, delay, ease: [0.2, 0.65, 0.3, 0.9] }}
-      className="group relative flex flex-col p-4 md:p-8 overflow-hidden rounded-2xl bg-neutral-900/30 border border-white/[0.03] hover:bg-neutral-900/50 hover:border-white/[0.08] transition-all duration-500 flex-1"
+      variants={itemVariants}
+      className="group relative flex flex-col pr-4"
     >
       {/* Background watermark icon */}
-      <div className={`absolute -bottom-8 -right-8 opacity-[0.02] group-hover:opacity-[0.06] group-hover:-rotate-12 transition-all duration-700 pointer-events-none [&>svg]:w-48 [&>svg]:h-48 ${textColors[color]}`}>
-        {icon}
-      </div>
+      
 
       {/* Decorative gradient blur in top left */}
       <div className={`absolute -top-20 -left-20 w-40 h-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none ${lineColors[color]}`} />
@@ -114,9 +109,6 @@ function FloatingCard({ title, icon, description, color, badge, delay = 0 }: { t
         {/* Bottom content */}
         <div className="mt-auto space-y-3">
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-xl bg-neutral-950/50 border border-white/[0.05] ${textColors[color]} group-hover:scale-110 transition-transform duration-500`}>
-              {icon}
-            </div>
             <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
               {title}
             </h3>
@@ -151,6 +143,7 @@ export default function AboutSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
+            className="mobile-no-animate hidden md:block"
           >
             <div className="relative mb-2">
               <div className="grid grid-cols-12 gap-8 items-end">
@@ -250,30 +243,28 @@ export default function AboutSection() {
                 title="Co dělám?"
                 icon={<Code2 className="w-5 h-5 text-accent" />}
                 color="accent"
-                delay={0.3}
-                description="Navrhuju a kóduju webové aplikace. Postarám se o všechno od UI až po backend. Většinou stavím na Next.js a Supabase — baví mě dělat věci, které jsou rychlé a dávají smysl."
+                description="Navrhuju a stavím weby a webové aplikace. Postarám se o všechno od UI až po backend. Většinou stavím na Next.js a Supabase . Baví mě vymýšlet zajímavé funkce a vylepšení."
               />
               <FloatingCard 
                 title="Freelance & Spolupráce"
                 icon={<Handshake className="w-5 h-5 text-orange-500" />}
                 color="orange"
                 badge="Mám volnou kapacitu"
-                delay={0.4}
-                description="Většinu času věnuju svému startupu, ale rád si najdu čas na zajímavý freelance projekt nebo web na zakázku. Full-time nehledám, ale pokud něco potřebuješ postavit, ozvi se."
+                description="Hodně času věnuju svému startupu, ale vždy si najdu čas na zajímavý freelance projekt nebo web na zakázku. Full-time nehledám, ale pokud něco potřebuješ postavit, ozvi se."
               />
             </div>
           </motion.div>
         </div>
 
         <div className="md:hidden">
-          <div className="space-y-6">
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.7, ease: [0.2, 0.65, 0.3, 0.9] }}
-              className="space-y-5"
-            >
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            className="mobile-no-animate space-y-6"
+          >
+            <motion.div variants={itemVariants} className="space-y-5">
               <div>
                 <p className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">O mně</p>
                 <h1 className="text-4xl font-bold text-white leading-[0.95]">
@@ -365,7 +356,7 @@ export default function AboutSection() {
                 <CalButton />
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
