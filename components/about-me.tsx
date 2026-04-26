@@ -84,8 +84,10 @@ function FloatingCard({ title, icon, description, color, badge, delay = 0 }: { t
     <motion.div
       variants={itemVariants}
       className="group relative flex flex-col pr-4"
+      className="group relative flex flex-col pr-4"
     >
       {/* Background watermark icon */}
+      
       
 
       {/* Decorative gradient blur in top left */}
@@ -143,6 +145,7 @@ export default function AboutSection() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
+            className="mobile-no-animate hidden md:block"
             className="mobile-no-animate hidden md:block"
           >
             <div className="relative mb-2">
