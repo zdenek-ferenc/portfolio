@@ -1,8 +1,6 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const SERVICE_COLORS: Record<string, string> = {
   "Firemní weby": "#CF2F31",
   "Redesign": "#9333EA",
@@ -147,6 +145,17 @@ export async function POST(request: Request) {
   </table>
 </body>
 </html>`;
+
+    // Klient se vytváří až při odeslání, aby build nevyžadoval RESEND_API_KEY.
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error("Contact API: chybí RESEND_API_KEY.");
+      return NextResponse.json(
+        { error: "Odesílání e-mailů není nakonfigurované." },
+        { status: 500 }
+      );
+    }
+    const resend = new Resend(apiKey);
 
     const { error } = await resend.emails.send({
       from: "Portfolio <onboarding@resend.dev>",

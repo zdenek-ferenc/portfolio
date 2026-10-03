@@ -30,17 +30,18 @@ export function ServiceCard({
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 30 }}
+      data-glow
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: 0.7,
-        delay: index * 0.1,
-        ease: [0.2, 0.65, 0.3, 0.9],
+        duration: 0.6,
+        delay: index * 0.07,
+        ease: [0.16, 1, 0.3, 1],
       }}
       onMouseMove={handleMouseMove}
       onClick={onClick}
-      className={`group/svc relative rounded-3xl p-5 sm:p-6 bg-neutral-800/10 border border-white/[0.06] ${config.border} transition-all duration-500 overflow-hidden backdrop-blur-md flex flex-col text-left cursor-pointer hover:bg-neutral-900/40`}
+      className={`group/svc relative rounded-2xl p-5 sm:p-6 bg-surface border border-white/[0.07] ${config.border} transition-colors duration-300 overflow-hidden flex flex-col text-left cursor-pointer`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 group-hover/svc:opacity-100 transition duration-300"
@@ -59,24 +60,24 @@ export function ServiceCard({
         <div className="flex items-center sm:items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <div
-              className={`p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${config.iconBg} border border-white/[0.04] group-hover/svc:scale-105 transition-transform duration-500`}
+              className={`p-2 sm:p-2.5 rounded-xl ${config.iconBg} border border-white/[0.07]`}
             >
               <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${config.iconText}`} />
             </div>
             {/* Title on mobile (inline with icon) */}
-            <h3 className="text-base font-bold text-white tracking-tight sm:hidden">
+            <h3 className="text-base font-semibold text-white tracking-tight sm:hidden">
               {service.title}
             </h3>
           </div>
-          <ChevronRight className="w-4 h-4 text-neutral-700 group-hover/svc:text-white group-hover/svc:translate-x-1 transition-all duration-300 sm:mt-2" />
+          <ChevronRight className="w-4 h-4 text-neutral-600 group-hover/svc:text-white group-hover/svc:translate-x-0.5 transition-all duration-300 sm:mt-2" />
         </div>
 
         <div className="space-y-1.5 flex-1">
           {/* Title on desktop (below icon) */}
-          <h3 className="hidden sm:block text-lg font-bold text-white tracking-tight">
+          <h3 className="hidden sm:block text-lg font-semibold text-white tracking-tight">
             {service.title}
           </h3>
-          <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light mt-1 sm:mt-0">
+          <p className="text-sm text-neutral-400 leading-relaxed mt-1 sm:mt-0">
             {service.description}
           </p>
         </div>
@@ -85,7 +86,7 @@ export function ServiceCard({
           {service.features.map((feature) => (
             <span
               key={feature}
-              className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-[10px] font-medium ${config.tagBg} ${config.tagText} border border-white/[0.03]`}
+              className={`font-mono px-2.5 py-1 rounded-md text-xs ${config.tagBg} ${config.tagText} border border-white/[0.06]`}
             >
               {feature}
             </span>

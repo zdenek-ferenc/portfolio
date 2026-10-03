@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Github, Linkedin, Mail, ArrowUpRight, Code2, Sparkles } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUpRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import SpotlightCard from "@/components/ui/spotlight-card";
@@ -57,22 +57,19 @@ export default function BentoGrid() {
       name: "LinkedIn",
       icon: <Linkedin className="w-4 h-4" />,
       href: "https://www.linkedin.com/in/zdenek-ferenc-92a64b2ba/",
-      color: "hover:text-blue-400 hover:border-blue-500/30 hover:bg-blue-500/[0.06]",
-      glow: "hover:shadow-[0_0_16px_rgba(59,130,246,0.12)]",
+      color: "hover:text-white hover:border-white/25 hover:bg-white/[0.04]",
     },
     {
       name: "Email",
       icon: <Mail className="w-4 h-4" />,
       action: () => setIsGeneralModalOpen(true),
-      color: "hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/[0.06]",
-      glow: "hover:shadow-[0_0_16px_rgba(52,211,153,0.12)]",
+      color: "hover:text-white hover:border-white/25 hover:bg-white/[0.04]",
     },
     {
       name: "Github",
       icon: <Github className="w-4 h-4" />,
       href: "https://github.com/zdenek-ferenc",
-      color: "hover:text-white hover:border-white/20 hover:bg-white/[0.06]",
-      glow: "hover:shadow-[0_0_16px_rgba(255,255,255,0.07)]",
+      color: "hover:text-white hover:border-white/25 hover:bg-white/[0.04]",
     },
   ];
 
@@ -86,120 +83,105 @@ export default function BentoGrid() {
           viewport={{ once: true, margin: "-80px" }}
           className="mobile-no-animate grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
         >
+          {/* Tech stack: hairline mřížka, ikony v klidu monochromní, barva až při hoveru */}
           <motion.div variants={cardVariants} className="md:col-span-2">
-            <SpotlightCard className="p-6 backdrop-blur-xl group h-full overflow-hidden">
-              <div className="flex flex-col items-center w-full gap-5 h-full">
-                <div className="flex">
-                  <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-[0.14em]">
-                    Tech Stack
+            <SpotlightCard className="p-6 md:p-7 group h-full overflow-hidden">
+              <div className="flex flex-col w-full gap-6 h-full">
+                <div className="flex items-baseline justify-between gap-4">
+                  <h3 className="text-lg font-semibold tracking-tight text-white">
+                    Tech stack
                   </h3>
+                  <span className="text-xs text-neutral-500">Klikni a uvidíš projekty</span>
                 </div>
-                <div className="flex flex-wrap items-center justify-center gap-2.5 md:grid md:grid-cols-7 md:gap-3 w-full mt-auto">
+                <div className="mt-auto grid grid-cols-3 md:grid-cols-7 gap-px overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.07]">
                   {techStack.map((tech, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ y: -4, scale: 1.02 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                      className={`flex flex-col items-center gap-2 group/icon duration-200 relative ${tech.hiddenOnMobile ? "hidden md:flex" : "flex"}`}
-                    >
-                      <div 
-                        onClick={() => {
-                          if (tech.hasProject) {
-                            const section = document.getElementById("projects");
-                            if (section) {
-                              section.scrollIntoView({ behavior: "smooth" });
-                              window.dispatchEvent(new CustomEvent("highlight-skill", { detail: tech.name }));
-                            }
-                          } else {
-                            setActiveModal({ name: tech.name, glow: tech.glow, desc: tech.desc });
+                    <button
+                      type="button"
+                      key={tech.name}
+                      onClick={() => {
+                        if (tech.hasProject) {
+                          const section = document.getElementById("projects");
+                          if (section) {
+                            section.scrollIntoView({ behavior: "smooth" });
+                            window.dispatchEvent(new CustomEvent("highlight-skill", { detail: tech.name }));
                           }
-                        }}
-                        className="p-2.5 md:p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] group-hover/icon:bg-white/[0.06] group-hover/icon:border-white/10 transition-all duration-300 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center cursor-pointer relative"
-                      >
-                        {/* Glow back-lit effect */}
-                        <div 
-                           className="absolute inset-0 rounded-2xl opacity-0 group-hover/icon:opacity-20 blur-md transition-all duration-300 -z-10 scale-95 group-hover/icon:scale-100"
-                           style={{ backgroundColor: tech.glow, boxShadow: `0 0 20px ${tech.glow}` }}
-                        />
-                        {/* Dynamic Core Border */}
-                        <div 
-                           className="absolute inset-0 rounded-2xl border-[0.1px] transition-all duration-300 opacity-0 group-hover/icon:opacity-100 pointer-events-none"
-                           style={{ borderColor: tech.glow }}
-                        />
-                        <Image
-                          src={tech.icon}
-                          alt={tech.name}
-                          width={32}
-                          height={32}
-                          className={`object-contain w-6 md:w-8 ${tech.className || ""}`}
-                          style={{ height: "auto" }}
-                        />
-                      </div>
-                      <span className="text-[10px] md:text-xs font-medium text-neutral-500 group-hover/icon:text-neutral-300 transition-colors duration-300">
+                        } else {
+                          setActiveModal({ name: tech.name, glow: tech.glow, desc: tech.desc });
+                        }
+                      }}
+                      className={`group/cell cursor-pointer flex-col items-center justify-center gap-3 bg-surface px-2 py-6 transition-colors duration-300 hover:bg-[#1a1a1a] focus-visible:bg-[#1a1a1a] focus-visible:outline-none ${
+                        tech.hiddenOnMobile ? "hidden md:flex" : "flex"
+                      } ${index === 4 ? "max-md:col-span-2" : ""}`}
+                    >
+                      <Image
+                        src={tech.icon}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className={`object-contain w-7 md:w-8 grayscale opacity-60 transition-all duration-300 group-hover/cell:grayscale-0 group-hover/cell:opacity-100 group-hover/cell:-translate-y-0.5 ${tech.className || ""}`}
+                        style={{ height: "auto" }}
+                      />
+                      <span className="font-mono text-[11px] text-neutral-500 transition-colors duration-300 group-hover/cell:text-neutral-100">
                         {tech.name}
                       </span>
-                    </motion.div>
+                    </button>
                   ))}
                 </div>
               </div>
             </SpotlightCard>
           </motion.div>
 
+          {/* Lokace: typografie + tečkový vzor z hero, jedna červená tečka = Brno */}
           <motion.div {...cardAnimation(0.1)} className="hidden md:block">
-            <SpotlightCard className="p-8 backdrop-blur-xl flex flex-col items-center justify-center text-center gap-5 group h-full">
-              <div className="relative">
-                <div className="w-16 h-16 bg-accent/[0.08] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-500 group-hover:bg-accent/[0.14] group-hover:shadow-[0_0_30px_rgba(207,47,49,0.2)] border border-accent/10">
-                  <MapPin className="w-7 h-7 text-accent transition-transform duration-500 group-hover:scale-105" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-3.5 h-3.5 flex items-center justify-center">
-                  <span className="animate-ping absolute inset-0 rounded-full bg-accent/50 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent border border-neutral-900" />
-                </div>
+            <SpotlightCard className="group h-full min-h-[220px]">
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: "radial-gradient(rgba(255,255,255,0.16) 1px, transparent 1.4px)",
+                  backgroundSize: "16px 16px",
+                  WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 62% 36%, #000 0%, transparent 100%)",
+                  maskImage: "radial-gradient(ellipse 80% 70% at 62% 36%, #000 0%, transparent 100%)",
+                }}
+              />
+              <div aria-hidden className="absolute left-[62%] top-[36%] -translate-x-1/2 -translate-y-1/2">
+                <span className="block h-2.5 w-2.5 rounded-full bg-accent" />
+                <span className="absolute -inset-2.5 rounded-full border border-accent/40" />
               </div>
-              <div>
-                <p className="text-[10px] text-neutral-600 uppercase tracking-[0.2em] font-semibold mb-1.5">
-                  Lokace
-                </p>
-                <p className="text-xl font-bold text-neutral-200">Brno, Česko</p>
+              <div className="relative flex h-full w-full flex-col justify-end p-7 pt-24">
+                <p className="font-mono text-[11px] text-neutral-500 mb-2">49.19° N, 16.61° E</p>
+                <p className="text-3xl font-semibold tracking-tight text-white leading-none">Brno</p>
+                <p className="mt-1.5 text-sm text-neutral-400">Česko</p>
               </div>
             </SpotlightCard>
           </motion.div>
 
+          {/* Odkazy */}
           <motion.div {...cardAnimation(0.15)} className="md:col-span-3">
-            <SpotlightCard className="backdrop-blur-xl group">
-              <div className="flex flex-col md:flex-row items-center w-full justify-between gap-5 sm:gap-4 px-6 py-5">
-                <div className="flex items-center gap-3">
-                  <div>
-                    <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-[0.14em]">Najdeš mě zde</h3>
-                  </div>
-                </div>
+            <SpotlightCard className="group">
+              <div className="flex flex-col md:flex-row md:items-center w-full justify-between gap-5 px-6 md:px-7 py-5">
+                <h3 className="text-lg font-semibold tracking-tight text-white">Najdeš mě zde</h3>
 
-                <div className="flex flex-wrap gap-2.5 justify-center md:justify-end">
+                <div className="flex flex-wrap gap-2.5 md:justify-end">
                   {socialLinks.map((social) => {
+                    const cls = `group/link relative flex items-center gap-2.5 pl-4 pr-3.5 py-2.5 rounded-xl border border-white/[0.1] transition-colors duration-300 text-neutral-300 text-sm font-medium cursor-pointer active:scale-[0.98] ${social.color}`;
+                    const inner = (
+                      <>
+                        {social.icon}
+                        <span>{social.name}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-neutral-500 transition-all duration-300 group-hover/link:text-white group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                      </>
+                    );
                     if (social.action) {
                       return (
-                        <button
-                          key={social.name}
-                          onClick={social.action}
-                          className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative cursor-pointer hover:-translate-y-0.5 active:scale-[0.97] ${social.color} ${social.glow}`}
-                        >
-                          {social.icon}
-                          <span>{social.name}</span>
-                          <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <button key={social.name} onClick={social.action} className={cls}>
+                          {inner}
                         </button>
                       );
                     }
                     return (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`flex items-center gap-2.5 px-5 py-2.5 bg-white/[0.02] rounded-xl border border-white/10 transition-all duration-300 text-neutral-500 text-sm font-medium z-30 relative hover:-translate-y-0.5 active:scale-[0.97] ${social.color} ${social.glow}`}
-                      >
-                        {social.icon}
-                        <span>{social.name}</span>
-                        <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                        {inner}
                       </a>
                     );
                   })}
@@ -216,35 +198,30 @@ export default function BentoGrid() {
              animate={{ opacity: 1 }} 
              exit={{ opacity: 0 }} 
              onClick={() => setActiveModal(null)}
-             className="fixed inset-0 bg-neutral-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-pointer"
+             className="fixed inset-0 bg-neutral-950/80 z-50 flex items-center justify-center p-4 cursor-pointer"
           >
              <motion.div 
                 initial={{ scale: 0.95, y: 15 }} 
                 animate={{ scale: 1, y: 0 }} 
                 exit={{ scale: 0.95, y: 15 }} 
                 onClick={(e) => e.stopPropagation()}
-                className="bg-neutral-900 border border-white/[0.08] max-w-sm w-full p-8 rounded-2xl text-center shadow-2xl relative cursor-default"
+                className="bg-neutral-900 border border-white/[0.08] max-w-sm w-full p-8 rounded-2xl text-center relative cursor-default"
              >
-                <div 
-                   className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl opacity-10 pointer-events-none"
-                   style={{ backgroundColor: activeModal.glow }}
-                />
-                
-                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="w-6 h-6" style={{ color: activeModal.glow }} />
+                <div className="w-14 h-14 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
+                    <Sparkles className="w-6 h-6 text-accent" />
                 </div>
                 
-                <h3 className="text-xl font-bold text-white mb-2">{activeModal.name}</h3>
+                <h3 className="text-xl font-semibold text-white mb-2">{activeModal.name}</h3>
                 
                 <p className="text-neutral-400 text-sm leading-relaxed mb-6 font-light">
                    {activeModal.desc || (
-                      <>Tento skill aktivně používám na projektech, ale momentálně pro něj <strong className="text-white">teprve připravuji case-study</strong>.</>
+                      <>Tento skill aktivně používám na projektech, ale momentálně pro něj <strong className="text-white font-medium">teprve připravuji case-study</strong>.</>
                    )}
                 </p>
 
                 <button 
                   onClick={() => setActiveModal(null)}
-                  className="cursor-pointer w-full bg-white text-black font-bold py-2.5 rounded-xl text-sm hover:bg-neutral-200 transition-all hover:scale-[0.98]"
+                  className="cursor-pointer w-full bg-white text-neutral-950 font-medium py-2.5 rounded-xl text-sm hover:bg-neutral-200 transition-colors active:scale-[0.98]"
                 >
                    Rozumím
                 </button>

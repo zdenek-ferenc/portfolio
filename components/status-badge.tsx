@@ -40,7 +40,7 @@ export default function StatusBadge() {
 
       if (hour >= 1 && hour < 7) {
         setStatus("sleeping");
-        setActivityText("😴 Spím (asi)");
+        setActivityText("Spím (asi)");
         return;
       }
 
@@ -75,35 +75,19 @@ export default function StatusBadge() {
     return () => clearInterval(interval);
   }, []);
 
-  const getStatusColor = () => {
-    switch (status) {
-      case "sleeping": return "bg-neutral-500";
-      case "coding": return "bg-blue-500";
-      case "online": return "bg-green-500";
-      default: return "bg-neutral-500";
-    }
-  };
+  const dotColor = status === "coding" || status === "online" ? "bg-emerald-500" : "bg-neutral-600";
 
   return (
     <div
       onClick={handleContactClick}
-      className={`
-        inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.08] bg-neutral-900 
-        backdrop-blur-sm text-[11px] font-medium text-neutral-300 transition-all duration-300
-        ${status === "online" ? "cursor-pointer hover:bg-neutral-800 hover:border-white/10" : "cursor-default"}
-      `}
+      className={`inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.02] font-mono text-xs text-neutral-300 transition-colors duration-300 ${
+        status === "online" ? "cursor-pointer hover:bg-white/[0.05] hover:border-white/[0.14]" : "cursor-default"
+      }`}
     >
-      <div className="relative flex items-center justify-center w-2 h-2">
-        {status !== "loading" && status !== "sleeping" && (
-          <span className="absolute inset-0 rounded-full bg-current opacity-20 filter blur-[2px] animate-pulse" 
-                style={{ color: status === "coding" ? "rgb(59, 130, 246)" : "rgb(34, 197, 94)" }} />
-        )}
-        <span className={`w-1.5 h-1.5 rounded-full ${getStatusColor()}`} />
-      </div>
-
+      <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
       <span className="flex items-center gap-1.5">
         {status === "loading" ? "Načítám..." : activityText}
-        {status === "online" && <ArrowDown className="w-3 h-3 text-neutral-500 animate-bounce" />}
+        {status === "online" && <ArrowDown className="w-3 h-3 text-neutral-500" />}
       </span>
     </div>
   );

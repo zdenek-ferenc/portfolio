@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -11,33 +11,29 @@ interface MagneticButtonProps {
 
 export default function MagneticButton({ children, className = "", onClick }: MagneticButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 220, damping: 20, mass: 0.2 });
+  const springY = useSpring(y, { stiffness: 220, damping: 20, mass: 0.2 });
 
   const handleMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current!.getBoundingClientRect();
-    
-    const middleX = clientX - (left + width / 2);
-    const middleY = clientY - (top + height / 2);
-
-    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
+    if (!ref.current) return;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    x.set((e.clientX - (left + width / 2)) * 0.12);
+    y.set((e.clientY - (top + height / 2)) * 0.12);
   };
 
   const reset = () => {
-    setPosition({ x: 0, y: 0 });
+    x.set(0);
+    y.set(0);
   };
 
   return (
     <motion.button
       ref={ref}
       onClick={onClick}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 150, 
-        damping: 15, 
-        mass: 0.1 
-      }}
+      style={{ x: springX, y: springY }}
+      whileTap={{ scale: 0.98 }}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
       className={className}
