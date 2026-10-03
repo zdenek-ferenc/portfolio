@@ -1,24 +1,18 @@
 import type { Metadata, Viewport } from "next";
-// 1. Importujeme Plus_Jakarta_Sans místo Inter
-import { Space_Grotesk, Plus_Jakarta_Sans, Caveat } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FloatingDock from "@/components/ui/floating-dock";
+import PointerGlow from "@/components/ui/pointer-glow";
 import { Analytics } from "@vercel/analytics/react";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin", "latin-ext"],
 });
 
-// 2. Nakonfigurujeme Plus Jakarta Sans jako hlavní font
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-body",
-  subsets: ["latin"],
-});
-
-const caveat = Caveat({
-  variable: "--font-handwriting",
-  subsets: ["latin"],
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin", "latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -38,16 +32,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark custom-scrollbar">
+    <html lang="cs" className="dark custom-scrollbar">
       <body
-        // 3. Použijeme jakarta.variable místo inter.variable
-        className={`${spaceGrotesk.variable} ${jakarta.variable} ${caveat.variable} antialiased bg-neutral-950 text-neutral-200 selection:bg-red-500/30`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-neutral-200 selection:bg-accent/30`}
       >
-        {/* Noise overlay */}
-        <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.04] mix-blend-overlay bg-noise" />
-        
+        {/* Jemný noise overlay (fixed, bez pointer events) */}
+        <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.025] mix-blend-overlay bg-noise" />
+
         {children}
-        
+
+        <PointerGlow />
         <FloatingDock />
         <Analytics />
       </body>

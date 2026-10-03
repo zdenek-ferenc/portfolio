@@ -6,29 +6,30 @@ import { ArrowUpRight } from "lucide-react";
 import MagneticButton from "@/components/ui/magnetic-button";
 import BentoGrid from "@/components/bento-grid";
 import StatusBadge from "@/components/status-badge";
+import DotField from "@/components/ui/dot-field";
 
 const words = ["projekty", "aplikace", "produkty"];
+const CYCLE_MS = 3200;
 
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.18,
+      staggerChildren: 0.1,
       delayChildren: 0.1,
     },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 30, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.9,
-      ease: [0.2, 0.65, 0.3, 0.9] as const,
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
@@ -36,12 +37,11 @@ const item = {
 export default function Hero() {
   const [index, setIndex] = useState(0);
 
+  // Timer se po ručním přepnutí slova restartuje (index je v závislostech)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    const t = setTimeout(() => setIndex((i) => (i + 1) % words.length), CYCLE_MS);
+    return () => clearTimeout(t);
+  }, [index]);
 
   const handleViewWork = () => {
     const projectsSection = document.getElementById("projects");
@@ -53,105 +53,97 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-full flex flex-col items-center justify-center pt-8 md:pt-16 pb-12 overflow-hidden">
-      <div className="absolute inset-0 bg-grid-lines opacity-100 pointer-events-none" />
-
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, #0a0a0a 100%)",
-        }}
-      />
-
-      <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-[0.12]"
-        style={{
-          background:
-            "conic-gradient(from 0deg at 50% 50%, transparent 0deg, #CF2F31 60deg, transparent 120deg, #ff8c42 180deg, transparent 240deg, #CF2F31 300deg, transparent 360deg)",
-          filter: "blur(60px)",
-          animation: "float-slow 20s ease-in-out infinite",
-        }}
-      />
-
-      <div
-        className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[500px] h-[200px] rounded-full pointer-events-none opacity-30"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(207,47,49,0.15) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }}
-      />
-
+    <section className="relative flex flex-col items-center pt-24 pb-12 overflow-hidden">
+      <DotField homeY={0.4} />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative z-10 max-w-5xl w-full flex flex-col items-center text-center space-y-6 md:space-y-10 px-4"
+        className="relative z-10 max-w-5xl w-full flex flex-col items-center text-center gap-7 md:gap-8 px-5 md:pt-6"
       >
         <motion.div variants={item}>
           <StatusBadge />
         </motion.div>
 
-        <motion.h1
-          variants={item}
-          className="flex flex-col items-center justify-center font-extrabold tracking-tighter leading-tight"
-        >
-          <span className="text-5xl md:text-7xl lg:text-8xl text-white mb-2 md:mb-4">
-            Měním nápady na
-          </span>
-
-          <div className="relative flex flex-col items-center">
-            <div className="relative h-[1.5em] pb-2 flex items-center justify-center overflow-hidden text-5xl md:text-7xl lg:text-8xl">
-              <AnimatePresence mode="wait">
+        <motion.div variants={item} className="flex flex-col items-center gap-5">
+          <h1 className="font-semibold tracking-[-0.04em] leading-[1.02] text-white text-[2.25rem] min-[400px]:text-5xl md:text-6xl lg:text-7xl">
+            <span className="block">Měním nápady na</span>
+            <span className="relative block h-[1.25em] overflow-hidden text-accent" aria-live="polite">
+              <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={words[index]}
-                  initial={{ y: 40, opacity: 0, filter: "blur(10px)", scale: 0.92 }}
-                  animate={{ y: 0, opacity: 1, filter: "blur(0px)", scale: 1 }}
-                  exit={{ y: -40, opacity: 0, filter: "blur(10px)", scale: 0.92 }}
-                  transition={{ duration: 0.55, ease: [0.2, 0.65, 0.3, 0.9] as const }}
-                  className="animate-gradient-text whitespace-nowrap block font-extrabold leading-tight"
+                  className="absolute inset-x-0 top-0 flex justify-center whitespace-nowrap"
+                  aria-label={words[index]}
                 >
-                  {words[index]}
+                  {words[index].split("").map((char, i) => (
+                    <motion.span
+                      key={`${words[index]}-${i}`}
+                      aria-hidden
+                      className="inline-block"
+                      initial={{ y: "105%" }}
+                      animate={{ y: "0%" }}
+                      exit={{ y: "-105%" }}
+                      transition={{
+                        duration: 0.6,
+                        ease: [0.16, 1, 0.3, 1] as const,
+                        delay: i * 0.035,
+                      }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
                 </motion.span>
               </AnimatePresence>
-            </div>
-            <motion.div
-              className="absolute -bottom-1 h-[3px] md:h-[4px] w-full rounded-full"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent, #CF2F31, #ff8c42, #CF2F31, transparent)",
-                transformOrigin: "left",
-                animation: "draw-line 1s ease-out 0.8s forwards",
-                transform: "scaleX(0)",
-              }}
-            />
-          </div>
-        </motion.h1>
+            </span>
+          </h1>
 
-        <motion.div variants={item}>
-          <p className="text-sm md:text-lg text-neutral-400 max-w-xl leading-relaxed">
-            Aktuálně tvořím budoucnost studentských stáží v{" "}
-            <span className="text-white font-semibold">RiseHigh</span>.
-          </p>
+          {/* Indikátor slova: aktivní segment se plní po dobu jednoho cyklu */}
+          <div className="flex items-center gap-2" role="tablist" aria-label="Slovo v nadpisu">
+            {words.map((word, i) => (
+              <button
+                key={word}
+                role="tab"
+                aria-selected={i === index}
+                aria-label={word}
+                onClick={() => setIndex(i)}
+                className="group relative h-5 w-9 cursor-pointer flex items-center"
+              >
+                <span className="relative block h-[2px] w-full overflow-hidden rounded-full bg-white/[0.14] transition-colors group-hover:bg-white/30">
+                  {i === index && (
+                    <motion.span
+                      key={`fill-${index}`}
+                      className="absolute inset-0 origin-left bg-accent"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: CYCLE_MS / 1000, ease: "linear" }}
+                    />
+                  )}
+                </span>
+              </button>
+            ))}
+          </div>
         </motion.div>
 
-        <motion.div
+        <motion.p
           variants={item}
-          className="flex flex-row gap-3 items-center"
+          className="text-base md:text-lg text-neutral-400 max-w-md leading-relaxed"
         >
+          Aktuálně tvořím budoucnost studentských stáží v{" "}
+          <span className="text-white font-medium">RiseHigh</span>.
+        </motion.p>
+
+        <motion.div variants={item} className="flex flex-row gap-3 items-center">
           <MagneticButton
             onClick={handleViewWork}
-            className="cursor-pointer flex items-center justify-center group relative px-7 py-3.5 md:px-9 md:py-4 bg-accent/70 text-white rounded-xl font-semibold text-sm md:text-base transition-all duration-300 hover:bg-accent hover:shadow-[0_0_40px_rgba(207,47,49,0.35)] overflow-hidden"
+            className="cursor-pointer flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-accent text-white rounded-xl font-medium text-sm md:text-base transition-colors duration-300 hover:bg-[#b82a2c]"
           >
-            <span className="relative z-10">Moje práce</span>
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            Moje práce
           </MagneticButton>
 
           <MagneticButton
             onClick={handleContact}
-            className="cursor-pointer group flex items-center gap-2 px-7 py-3.5 md:px-9 md:py-4 bg-white/[0.04] border border-white/[0.08] text-neutral-300 rounded-xl font-medium text-sm md:text-base hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+            className="cursor-pointer group flex items-center gap-2 px-6 py-3 md:px-8 md:py-3.5 border border-white/[0.12] text-neutral-200 rounded-xl font-medium text-sm md:text-base hover:text-white hover:bg-white/[0.04] hover:border-white/25 transition-colors duration-300"
           >
             Kontakt
             <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -159,7 +151,7 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      <div className="mt-6 md:mt-12 w-full">
+      <div className="mt-16 md:mt-20 w-full">
         <BentoGrid />
       </div>
     </section>

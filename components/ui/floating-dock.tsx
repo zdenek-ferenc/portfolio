@@ -79,7 +79,7 @@ function DesktopDock({ activeSection }: { activeSection: string }) {
         mouseY.set(Infinity);
       }}
       className={[
-        "fixed z-50 hidden gap-6 rounded-2xl border border-white/10 bg-neutral-900/40 p-3 backdrop-blur-md shadow-2xl md:flex items-center justify-center",
+        "fixed z-50 hidden gap-6 rounded-2xl border border-white/10 bg-neutral-900/70 p-3 backdrop-blur-md md:flex items-center justify-center",
         "bottom-8 left-1/2 -translate-x-1/2 flex-row",
         "xl:bottom-auto xl:left-4 xl:top-1/2 xl:-translate-y-1/2 xl:flex-col xl:translate-x-0"
       ].join(" ")}
@@ -126,7 +126,7 @@ function AppIcon({
     return Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
   });
 
-  const scaleSync = useTransform(distance, [0, 100], [1.5, 1]);
+  const scaleSync = useTransform(distance, [0, 100], [1.3, 1]);
   const scale = useSpring(scaleSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
   const handleClick = (e: React.MouseEvent) => {
@@ -148,7 +148,7 @@ function AppIcon({
       {isActive && (
         <motion.div
           layoutId="active-dock-bg"
-          className="absolute inset-0 bg-accent/[0.12] border border-accent/20 rounded-full -z-10"
+          className="absolute inset-0 bg-white/[0.1] border border-white/[0.14] rounded-full -z-10"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
@@ -229,12 +229,12 @@ function MobileDock({ activeSection }: { activeSection: string }) {
                   }}
                   className={`flex items-center justify-between gap-4 rounded-xl border p-3 shadow-lg backdrop-blur-md active:bg-neutral-800 transition-colors ${
                     activeSection === link.href 
-                      ? "border-accent/40 bg-accent/[0.08] text-white" 
+                      ? "border-white/20 bg-white/[0.08] text-white" 
                       : "border-white/10 bg-neutral-900/90 text-neutral-200"
                   }`}
                 >
                   <span className="text-sm font-medium">{link.label}</span>
-                  <div className={activeSection === link.href ? "text-accent" : "text-neutral-400"}>
+                  <div className={activeSection === link.href ? "text-white" : "text-neutral-400"}>
                     {link.icon}
                   </div>
                 </Link>

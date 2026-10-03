@@ -3,67 +3,35 @@
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
-import { useRef, MouseEvent, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 
 function ProjectImage({ src, alt, priority = false, children }: { src: string; alt: string; priority?: boolean; children?: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const springConfig = { stiffness: 300, damping: 30 };
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [4, -4]), springConfig);
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-4, 4]), springConfig);
-  const scale = useSpring(1, springConfig);
-
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const xPos = (e.clientX - rect.left) / rect.width - 0.5;
-    const yPos = (e.clientY - rect.top) / rect.height - 0.5;
-    x.set(xPos);
-    y.set(yPos);
-  };
-
-  const handleMouseEnter = () => scale.set(1.02);
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-    scale.set(1);
-  };
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-4%", "4%"]);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        scale,
-        transformStyle: "preserve-3d",
-      }}
-      className="relative w-full aspect-video rounded-2xl overflow-hidden cursor-pointer group/image shadow-2xl border border-white/[0.05]"
+      data-glow
+      className="relative w-full aspect-video rounded-2xl overflow-hidden group/image border border-white/[0.08]"
     >
-      <motion.div 
-        className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover/image:opacity-40 transition-opacity duration-500"
-        style={{
-          background: useMotionTemplate`radial-gradient(circle 300px at calc(50% + ${x} * 100%) calc(50% + ${y} * 100%), rgba(255,255,255,0.1), transparent)`
-        }}
-      />
-      
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover transition-transform duration-700 ease-out"
-        sizes="(max-width: 768px) 100vw, 600px"
-        priority={priority}
-        fetchPriority={priority ? "high" : "auto"}
-      />
+      {/* Obrázek se při scrollu jemně posouvá uvnitř rámu (hloubka) */}
+      <motion.div style={{ y }} className="absolute inset-0 scale-[1.1]">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 600px"
+          priority={priority}
+          fetchPriority={priority ? "high" : "auto"}
+        />
+      </motion.div>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -79,7 +47,7 @@ const sectionVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
     y: 0,
@@ -91,7 +59,7 @@ const cardVariants = {
 };
 
 const headingVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,
     y: 0,
@@ -146,37 +114,22 @@ export default function ProjectsSection() {
     return () => window.removeEventListener("highlight-skill", handleHighlight);
   }, []);
 
-  const SKILL_COLORS: Record<string, string> = {
-    "Next.js": "#ffffff",
-    "React": "#67DAF5",
-    "TypeScript": "#0980D4",
-    "Tailwind": "#47A9B4",
-    "Supabase": "#40CE91",
-    "Stripe": "#635BFF",
-  };
-
   return (
-    <section className="relative flex flex-col items-center justify-center pb-12 px-6 overflow-hidden" id="projects">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px] opacity-20 pointer-events-none" />
-
-      <div className="max-w-5xl mx-auto w-full z-10">
+    <section className="relative flex flex-col items-center justify-center px-6 overflow-hidden" id="projects">
+      <div className="max-w-5xl mx-auto w-full">
         <motion.div
           variants={headingVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
-          className="mobile-no-animate mb-16 sm:mb-24 text-center sm:text-left flex flex-col items-center gap-6 sm:gap-12"
+          className="mobile-no-animate mb-14 sm:mb-20 max-w-xl"
         >
-          <div className="flex-1">
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white">
-              Vybrané projekty
-            </h2>
-          </div>
-          <div className="flex-1 hidden sm:block">
-            <p className="text-neutral-400 text-lg md:text-xl text-center leading-relaxed max-w-md">
-              Ukázka mojí práce. Zaměřuji se na čisté UI, moderní technologie a baví mě vymýšlet zajímavé featury.
-            </p>
-          </div>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tighter text-white leading-[1] mb-4">
+            Vybrané projekty<span className="text-accent">.</span>
+          </h2>
+          <p className="text-neutral-400 text-base md:text-lg leading-relaxed">
+            Ukázka mojí práce. Zaměřuji se na čisté UI, moderní technologie a baví mě vymýšlet zajímavé featury.
+          </p>
         </motion.div>
 
         <motion.div
@@ -184,7 +137,7 @@ export default function ProjectsSection() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
-          className="mobile-no-animate space-y-24"
+          className="mobile-no-animate space-y-20 sm:space-y-28"
         >
           {projects.map((project, idx) => (
             <motion.div
@@ -192,70 +145,47 @@ export default function ProjectsSection() {
               variants={cardVariants}
               className={`mobile-no-animate flex flex-col-reverse relative ${
                 idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-              } gap-6 md:gap-10 items-center`}
+              } gap-6 md:gap-12 items-center`}
             >
               <div className="flex-1 w-full space-y-4 relative z-10">
-                <div className="absolute -top-12 -left-6 text-[140px] font-bold text-white/[0.02] -z-10 leading-none select-none tracking-tighter">
-                  {project.num}
-                </div>
-
-                <div className="hidden md:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-                  </span>
-                  <span className="text-xs font-semibold text-neutral-300 uppercase tracking-widest">
-                    {project.impact}
-                  </span>
-                </div>
+                <p className="hidden md:block font-mono text-xs text-neutral-500">
+                  {project.impact}
+                </p>
 
                 <div className="space-y-4">
-                  <h3 className="hidden md:block text-4xl md:text-5xl lg:text-5xl font-bold text-white tracking-tight">
+                  <h3 className="hidden md:block text-4xl lg:text-5xl font-semibold text-white tracking-tighter">
                     {project.title}
                   </h3>
-                  <p className="text-base sm:text-lg text-neutral-400 leading-relaxed font-light md:max-w-[90%]">
+                  <p className="text-base sm:text-lg text-neutral-400 leading-relaxed md:max-w-[90%]">
                     {project.description}
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2.5 pt-2">
+                <div className="flex flex-wrap gap-2 pt-2">
                   {project.tags.map((tag) => {
                     const isHighlighted = highlightedSkill === tag;
-                    const glowColor = SKILL_COLORS[tag] || "#ffffff";
-                    
                     return (
                       <span
                         key={tag}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium border backdrop-blur-sm transition-all duration-500 ${
-                          isHighlighted 
-                            ? "bg-white/10 text-white ring-1 ring-white/20 animate-pulse" 
-                            : "bg-white/[0.02] text-neutral-400 border-white/[0.05] hover:bg-white/[0.06] hover:text-neutral-200"
+                        className={`font-mono px-3 py-1.5 rounded-lg text-xs border transition-colors duration-300 ${
+                          isHighlighted
+                            ? "bg-accent/10 text-white border-accent/50"
+                            : "bg-white/[0.02] text-neutral-400 border-white/[0.07] hover:text-neutral-200 hover:border-white/[0.14]"
                         }`}
-                        style={
-                          isHighlighted 
-                          ? { borderColor: glowColor, boxShadow: `0 0 20px ${glowColor}30` } 
-                          : {}
-                        }
                       >
-                        {isHighlighted && (
-                          <span 
-                            className="w-1.5 h-1.5 rounded-full" 
-                            style={{ backgroundColor: glowColor, boxShadow: `0 0 8px ${glowColor}` }}
-                          />
-                        )}
                         {tag}
                       </span>
                     );
                   })}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4 pt-6">
+                <div className="flex flex-wrap items-center gap-3 pt-6">
                   <Link
                     href={project.link}
-                    className="group flex items-center justify-center gap-2 px-8 py-4 bg-neutral-200 text-black rounded-full font-bold text-sm hover:bg-white transition-all duration-300 ease-out"
+                    className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-neutral-950 rounded-xl font-medium text-sm hover:bg-neutral-200 active:scale-[0.98] transition-all duration-300"
                   >
                     <span>O projektu</span>
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </Link>
 
                   {project.href && (
@@ -263,7 +193,7 @@ export default function ProjectsSection() {
                       href={project.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-white rounded-full font-bold text-sm border border-white/[0.15] hover:bg-white/[0.05] active:scale-95 transition-all duration-300 ease-out"
+                      className="group flex items-center justify-center gap-2 px-6 py-3.5 text-neutral-200 rounded-xl font-medium text-sm border border-white/[0.12] hover:bg-white/[0.04] hover:border-white/25 active:scale-[0.98] transition-all duration-300"
                     >
                       <span>Web</span>
                       <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -272,21 +202,12 @@ export default function ProjectsSection() {
                 </div>
               </div>
 
-              <div className="flex-1 w-full perspective-1000 relative">
-                <div className="absolute inset-4 bg-accent/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="flex-1 w-full relative">
                 <ProjectImage src={project.image} alt={project.title} priority={idx === 0}>
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/10 to-transparent z-20 md:hidden pointer-events-none" />
-                  <div className="absolute bottom-0 left-0 p-5 z-30 md:hidden flex flex-col items-start gap-3 pointer-events-none">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.1] border border-white/[0.1] backdrop-blur-md shadow-lg">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-                      </span>
-                      <span className="text-[10px] font-semibold text-white uppercase tracking-widest drop-shadow-md">
-                        {project.impact}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight drop-shadow-lg">
+                  <div className="absolute bottom-0 left-0 p-5 z-30 md:hidden flex flex-col items-start gap-1 pointer-events-none">
+                    <span className="font-mono text-xs text-neutral-300">{project.impact}</span>
+                    <h3 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
                       {project.title}
                     </h3>
                   </div>

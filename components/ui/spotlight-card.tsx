@@ -1,49 +1,43 @@
 "use client";
-import { useRef, useState, MouseEvent } from "react";
-import { motion } from "framer-motion";
 
-export default function SpotlightCard({ 
-  children, 
-  className = "" 
-}: { 
-  children: React.ReactNode, 
-  className?: string 
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import type { MouseEvent } from "react";
+
+export default function SpotlightCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
 }) {
-  const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const mouseX = useMotionValue(-400);
+  const mouseY = useMotionValue(-400);
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const div = divRef.current;
-    const rect = div.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
   };
 
-  const handleFocus = () => {
-    setOpacity(1);
-  };
-
-  const handleBlur = () => {
-    setOpacity(0);
+  const handleMouseLeave = () => {
+    mouseX.set(-400);
+    mouseY.set(-400);
   };
 
   return (
     <div
-      ref={divRef}
+      data-glow
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleFocus}
-      onMouseLeave={handleBlur}
-      className={`relative overflow-hidden rounded-3xl border border-white/5 bg-neutral-900/50 transition-colors ${className}`}
+      onMouseLeave={handleMouseLeave}
+      className={`relative overflow-hidden rounded-2xl border border-white/[0.07] bg-surface transition-colors duration-300 hover:border-white/[0.12] ${className}`}
     >
       <motion.div
-        className="pointer-events-none absolute -inset-px bg-opacity-0 md:bg-opacity-60 opacity-0 transition duration-300 z-10"
+        className="pointer-events-none absolute inset-0 hidden md:block"
         style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 255, 255, 0.06), transparent 40%)`,
+          background: useMotionTemplate`radial-gradient(420px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.04), transparent 60%)`,
         }}
       />
-      <div className="flex flex-col gap-4 items-center h-full z-20">{children}</div>
+      <div className="relative flex flex-col h-full w-full">{children}</div>
     </div>
   );
 }
