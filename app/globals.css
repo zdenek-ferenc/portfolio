@@ -19,6 +19,11 @@
 }
 
 /* Base styles */
+/* Místo po scrollbaru zůstává i při zamčeném scrollu (otevřený modal), stránka tak neposkočí */
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
