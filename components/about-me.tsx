@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Mail, ArrowUpRight, Calendar } from "lucide-react";
+import { MapPin, Mail, ArrowUpRight, ArrowRight, Calendar } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,7 @@ const itemVariants = {
   },
 };
 
-function CalButton({ compact = false }: { compact?: boolean }) {
+function CalButton({ fullWidth = false }: { fullWidth?: boolean }) {
   const CAL_LINK = "zdenekferenc/intro";
   const [pulse, setPulse] = useState(false);
 
@@ -54,16 +54,15 @@ function CalButton({ compact = false }: { compact?: boolean }) {
           config: { theme: "dark" },
         });
       }}
-      className={`group/cal relative flex items-center justify-center gap-2.5 bg-white text-neutral-950 hover:bg-neutral-200 font-medium transition-colors duration-300 cursor-pointer ${
-        compact 
-          ? "w-fit py-2.5 px-4 rounded-xl text-xs" 
-          : "w-full py-3.5 rounded-xl text-sm"
+      className={`group/cal relative flex items-center justify-center gap-2.5 bg-white text-neutral-950 hover:bg-neutral-200 active:scale-[0.98] font-medium py-3.5 px-6 rounded-xl text-sm transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 ${
+        fullWidth ? "w-full" : "w-fit"
       } ${
         pulse ? " ring-2 ring-accent ring-offset-2 ring-offset-neutral-950" : ""
       }`}
     >
-      <Calendar className={`${compact ? "w-3.5 h-3.5" : "w-4 h-4"} relative z-10`} />
-      <span className="relative z-10">{compact ? "Call" : "Pojďme si zavolat"}</span>
+      <Calendar className="w-4 h-4 relative z-10" />
+      <span className="relative z-10">Pojďme si zavolat</span>
+      <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover/cal:translate-x-0.5" />
     </button>
   );
 }
@@ -75,7 +74,7 @@ function FloatingCard({ title, description, badge }: { title: string, descriptio
       data-glow
       className="group relative flex flex-col rounded-2xl border border-white/[0.07] bg-surface p-6 transition-colors duration-300 hover:border-white/[0.14]"
     >
-      <div className="flex items-center justify-between gap-3 mb-3">
+      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 mb-3">
         <h3 className="text-lg sm:text-xl font-semibold text-white tracking-tight">
           {title}
         </h3>
@@ -145,6 +144,14 @@ export default function AboutSection() {
                       Baví mě stavět věci od nuly. Rád přemýšlím nad celým produktem: ne jen nad kódem, ale i nad tím, jestli to vůbec dává smysl pro lidi, kteří to budou používat. Většinu věcí řeším sám, od designu přes frontend až po backend.
                     </p>
                   </div>
+                  <div className="mt-8 flex items-center gap-4">
+                    <CalButton />
+                    <p className="text-sm text-neutral-400 leading-snug">
+                      Vybereš si termín v kalendáři.
+                      <br />
+                      Nezávazně, probereme tvůj nápad.
+                    </p>
+                  </div>
                 </motion.div>
 
                 <motion.div
@@ -167,13 +174,8 @@ export default function AboutSection() {
                       </div>
                       
                       <div className="absolute bottom-0 left-0 right-0 p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs text-neutral-300 mb-0.5">Developer & Founder</p>
-                            <p className="md:text-2xl text-lg font-semibold text-white tracking-tight">Zdenek Ferenc</p>
-                          </div>
-                          <CalButton compact />
-                        </div>
+                        <p className="text-xs text-neutral-300 mb-0.5">Developer & Founder</p>
+                        <p className="md:text-2xl text-lg font-semibold text-white tracking-tight">Zdenek Ferenc</p>
                       </div>
                     </div>
                   </div>
@@ -244,9 +246,13 @@ export default function AboutSection() {
                         <span>Brno, CZ</span>
                     </div>
                  </div>
-                 <div className="w-fit">
-                    <CalButton compact />
-                 </div>
+              </div>
+
+              <div className="space-y-2.5">
+                <CalButton fullWidth />
+                <p className="text-center text-xs text-neutral-400">
+                  Vybereš si termín v kalendáři. Nezávazně, probereme tvůj nápad.
+                </p>
               </div>
             </motion.div>
 
@@ -302,8 +308,6 @@ export default function AboutSection() {
                     zdenekk.ferenc@gmail.com
                   </a>
                 </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent w-full" />
-                <CalButton />
               </div>
             </motion.div>
           </motion.div>

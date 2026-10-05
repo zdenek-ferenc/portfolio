@@ -92,6 +92,16 @@ export default function ProjectsSection() {
       image: "/kovacka.webp",
       impact: "Portfolio & Admin",
     },
+    {
+      num: "03",
+      title: "Hravé slovíčka",
+      description: "Web pro soukromé centrum rozvoje řeči dětí. Z dotazníku od klientky jsem udělal přehledný ceník, pokyny pro rodiče a online rezervace.",
+      tags: ["Astro", "TypeScript", "Tailwind", "SEO", "Reservio", "Leaflet"],
+      href: "",
+      link: "/projects/hraveslovicka",
+      image: "/hraveslovicka.webp",
+      impact: "Klientský web",
+    },
   ];
 
   const [highlightedSkill, setHighlightedSkill] = useState<string | null>(() => {

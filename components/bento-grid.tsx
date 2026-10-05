@@ -93,7 +93,7 @@ export default function BentoGrid() {
                   </h3>
                   <span className="text-xs text-neutral-500">Klikni a uvidíš projekty</span>
                 </div>
-                <div className="mt-auto grid grid-cols-3 md:grid-cols-7 gap-px overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.07]">
+                <div className="mt-auto grid grid-cols-6 md:grid-cols-12 lg:grid-cols-7 gap-px overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.07]">
                   {techStack.map((tech, index) => (
                     <button
                       type="button"
@@ -111,7 +111,7 @@ export default function BentoGrid() {
                       }}
                       className={`group/cell cursor-pointer flex-col items-center justify-center gap-3 bg-surface px-2 py-6 transition-colors duration-300 hover:bg-[#1a1a1a] focus-visible:bg-[#1a1a1a] focus-visible:outline-none ${
                         tech.hiddenOnMobile ? "hidden md:flex" : "flex"
-                      } ${index === 4 ? "max-md:col-span-2" : ""}`}
+                      } ${index < 3 ? "col-span-2" : "col-span-3"} ${index < 4 ? "md:col-span-3" : "md:col-span-4"} lg:col-span-1`}
                     >
                       <Image
                         src={tech.icon}

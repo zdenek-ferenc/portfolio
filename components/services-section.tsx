@@ -9,10 +9,13 @@ import { type Service, services } from "./services/data";
 import { ServiceCard } from "./services/service-card";
 import { ContactModal } from "./services/contact-modal";
 import { GeneralContactModal } from "./services/general-contact-modal";
+import { AuditModal } from "./services/audit-modal";
+import { AuditCard } from "./services/audit-card";
 
 export default function ServicesSection() {
   const [activeModal, setActiveModal] = useState<Service | null>(null);
   const [isGeneralModalOpen, setIsGeneralModalOpen] = useState(false);
+  const [auditUrl, setAuditUrl] = useState<string | null>(null);
 
   const handleCal = async () => {
     const cal = await getCalApi({
@@ -43,6 +46,7 @@ export default function ServicesSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <AuditCard onOpen={setAuditUrl} />
           {services.map((service, index) => (
             <ServiceCard
               key={service.id}
@@ -87,6 +91,9 @@ export default function ServicesSection() {
         )}
         {isGeneralModalOpen && (
           <GeneralContactModal onClose={() => setIsGeneralModalOpen(false)} />
+        )}
+        {auditUrl !== null && (
+          <AuditModal initialUrl={auditUrl} onClose={() => setAuditUrl(null)} />
         )}
       </AnimatePresence>
     </section>
