@@ -5,7 +5,19 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 /** Screenshot se při scrollu roztáhne ze šířky textu do plné šířky. */
-export default function HeroShot() {
+export default function HeroShot({
+  src,
+  alt,
+  width,
+  height,
+  background,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  background: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
@@ -19,12 +31,12 @@ export default function HeroShot() {
   return (
     <div ref={ref} className="relative">
       <motion.div
-        style={{ clipPath }}
-        className="relative aspect-[1926/1083] w-full overflow-hidden bg-[#06101f] animate-fade-in delay-300"
+        style={{ clipPath, aspectRatio: `${width} / ${height}`, backgroundColor: background }}
+        className="relative w-full overflow-hidden animate-fade-in delay-300"
       >
         <Image
-          src="/risehigh.webp"
-          alt="Úvodní stránka risehigh.io: nadpis Praxe, která dává smysl, tlačítka pro studenty a firmy a vpravo interaktivní ukázka výzvy"
+          src={src}
+          alt={alt}
           fill
           priority
           fetchPriority="high"

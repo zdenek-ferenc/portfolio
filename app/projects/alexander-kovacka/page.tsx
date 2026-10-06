@@ -1,414 +1,374 @@
-"use client";
-
-import { useState } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { 
-  ArrowLeft, Camera, FileText, ArrowUpRight, Heart, MessageSquare, Lock, Zap
-} from "lucide-react";
-import SpotlightCard from "@/components/ui/spotlight-card-risehigh";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import HeroShot from "@/components/case-study/hero-shot";
+import RunningHead from "@/components/case-study/running-head";
+import { Note, Ref, Row } from "@/components/case-study/margin";
+import { Chapter as BaseChapter, B, P, linkClass } from "@/components/case-study/prose";
+import { COLUMNS } from "@/components/case-study/shared";
+import Proofing from "./proofing";
 
-function ProofingSimulator() {
-  const [selected, setSelected] = useState(false);
-  const [comment, setComment] = useState("");
-  const [commentsList, setCommentsList] = useState<string[]>([]);
+export const metadata: Metadata = {
+  title: "Alexander Kovačka - Zdenek Ferenc",
+  description:
+    "Minimalistický web pro fotografa a k němu systém na správu galerií, klientský výběr fotek a fakturaci. Jak jsme ho s Alexem postavili.",
+};
 
-  const handleSendComment = () => {
-    if (comment.trim() === "") return;
-    setCommentsList([...commentsList, comment]);
-    setComment("");
-  };
+const SITE = "https://www.alexanderkovacka.com/cs";
 
+const chapters = [
+  { id: "vize", title: "Společná vize" },
+  { id: "cms", title: "CMS pro nahrávání" },
+  { id: "proofing", title: "Client proofing" },
+  { id: "struktura", title: "Chytřejší struktura" },
+  { id: "faktury", title: "Generátor faktur" },
+  { id: "pod-kapotou", title: "Pod kapotou" },
+] as const;
+
+const meta = [
+  { label: "Klient", value: "Alexander Kovačka, fotograf" },
+  { label: "Moje role", value: "Design a vývoj" },
+  { label: "Stack", value: "Next.js, Supabase, Tailwind" },
+];
+
+const steps = [
+  { title: "Nahrání", text: "Alex nahraje fotky z focení do privátní klientské galerie a pošle klientovi odkaz." },
+  { title: "Výběr", text: "Klient prochází náhledy a jedním kliknutím označí favority." },
+  { title: "Komentáře", text: "U vybraných fotek může zanechat poznámku k požadované úpravě." },
+];
+
+const kinds = [
+  { title: "Projekty", text: "Malé samostatné jednotky, třeba konkrétní event nebo festival. Kliknutím se dostaneš rovnou do galerie." },
+  { title: "Kolekce", text: "Zastřešující kategorie jako Festivaly, Eventy nebo Studio. Sdružují projekty, aby byl web přehledný." },
+];
+
+const decisions = [
+  {
+    term: "Sharp",
+    lead: "Fotky se zmenší dřív, než se uloží.",
+    text: "Alex nahrává fotky v tiskové kvalitě, 10 až 20 MB na kus. Server je nejdřív protáhne knihovnou Sharp, která je zkomprimuje a převede do .webp. Do cloudu tak jde jen zlomek původní velikosti, což šetří místo i měsíční náklady za úložiště.",
+  },
+  {
+    term: "Hash v URL",
+    lead: "Zabezpečení bez registrace.",
+    text: "Klienti nechtějí zakládat účty a pamatovat si hesla. Klientská zóna proto běží na odkazu s dynamickým kryptografickým hashem. Je unikátní pro daného klienta, bezpečný a otevře se jedním klikem.",
+  },
+  {
+    term: "Real-time",
+    lead: "Alex vidí výběr živě.",
+    text: "Když klient doma srdíčkuje fotky, Alex to v administraci vidí hned. Real-time spojení s databází místo neustálých REST dotazů výrazně ulevilo serveru a dalo klientské zóně plynulý pocit.",
+  },
+];
+
+function Chapter({
+  index,
+  summary,
+  children,
+}: {
+  index: number;
+  summary: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const { id, title } = chapters[index];
   return (
-    <div className="w-full bg-neutral-900/40 border border-white/[0.05] rounded-3xl p-6 md:p-8 backdrop-blur-md relative group overflow-hidden mt-8 not-prose">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
-
-      <div className="grid md:grid-cols-12 gap-6 items-center">
-         <div className="md:col-span-12 lg:col-span-7 aspect-4/3 bg-neutral-950 rounded-xl border border-white/5 relative overflow-hidden flex items-center justify-center p-4">
-            <div className="absolute top-4 right-4 z-20">
-               <motion.button 
-                 onClick={() => setSelected(!selected)}
-                 whileTap={{ scale: 0.85 }}
-                 className={`p-2.5 rounded-xl border transition-all duration-300 ${selected ? 'bg-red-500/10 border-red-500/30 text-red-500' : 'bg-neutral-900 border-white/10 text-neutral-400 hover:text-white'}`}
-               >
-                 <Heart className={`w-4 h-4 ${selected ? 'fill-red-500' : ''}`} />
-               </motion.button>
-            </div>
-
-            <div className="absolute inset-0">
-               <Image 
-                 src="/marek.webp" 
-                 alt="Klientský výběr fotky"
-                 fill
-                 className="object-cover"
-                 sizes="(max-width: 1024px) 100vw, 600px"
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/40 via-transparent to-transparent" />
-            </div>
-
-            <AnimatePresence>
-               {commentsList.length > 0 && (
-                  <motion.div 
-                     initial={{ opacity: 0, y: 10 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     exit={{ opacity: 0, y: 10 }}
-                     className="absolute bottom-4 left-4 right-4 bg-neutral-900/90 border border-white/10 p-3 rounded-xl backdrop-blur-md text-xs z-20"
-                   >
-                      <p className="text-blue-400 font-bold mb-0.5">Komentář klienta:</p>
-                      <p className="text-neutral-300">{commentsList[commentsList.length - 1]}</p>
-                   </motion.div>
-                )}
-            </AnimatePresence>
-         </div>
-
-         <div className="md:col-span-12 lg:col-span-5 flex flex-col gap-3">
-            <h4 className="text-base font-bold text-white">Živé Klientské Rozhraní</h4>
-            <p className="text-neutral-400 text-xs leading-relaxed">
-               Zde je ukázka, jak funguje client-proofing pro Alexova klienta. Označ fotku srdíčkem nebo zanech poznámku k požadované úpravě.
-            </p>
-
-            <div className="space-y-2 mt-2">
-               <input 
-                 type="text" 
-                 placeholder="Např. Trochu prosvětlit stíny..." 
-                 value={comment}
-                 onChange={(e) => setComment(e.target.value)}
-                 className="w-full bg-neutral-950 border border-white/10 p-2.5 rounded-xl text-xs text-neutral-200 focus:outline-none focus:border-blue-500/50 transition-colors"
-               />
-               <button 
-                 onClick={handleSendComment}
-                 className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs transition-colors shadow-lg shadow-blue-500/10"
-               >
-                 Odeslat poznámku
-               </button>
-            </div>
-
-         </div>
-      </div>
-    </div>
+    <BaseChapter id={id} title={title} summary={summary}>
+      {children}
+    </BaseChapter>
   );
 }
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } }
-};
-
-const stagger = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-  }
-};
-
 export default function KovackaPage() {
   return (
-    <main className="min-h-screen bg-[#050505] selection:bg-blue-500/30 overflow-x-hidden text-neutral-200 font-sans">
-      
-      {/* Background Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-0 w-[600px] h-[600px] bg-neutral-800/[0.04] blur-[180px] rounded-full pointer-events-none -z-10" />
+    <main className="min-h-screen overflow-x-clip bg-[#050505] text-neutral-200">
+      <RunningHead name="Alexander Kovačka" chapters={chapters} href={SITE} hrefLabel="alexanderkovacka.com" />
 
-      {/* Hero Section */}
-      <section className="relative flex flex-col pt-6 md:pt-12 justify-end pb-12 md:pb-22 px-6 md:px-12 border-b border-white/[0.03]">
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-[#050505] z-10 pointer-events-none" />
-        
-        <div className="relative z-20 max-w-6xl mx-auto w-full space-y-8 md:space-y-16">
-          <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            <Link href="/#projects" className="inline-flex items-center gap-2.5 text-neutral-500 hover:text-white transition-all group w-fit text-sm">
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-medium tracking-wide">Zpět na portfolio</span>
-            </Link>
-          </motion.div>
-          
-          <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-4xl">
-             <motion.div variants={fadeUp} className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-blue-500/5 border border-blue-500/15 backdrop-blur-md rounded-full">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
-                <span className="text-xs font-bold text-blue-400 uppercase tracking-[0.15em]">Portfolio & Admin</span>
-             </motion.div>
-             
-             <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-[0.85]">
-               Alexander Kovačka
-             </motion.h1>
-             
-             <motion.p variants={fadeUp} className="text-xl md:text-3xl text-neutral-400 font-light leading-relaxed max-w-3xl">
-               Minimalistický web a komplexní <span className="text-white font-medium">operační systém pro fotografický byznys</span>.
-             </motion.p>
-          </motion.div>
+      {/* Úvod */}
+      <header id="uvod" className="px-6 pt-8 md:px-10 md:pt-12">
+        <div className="mx-auto max-w-[64rem]">
+          <Link
+            href="/#projects"
+            className="group inline-flex items-center gap-2.5 rounded-md text-sm text-text-tertiary transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+            <span className="font-medium">Zpět na portfolio</span>
+          </Link>
+
+          <div className={`mt-14 md:mt-20 ${COLUMNS}`}>
+            <div className="animate-fade-in-up">
+              <h1 className="text-[clamp(3rem,12vw,6rem)] font-semibold leading-[0.92] tracking-[-0.04em] text-white">
+                Alexander Kovačka<span className="text-accent">.</span>
+              </h1>
+              <p className="mt-7 max-w-[34rem] text-xl leading-snug text-neutral-300 text-pretty md:mt-9 md:text-[1.625rem] md:leading-[1.3]">
+                Minimalistický web pro fotografa a k němu operační systém pro jeho byznys: správa galerií, klientský
+                výběr fotek a fakturace na jednom místě. Postavil jsem ho pro kamaráda Alexe.
+              </p>
+            </div>
+
+            <nav aria-label="Kapitoly" className="hidden animate-fade-in-up delay-100 lg:mt-3 lg:block">
+              <p className="border-b border-white/[0.08] pb-3 text-sm text-text-tertiary">V příběhu</p>
+              <ol className="mt-2">
+                {chapters.map((c) => (
+                  <li key={c.id}>
+                    <a
+                      href={`#${c.id}`}
+                      className="group flex items-center justify-between gap-4 rounded-sm py-[7px] text-[15px] text-neutral-300 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                    >
+                      {c.title}
+                      <ArrowRight className="h-3.5 w-3.5 shrink-0 -translate-x-1 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </div>
+
+          <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/[0.08] pt-6 animate-fade-in-up delay-200 md:mt-16 md:grid-cols-4">
+            {meta.map((m) => (
+              <div key={m.label}>
+                <dt className="text-sm text-text-tertiary">{m.label}</dt>
+                <dd className="mt-1 text-[15px] leading-snug text-neutral-200">{m.value}</dd>
+              </div>
+            ))}
+            <div>
+              <dt className="text-sm text-text-tertiary">Stav</dt>
+              <dd className="mt-1 text-[15px] leading-snug text-neutral-200">
+                Běží na{" "}
+                <a href={SITE} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                  alexanderkovacka.com
+                </a>
+              </dd>
+            </div>
+          </dl>
         </div>
-      </section>
+      </header>
 
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative">
-        <div className="absolute md:left-12 top-0 bottom-0 w-[1px] bg-gradient-to-b from-white/5 via-neutral-800 to-transparent hidden md:block" />
-
-        {/* CHAPTER 01: SPOLEČNÁ VIZE */}
-        <motion.section 
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
-          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start"
-        >
-          <div className="absolute left-[-5px] top-[120px] w-2.5 h-2.5 bg-neutral-600 rounded-full hidden md:block" />
-          
-          <div className="md:col-span-4 space-y-4 relative">
-            <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">01</span>
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Kapitola 01</span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Společná Vize</h2>
+      <figure className="mt-12 px-4 md:mt-16 md:px-10">
+        <div className="mx-auto max-w-[76rem]">
+          <HeroShot
+            src="/kovacka.webp"
+            alt="Úvodní stránka alexanderkovacka.com: bílý panel s logem a menu vlevo, vpravo fotka zarostlé zdi s dveřmi"
+            width={1615}
+            height={959}
+            background="#ffffff"
+          />
+        </div>
+        <figcaption className="mx-auto mt-4 max-w-[64rem] px-2 md:px-0">
+          <div className={COLUMNS}>
+            <span aria-hidden className="hidden lg:block" />
+            <span className="text-sm leading-relaxed text-text-tertiary">
+              Úvodní stránka alexanderkovacka.com. Fotka má celé místo, web kolem ní je schválně prázdný.
+            </span>
           </div>
+        </figcaption>
+      </figure>
 
-          <div className="md:col-span-8">
-            <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
-              <p>
-                Alex je můj dobrý kamarád a současně velmi šikovný fotograf. Sedli jsme si společně nad prázdným plátnem a začali řešit, jak by měl jeho web vypadat. 
-                Alexova představa byla od začátku jasná: <strong className="text-white">čistokrevný minimalismus</strong>.
-              </p>
-              <p>
-                Žádné rušivé elementy, žádné zbytečnosti. Web musel dýchat. Velké množství <strong className="text-white">whitespace</strong>, jednoduchá typografie a veškerá pozornost upřená na to nejdůležitější – jeho fotky.
-              </p>
-            </div>
-          </div>
-        </motion.section>
+      <article className="px-6 pb-32 md:px-10 md:pb-44">
+        <div className="mx-auto max-w-[64rem]">
+          <Chapter index={0} summary="Čistý minimalismus: whitespace, jednoduchá typografie, všechna pozornost na fotkách.">
+            <Row
+              notes={
+                <Note n={1}>
+                  Sedli jsme si nad prázdným plátnem a řešili, jak by měl web vypadat. Alexova představa byla jasná
+                  od první minuty.
+                </Note>
+              }
+            >
+              <P>
+                Alex je můj dobrý kamarád a zároveň velmi šikovný fotograf. Společně jsme začali řešit, jak by měl
+                jeho web vypadat
+                <Ref n={1} />. Chtěl <B>čistokrevný minimalismus</B>.
+              </P>
+            </Row>
+            <Row>
+              <P>
+                Žádné rušivé prvky, žádné zbytečnosti. Web musel dýchat: hodně <B>prázdného místa</B>, jednoduchá
+                typografie a veškerá pozornost na to nejdůležitější, jeho fotky.
+              </P>
+            </Row>
+          </Chapter>
 
-        {/* CHAPTER 02: CMS PRO JEDNODUCHOST */}
-        <motion.section 
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
-          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start"
-        >
-          <div className="absolute left-[-5px] top-[140px] w-2.5 h-2.5 bg-neutral-700 rounded-full hidden md:block" />
-          
-          <div className="md:col-span-4 space-y-4 relative">
-             <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">02</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Kapitola 02</span>
-             <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">CMS pro nahrávání</h2>
-          </div>
+          <Chapter index={1} summary="Vlastní administrace, aby Alex nahrával a publikoval sám, bez učení složitých editorů.">
+            <Row
+              notes={
+                <Note n={2}>Cíl byl, aby Alex nemusel řešit kód ani učit se složité editory.</Note>
+              }
+            >
+              <P>
+                S přibývajícími projekty rostla potřeba obsah snadno spravovat. Složité úpravy přes kód nepřipadaly v
+                úvahu
+                <Ref n={2} />, proto jsme jako první krok postavili <B>vlastní administrační panel</B>.
+              </P>
+            </Row>
+            <Row>
+              <P>
+                Alex si teď sám nahrává celé sady fotek, zakládá projekty a během pár vteřin je pouští k divákům.
+              </P>
+            </Row>
+          </Chapter>
 
-          <div className="md:col-span-8">
-             <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
-                <p>
-                  S přibývajícími projekty rostla potřeba obsah efektivně spravovat. 
-                  Složité úpravy přes kód nepřipadaly v úvahu, proto jsme jako první krok postavili <strong className="text-white">custom administrační panel</strong>.
-                </p>
-                <p>
-                  Alex si nyní může sám nahrávat celé sady fotek, vytvářet projekty a během pár vteřin je pouštět ven k divákům, aniž by se musel učit složité editory.
-                </p>
-             </div>
-          </div>
-        </motion.section>
-
-        {/* CHAPTER 03: CLIENT-PROOFING */}
-        <motion.section 
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
-          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start"
-        >
-          <div className="absolute left-[-5px] top-[140px] w-2.5 h-2.5 bg-blue-500 rounded-full hidden md:block animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.5)]" />
-          
-          <div className="md:col-span-4 space-y-4 relative">
-             <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">03</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Kapitola 03</span>
-             <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Client Proofing</h2>
-          </div>
-
-          <div className="md:col-span-8 space-y-8">
-             <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
-                <p>
-                  Skutečný gamechanger přišel s klientskou zónou. Posílání fotek přes třetistranné služby bylo krkolomné. Chtěli jsme, aby klient dostal zážitek přímo pod Alexovou značkou.
-                </p>
-             </div>
-
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 mt-8 md:mt-16 !text-left not-prose">
-                {[
-                  { icon: Camera, title: "1. Nahrání", p: "Alex nahraje fotky z focení do privátní klientské galerie a odešle klientovi odkaz." },
-                  { icon: Heart, title: "2. Výběr", p: "Klient prochází náhledy a jednoduchým kliknutím označuje favority." },
-                  { icon: MessageSquare, title: "3. Komentáře", p: "U vybraných fotek může klient zanechat poznámku k požadované úpravě." }
-                ].map((step, i) => (
-                  <SpotlightCard key={i} className="p-4 md:p-6 bg-neutral-900/10 flex flex-col items-center md:items-center text-left !gap-2 space-y-2 group h-full">
-                     <div className="w-12 h-12 rounded-2xl bg-white/5 backdrop-blur-md flex items-center justify-center mb-1 border border-white/5">
-                        <step.icon className="w-5 h-5 text-blue-400" />
-                     </div>
-                     <h4 className="text-base font-bold text-white">{step.title}</h4>
-                     <p className="text-xs text-gray-400 leading-relaxed">{step.p}</p>
-                  </SpotlightCard>
+          <Chapter index={2} summary="Klient vybírá a komentuje fotky pod Alexovou značkou, bez účtu a bez hesla.">
+            <Row>
+              <P>
+                Skutečný gamechanger přišel s klientskou zónou. Posílání fotek přes cizí služby bylo krkolomné a
+                Alex chtěl, aby klient dostal zážitek přímo pod jeho značkou.
+              </P>
+              <dl className="mt-10 border-t border-white/[0.08]">
+                {steps.map((s) => (
+                  <div
+                    key={s.title}
+                    className="grid gap-1 border-b border-white/[0.08] py-5 sm:grid-cols-[7.5rem_1fr] sm:gap-6"
+                  >
+                    <dt className="font-medium text-white">{s.title}</dt>
+                    <dd className="text-[16px] leading-relaxed text-[#a8a8a8]">{s.text}</dd>
+                  </div>
                 ))}
-             </div>
-             <ProofingSimulator />
-             <div className="w-full bg-neutral-900/10 border border-white/[0.03] rounded-2xl p-4 flex items-center gap-3 not-prose">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
-                   <FileText className="w-4 h-4 text-blue-400" />
-                </div>
-                <p className="text-sm text-neutral-400 leading-relaxed m-0">
-                   <strong className="text-white">Adobe Lightroom Bridge:</strong> Každá nahraná fotka si drží svůj původní název (např. <code>DSC_1234</code>). Jakmile klient dokončí výběr, Alex si vygeneruje seznam zvolených názvů, který stačí vložit do vyhledávání v Lightroomu. Program pak ze stovek fotek na SD kartě automaticky vytáhne jen ty k úpravě.
-                </p>
-             </div>
-          </div>
-        </motion.section>
+              </dl>
+            </Row>
 
-        {/* CHAPTER 04: STRUKTURA PROJEKTŮ */}
-        <motion.section 
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
-          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start"
-        >
-          <div className="absolute left-[-5px] top-[140px] w-2.5 h-2.5 bg-neutral-700 rounded-full hidden md:block" />
-          
-          <div className="md:col-span-4 space-y-4 relative">
-             <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">04</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Kapitola 04</span>
-             <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Chytřejší Struktura</h2>
-          </div>
+            <Row
+              notes={
+                <Note label="Zkus to">
+                  Je to živá ukázka klientské zóny. Nic se neukládá, po obnovení stránky začneš znovu.
+                </Note>
+              }
+            >
+              <div className="mt-6">
+                <Proofing />
+              </div>
+            </Row>
 
-          <div className="md:col-span-8">
-             <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
-                <p>
-                  S hromadou zakázek hrozilo, že se úvodní strana stane 100-položkovým seznamem. 
-                  Potřebovali jsme nad fotky přidat další organizační vrstvu.
-                </p>
-             </div>
+            <Row
+              notes={
+                <Note n={3}>
+                  Lightroom umí hledat podle názvů souborů, a právě to Alexovi ušetří ruční procházení.
+                </Note>
+              }
+            >
+              <P>
+                <B>Most do Lightroomu.</B> Každá nahraná fotka drží svůj původní název, třeba <code className="rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[0.85em] text-neutral-200">DSC_1234</code>.
+                Jakmile klient dokončí výběr, Alex si vygeneruje seznam zvolených názvů a vloží ho do hledání v
+                Lightroomu
+                <Ref n={3} />. Program pak ze stovek fotek na SD kartě vytáhne jen ty k úpravě.
+              </P>
+            </Row>
+          </Chapter>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 max-w-3xl not-prose">
-                <SpotlightCard className="p-5 bg-neutral-900/10 border border-white/[0.03] flex flex-col gap-1.5">
-                   <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                      Projekty
-                   </h4>
-                   <p className="text-xs text-neutral-500 leading-relaxed">
-                      Malé, samostatné jednotky (konkrétní event, festival). Kliknutím se dostaneš přímo k oné galerii fotek.
-                   </p>
-                </SpotlightCard>
-
-                <SpotlightCard className="p-5 bg-neutral-900/10 border border-white/[0.03] flex flex-col gap-1.5">
-                   <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                      Kolekce
-                   </h4>
-                   <p className="text-xs text-neutral-500 leading-relaxed">
-                      Zastřešující kategorie (např. Festivaly, Eventy, Studio). Sdružují několik projektů dohromady pro přehlednost.
-                   </p>
-                </SpotlightCard>
-             </div>
-
-             <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl mt-6">
-                <p>
-                  Alex má v administraci kompletní kontrolu nad tím, jaké <strong className="text-white">Kolekce</strong> se zrovna na homepage zobrazí, jaké skryje, nebo v jakém přijdou pořadí.
-                </p>
-             </div>
-          </div>
-        </motion.section>
-
-        {/* CHAPTER 05: BILLING AUTOMATIZACE */}
-        <motion.section 
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
-          className="py-12 relative md:pl-16 grid md:grid-cols-12 gap-10 items-start pb-32"
-        >
-          <div className="absolute left-[-5px] top-[140px] w-2.5 h-2.5 bg-neutral-700 rounded-full hidden md:block" />
-          
-          <div className="md:col-span-4 space-y-4 relative">
-             <span className="text-9xl font-black text-white/[0.02] absolute -top-12 left-0 tracking-tighter select-none pointer-events-none">05</span>
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Kapitola 05</span>
-             <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-none">Generátor Faktur</h2>
-          </div>
-
-          <div className="md:col-span-8 space-y-6">
-             <div className="prose prose-lg md:prose-xl prose-invert text-neutral-400 leading-relaxed max-w-3xl">
-                <p>
-                  Posledním střípkem do funkční skládačky byznysu byla fakturace. Přepisování údajů z e-mailů do účetních šablon stálo dost drahocenného času.
-                </p>
-                <p>
-                  Přímo do administrativy jsme integrovali <strong className="text-white">generátor faktur</strong>. Systém z dat zákazníka a vybraného balíčku sám načte veškeré informace, vygeneruje formálně správný doklad a rovnou jej pošle klientovi. Šetří se tak nudná administrativa na úkor samotného focení.
-                </p>
-             </div>
-
-             <div className="max-w-3xl">
-                <SpotlightCard className="p-6 bg-neutral-900/10 border border-white/[0.03] flex flex-row items-center gap-4 text-left">
-                   <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                     <FileText className="w-5 h-5 text-blue-400" />
-                   </div>
-                   <div>
-                     <p className="text-sm font-bold text-white mb-0.5">Billing přímo v Client Zóně</p>
-                     <p className="text-xs text-neutral-500 leading-relaxed">Rychlá a čistá fakturace bez nutnosti otevírat externí účetní software.</p>
-                   </div>
-                </SpotlightCard>
-             </div>
-          </div>
-        </motion.section>
-        {/* EDUCATIONAL SECTION: TECHNICKÉ CHALLENGES */}
-        <motion.div 
-          variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} 
-          className="max-w-6xl mx-auto space-y-12 relative z-10 pb-20 mt-20"
-        >
-          <div className="pl-4 grid md:grid-cols-12 gap-10 items-start">
-             <div className="md:col-span-5 space-y-5">
-                <h2 className="text-4xl md:text-5xl lg:text-5xl font-black text-white tracking-tight leading-none bg-linear-to-b from-white to-neutral-500 bg-clip-text">Pod kapotou</h2>
-                <div className="space-dash-none">
-                  <p className="text-neutral-400 font-light leading-relaxed text-sm md:text-base">
-                    Stavět systém pro fotografa znamenalo myslet na jediné: <strong className="text-white">rychlost a bezproblémové načítání gigabytů dat</strong>. Zde jsou klíčové věci, které mě tato case study naučila.
-                  </p>
-                </div>
-             </div>
-
-             <div className="md:col-span-7 space-y-4">
-                {[
-                  { 
-                    icon: Camera, 
-                    title: "Úspora místa s knihovnou Sharp", 
-                    desc: "Alex nahrává fotky v tiskové kvalitě (10-20MB/kus). Místo nákladného ukládání originálů fotky nejprve projdou serverem přes knihovnu Sharp, která je automaticky zkomprimuje a převede do formátu .webp. Do cloudu se tak ukládají pouze zlomky původní velikosti. Tím šetříme úložný prostor a měsíční náklady za drahý cloud storage.", 
-                    style: "hover:border-blue-500/10" 
-                  },
-                  { 
-                    icon: Lock, 
-                    title: "Zabezpečení bez nucené registrace", 
-                    desc: "Klienti nechtějí vytvářet účty, pamatovat si hesla a logovat se. Pro Client Proofing jsem vytvořil systém s dynamickým kryptografickým hashem v URL. Odkaz je unikátní pro daného klienta, zcela bezpečný a nahrává se 0-friction způsobem (jedním klikem).", 
-                    style: "hover:border-purple-500/10" 
-                  },
-                  { 
-                    icon: Zap, 
-                    title: "Real-time sync s Database", 
-                    desc: "Když klient sedí doma a srdíčkuje fotky, Alex to v administraci u sebe vidí živě. Použití Real-time Websocketu v databázi místo neustálých REST API dotazů ušetřilo obrovské zatížení serveru a dodalo té klientské zóně ten pravý 'smooth' plynulý pocit.", 
-                    style: "hover:border-emerald-500/10" 
-                  }
-                ].map((card, i) => (
-                   <SpotlightCard key={i} className={`p-6 bg-neutral-900/20 border border-white/5 flex flex-row items-start gap-4 transition-all duration-300 ${card.style}`}>
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 shrink-0">
-                         <card.icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div className="space-y-1">
-                         <h4 className="text-lg font-bold text-white">{card.title}</h4>
-                         <p className="text-sm text-neutral-500 leading-relaxed">{card.desc}</p>
-                      </div>
-                   </SpotlightCard>
+          <Chapter index={3} summary="Projekty drží galerie, kolekce je shlukují, aby se úvodní strana nezměnila v seznam.">
+            <Row>
+              <P>
+                S hromadou zakázek hrozilo, že se úvodní strana stane seznamem o stovce položek. Nad fotky jsme
+                proto přidali další organizační vrstvu.
+              </P>
+              <dl className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+                {kinds.map((k) => (
+                  <div key={k.title} className="border-t border-white/[0.1] pt-4">
+                    <dt className="font-medium text-white">{k.title}</dt>
+                    <dd className="mt-1.5 text-[16px] leading-relaxed text-[#a8a8a8]">{k.text}</dd>
+                  </div>
                 ))}
-             </div>
-          </div>
-        </motion.div>
-      </div>
+              </dl>
+            </Row>
+            <Row>
+              <P>
+                V administraci má Alex plnou kontrolu nad tím, které <B>kolekce</B> se na úvodní straně ukážou,
+                které skryje a v jakém pořadí.
+              </P>
+            </Row>
+          </Chapter>
 
-      {/* Footer Call to Action */}
-      <section className="py-28 bg-[#020202] border-t border-white/[0.02] text-center px-6 relative overflow-hidden">
-         <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_blue-500_0%,_transparent_70%) opacity-[0.02] pointer-events-none" />
-         
-         <div className="max-w-4xl mx-auto space-y-12 relative z-10">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-4">Máš dotaz nebo nápad?</h2>
-            <p className="text-neutral-500 text-base md:text-lg max-w-xl mx-auto font-light leading-relaxed">
-               Pokud tě zajímá, jak platforma funguje pod pokličkou, nebo řešíš podobný custom systém pro svůj byznys, neváhej se ozvat.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-5 justify-center pt-8">
-                 <button 
-                    onClick={() => window.open('https://www.alexanderkovacka.com/cs', '_blank')}
-                    className="cursor-pointer bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-95 active:scale-90 transition-all shadow-xl flex items-center justify-center gap-2 group"
-                 >
-                    Kouknout na web 
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                 </button>
-                 
-                 <button 
-                    onClick={() => window.location.href = "/?contact=true#about-me"}
-                    className="cursor-pointer bg-neutral-900 border border-white/10 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
-                 >
-                    Probrat projekt
-                 </button>
+          <Chapter index={4} summary="Faktura vznikne z dat zákazníka a balíčku a rovnou odejde klientovi.">
+            <Row
+              notes={
+                <Note n={4}>
+                  Přepisování údajů z e-mailů do účetních šablon stálo spoustu času, který chtěl Alex trávit focením.
+                </Note>
+              }
+            >
+              <P>
+                Posledním dílkem byla fakturace. Přepisování údajů z e-mailů do šablon
+                <Ref n={4} /> stálo drahocenný čas, a tak jsme do administrace přidali <B>generátor faktur</B>.
+              </P>
+            </Row>
+            <Row>
+              <P>
+                Systém si z dat zákazníka a vybraného balíčku sám načte všechny informace, vytvoří formálně správný
+                doklad a pošle ho klientovi. Nudná administrativa tak ubývá na úkor samotného focení.
+              </P>
+            </Row>
+          </Chapter>
+
+          <Chapter index={5} summary="Rychlost a gigabyty dat: komprese fotek, odkaz bez registrace a živá synchronizace.">
+            <Row>
+              <P>
+                Stavět systém pro fotografa znamenalo myslet hlavně na <B>rychlost a bezproblémové načítání
+                gigabytů dat</B>. Tři věci, které mě tahle zakázka naučila:
+              </P>
+            </Row>
+
+            <div>
+              {decisions.map((d, i) => (
+                <Row key={d.term}>
+                  <div
+                    className={`grid gap-2 border-b border-white/[0.08] py-7 sm:grid-cols-[7.5rem_1fr] sm:gap-6 ${
+                      i === 0 ? "border-t" : ""
+                    }`}
+                  >
+                    <p className="font-medium text-white">{d.term}</p>
+                    <div>
+                      <p className="text-[17px] text-white">{d.lead}</p>
+                      <p className="mt-2 text-[16px] leading-relaxed text-[#a8a8a8]">{d.text}</p>
+                    </div>
+                  </div>
+                </Row>
+              ))}
             </div>
-         </div>
-      </section>
+          </Chapter>
 
+          {/* Závěr */}
+          <section aria-labelledby="zaver-nadpis" className="mt-32 border-t border-white/[0.08] pt-16 md:mt-44 md:pt-24">
+            <Row
+              notes={
+                <Note label="Víc o mně">
+                  Navrhuju a kóduju webové aplikace od UI po backend. Podívej se i na{" "}
+                  <Link href="/projects/risehigh" className={`${linkClass} whitespace-nowrap`}>
+                    příběh RiseHighu
+                  </Link>
+                  .
+                </Note>
+              }
+            >
+              <h2
+                id="zaver-nadpis"
+                className="text-[2.5rem] font-semibold leading-[1] tracking-[-0.04em] text-white text-balance md:text-6xl"
+              >
+                Potřebuješ vlastní systém<span className="text-accent">?</span>
+              </h2>
+              <p className="mt-6 max-w-[34rem] text-lg leading-relaxed text-[#b4b4b4] text-pretty">
+                Jestli řešíš podobný custom systém pro svůj byznys nebo tě zajímá, jak platforma funguje pod
+                pokličkou, napiš mi pár vět a probereme to.
+              </p>
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/?contact=true#about-me"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-medium text-neutral-950 transition-all duration-300 hover:bg-neutral-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505]"
+                >
+                  Probrat projekt
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </Link>
+                <a
+                  href={SITE}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.12] px-6 py-3.5 text-sm font-medium text-neutral-300 transition-all duration-300 hover:border-white/25 hover:bg-white/[0.04] hover:text-white active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                >
+                  Kouknout na web
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </a>
+              </div>
+            </Row>
+          </section>
+        </div>
+      </article>
     </main>
   );
 }
