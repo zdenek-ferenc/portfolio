@@ -4,13 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { chapters } from "./shared";
+import type { ChapterMeta } from "./shared";
 
 /**
  * Běžící hlavička jako v knize: objeví se, až zmizí úvod,
  * ukazuje aktuální kapitolu a červenou linkou průběh čtení.
  */
-export default function RunningHead() {
+export default function RunningHead({
+  name,
+  chapters,
+  href,
+  hrefLabel,
+}: {
+  name: string;
+  chapters: readonly ChapterMeta[];
+  href: string;
+  hrefLabel: string;
+}) {
   const [shown, setShown] = useState(false);
   const [current, setCurrent] = useState<string | null>(null);
   const { scrollYProgress } = useScroll();
@@ -40,7 +50,7 @@ export default function RunningHead() {
       heroObserver.disconnect();
       chapterObserver.disconnect();
     };
-  }, []);
+  }, [chapters]);
 
   return (
     <>
@@ -67,16 +77,16 @@ export default function RunningHead() {
           </Link>
           <span aria-hidden className="h-4 w-px bg-white/10" />
           <p className="min-w-0 truncate">
-            <span className="font-medium text-white">RiseHigh</span>
+            <span className="font-medium text-white">{name}</span>
             {current ? <span className="text-neutral-400"> / {current}</span> : null}
           </p>
           <a
-            href="https://risehigh.io"
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
             className="group ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-md text-text-tertiary transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
           >
-            risehigh.io
+            {hrefLabel}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
         </div>

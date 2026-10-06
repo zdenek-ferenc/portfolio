@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import HeroShot from "./hero-shot";
-import RunningHead from "./running-head";
-import { Note, Ref, Row } from "./margin";
-import { COLUMNS, chapters } from "./shared";
+import HeroShot from "@/components/case-study/hero-shot";
+import RunningHead from "@/components/case-study/running-head";
+import { Note, Ref, Row } from "@/components/case-study/margin";
+import { Chapter as BaseChapter, B, P, linkClass } from "@/components/case-study/prose";
+import { COLUMNS } from "@/components/case-study/shared";
+import { chapters } from "./shared";
 
 export const metadata: Metadata = {
   title: "RiseHigh - Zdenek Ferenc",
@@ -24,17 +26,6 @@ const steps = [
   { title: "Výsledek", text: "Nejlepší řešení vyhraje. Firma dostane nápad i talent, student referenci." },
 ];
 
-const linkClass =
-  "text-white underline decoration-white/25 underline-offset-[5px] transition-colors hover:decoration-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-sm";
-
-function P({ children }: { children: React.ReactNode }) {
-  return <p className="text-[17px] leading-[1.75] text-[#b4b4b4] md:text-lg md:leading-[1.75] text-pretty">{children}</p>;
-}
-
-function B({ children }: { children: React.ReactNode }) {
-  return <strong className="font-medium text-white">{children}</strong>;
-}
-
 function Chapter({
   index,
   summary,
@@ -46,24 +37,16 @@ function Chapter({
 }) {
   const { id, title } = chapters[index];
   return (
-    <section id={id} data-chapter={title} aria-labelledby={`${id}-nadpis`} className="scroll-mt-24 pt-28 md:pt-40">
-      <Row notes={<Note summary>{summary}</Note>}>
-        <h2
-          id={`${id}-nadpis`}
-          className="text-[2.125rem] font-semibold leading-[1.05] tracking-[-0.035em] text-white text-balance md:text-5xl"
-        >
-          {title}
-        </h2>
-      </Row>
-      <div className="mt-8 space-y-7 md:mt-10">{children}</div>
-    </section>
+    <BaseChapter id={id} title={title} summary={summary}>
+      {children}
+    </BaseChapter>
   );
 }
 
 export default function RiseHighPage() {
   return (
     <main className="min-h-screen overflow-x-clip bg-[#050505] text-neutral-200">
-      <RunningHead />
+      <RunningHead name="RiseHigh" chapters={chapters} href="https://risehigh.io" hrefLabel="risehigh.io" />
 
       {/* Úvod */}
       <header id="uvod" className="px-6 pt-8 md:px-10 md:pt-12">
@@ -127,7 +110,13 @@ export default function RiseHighPage() {
 
       <figure className="mt-12 px-4 md:mt-16 md:px-10">
         <div className="mx-auto max-w-[76rem]">
-          <HeroShot />
+          <HeroShot
+            src="/risehigh.webp"
+            alt="Úvodní stránka risehigh.io: nadpis Praxe, která dává smysl, tlačítka pro studenty a firmy a vpravo interaktivní ukázka výzvy"
+            width={1926}
+            height={1083}
+            background="#06101f"
+          />
         </div>
         <figcaption className="mx-auto mt-4 max-w-[64rem] px-2 md:px-0">
           <div className={COLUMNS}>
