@@ -14,6 +14,7 @@
   --color-accent: #CF2F31;
   --color-text-primary: #EDEDED;
   --color-text-secondary: #A1A1A1;
+  --color-text-tertiary: #8A8A8A;
 
   --breakpoint-3xl: 1920px;
 }
@@ -28,6 +29,7 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  caret-color: var(--color-accent);
 }
 
 h1, h2, h3, h4, h5, h6 {
